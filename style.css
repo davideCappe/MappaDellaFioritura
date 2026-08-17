@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap');
 
+/* =========================================================
+   BASE / TOKENS / RESET
+   ========================================================= */
+
 :root {
   --ink: #3d4e49;
   --ink-soft: #667672;
@@ -97,6 +101,10 @@ body {
   margin: 0 auto;
   padding: var(--space-3) 20px 64px;
 }
+
+/* =========================================================
+   LAYOUT SHARED / HEADER / NAV
+   ========================================================= */
 
 .app-header {
   text-align: center;
@@ -239,6 +247,10 @@ body {
   display: grid;
   gap: var(--space-3);
 }
+
+/* =========================================================
+   HOME PAGE / CALCOLO MATRICE
+   ========================================================= */
 
 .tool-shell {
   display: grid;
@@ -488,6 +500,10 @@ body {
   background: rgba(255, 252, 249, 0.78);
 }
 
+/* =========================================================
+   ABOUT PAGE / CONTENT BLOCKS
+   ========================================================= */
+
 .note-band h2 {
   margin: 0 0 8px;
   font-family: 'Cormorant Garamond', Georgia, serif;
@@ -676,6 +692,10 @@ input:focus-visible {
   outline-offset: 2px;
 }
 
+/* =========================================================
+   FOOTER / SOCIAL / UTILITY
+   ========================================================= */
+
 .site-footer {
   margin-top: 20px;
   border-radius: 22px;
@@ -826,6 +846,10 @@ input:focus-visible {
   stroke-linejoin: round;
   pointer-events: none;
 }
+
+/* =========================================================
+   MATRIX SVG / ANIMATIONS / UTILITIES
+   ========================================================= */
 
 .reveal {
   opacity: 1;

@@ -718,19 +718,12 @@ function initNavMagneticHover() {
   });
 }
 
-const btnCalcola = document.getElementById("btnCalcola");
-const btnExport = document.getElementById("btnExport");
-const inputNome = document.getElementById("nome");
-const inputData = document.getElementById("dataNascita");
-const erroreEl = document.getElementById("errore");
-const matrixPanelEl = document.querySelector(".matrix-panel");
-const matrixContainerEl = document.querySelector(".matrix-container");
-
-if (btnExport) {
-  btnExport.disabled = true;
-}
+const page = document.body.dataset.page || "home";
 
 function mostraMappaAnimata() {
+  const matrixPanelEl = document.querySelector(".matrix-panel");
+  const matrixContainerEl = document.querySelector(".matrix-container");
+
   if (!matrixPanelEl || !matrixContainerEl) {
     return;
   }
@@ -761,7 +754,19 @@ function mostraMappaAnimata() {
   }
 }
 
-if (btnCalcola && btnExport && inputNome && inputData && erroreEl) {
+function initHomePageInteractions() {
+  const btnCalcola = document.getElementById("btnCalcola");
+  const btnExport = document.getElementById("btnExport");
+  const inputNome = document.getElementById("nome");
+  const inputData = document.getElementById("dataNascita");
+  const erroreEl = document.getElementById("errore");
+
+  if (!btnCalcola || !btnExport || !inputNome || !inputData || !erroreEl) {
+    return;
+  }
+
+  btnExport.disabled = true;
+
   btnCalcola.addEventListener("click", () => {
     const nome = inputNome.value.trim();
     const data = inputData.value;
@@ -792,9 +797,17 @@ if (btnCalcola && btnExport && inputNome && inputData && erroreEl) {
   });
 }
 
-inizializzaPosizioniPrognosi();
-disegnaMappaGuida();
-initUiMotion();
-initNavIndicator();
-initNavMagneticHover();
-initBackToTop();
+function initPageShell() {
+  inizializzaPosizioniPrognosi();
+  disegnaMappaGuida();
+  initUiMotion();
+  initNavIndicator();
+  initNavMagneticHover();
+  initBackToTop();
+
+  if (page === "home") {
+    initHomePageInteractions();
+  }
+}
+
+initPageShell();
