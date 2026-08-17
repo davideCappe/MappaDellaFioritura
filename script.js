@@ -580,17 +580,6 @@ function initUiMotion() {
     return;
   }
 
-  if (window.gsap) {
-    window.gsap.to(revealItems, {
-      opacity: 1,
-      y: 0,
-      duration: 0.9,
-      ease: "power2.out",
-      stagger: 0.12,
-    });
-    return;
-  }
-
   const observer = new IntersectionObserver(
     (entries, obs) => {
       entries.forEach((entry) => {
@@ -767,52 +756,8 @@ function mostraMappaAnimata() {
     "(prefers-reduced-motion: reduce)",
   ).matches;
 
-  if (prefersReducedMotion || !window.gsap) {
+  if (prefersReducedMotion) {
     return;
-  }
-
-  const texts = matrixContainerEl.querySelectorAll("#numeriLayer text");
-
-  const tl = window.gsap.timeline({ defaults: { overwrite: "auto" } });
-
-  if (firstReveal) {
-    tl.fromTo(
-      matrixContainerEl,
-      { opacity: 0.2, scale: 0.975 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.56,
-        ease: "power2.out",
-      },
-    );
-  }
-
-  tl.fromTo(
-    matrixContainerEl.querySelector("svg"),
-    { filter: "blur(10px)", clipPath: "inset(0 0 100% 0 round 16px)" },
-    {
-      filter: "blur(0px)",
-      clipPath: "inset(0 0 0% 0 round 16px)",
-      duration: 0.74,
-      ease: "power3.out",
-    },
-    firstReveal ? "-=0.36" : 0,
-  );
-
-  if (texts.length) {
-    tl.fromTo(
-      texts,
-      { opacity: 0, scale: 0.7, transformOrigin: "50% 50%" },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.28,
-        stagger: 0.015,
-        ease: "back.out(2.2)",
-      },
-      "-=0.36",
-    );
   }
 }
 
