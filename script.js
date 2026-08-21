@@ -443,17 +443,46 @@ function disegnaMappaGuida() {
 }
 
 async function toDataUrl(url) {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error("Impossibile leggere l'immagine di sfondo per l'export.");
-  }
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Immagine non disponibile.");
+    }
 
-  const blob = await response.blob();
-  return await new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(new Error("Errore conversione immagine."));
-    reader.readAsDataURL(blob);
+    const blob = await response.blob();
+    return await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error("Errore conversione immagine."));
+      reader.readAsDataURL(blob);
+    });
+  } catch (error) {
+    return await immagineComeDataUrl(url);
+  }
+}
+
+function immagineComeDataUrl(url) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+
+      const context = canvas.getContext("2d");
+      if (!context) {
+        reject(new Error("Impossibile preparare l'immagine per l'export."));
+        return;
+      }
+
+      context.drawImage(image, 0, 0);
+      resolve(canvas.toDataURL("image/png"));
+    };
+    image.onerror = () =>
+      reject(
+        new Error("Impossibile leggere l'immagine di sfondo per l'export."),
+      );
+    image.src = url;
   });
 }
 
@@ -469,11 +498,13 @@ function scaricaBlob(blob, filename) {
 }
 
 function creaNomeFilePng() {
-  const nome = (inputNome.value || "")
+  const nomeInput = document.getElementById("nome");
+  const dataInput = document.getElementById("dataNascita");
+  const nome = (nomeInput?.value || "")
     .trim()
     .replace(/\s+/g, "-")
     .toLowerCase();
-  const data = inputData.value || "senza-data";
+  const data = dataInput?.value || "senza-data";
 
   if (!nome) {
     return `matrice-destino-${data}.png`;
