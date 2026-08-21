@@ -41,6 +41,20 @@
                 <section class="input-panel">
                     <h2>Calcolo personale</h2>
                     <p class="panel-intro">Inserisci i dati principali e genera la tua mappa in pochi secondi.</p>
+                    <fieldset class="field profile-choice">
+                        <legend class="visually-hidden">Descrizione per</legend>
+                        <div class="choice-options">
+                            <label class="choice-option">
+                                <input type="radio" name="profilo" value="adulto" checked>
+                                <span>Adulto</span>
+                            </label>
+                            <label class="choice-option">
+                                <input type="radio" name="profilo" value="bambino">
+                                <span>Bambino</span>
+                            </label>
+                        </div>
+                    </fieldset>
+
                     <div class="field">
                         <label for="nome">Nome</label>
                         <input type="text" id="nome" placeholder="Nome" autocomplete="name" required>
@@ -71,6 +85,12 @@
                         </svg>
                     </div>
                 </section>
+            </section>
+
+            <section class="comfort-panel reveal" id="descrizioneCentro" aria-live="polite" hidden>
+                <p class="comfort-kicker">Il tuo centro</p>
+                <h2 id="comfortTitolo"></h2>
+                <p id="comfortTesto"></p>
             </section>
 
             <section class="note-band reveal" aria-label="Nota informativa">

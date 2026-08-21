@@ -67,6 +67,163 @@ const PROGNOSI_PERIODI = ["a", "b", "c", "d", "e", "f", "g"];
 const MOSTRA_MAPPA_GUIDA = false;
 const INCLUDE_GUIDA_NELL_EXPORT = false;
 
+const DESCRIZIONI_CENTRO = {
+  1: {
+    titolo: "Il Mago",
+    adulto:
+      "Ti senti a tuo agio quando puoi prendere iniziativa e avere il controllo diretto su un progetto, senza dover aspettare l'approvazione altrui. Il tuo comfort psicologico nasce dall'autonomia decisionale e dalla possibilità di trasformare un'idea in azione concreta. Situazioni che richiedono passività o attesa prolungata possono generarti disagio.",
+    bambino:
+      "Il bambino trova sicurezza in attività che gli permettono di sperimentare in prima persona, senza troppe istruzioni imposte dall'esterno. Ha bisogno di spazi in cui sbagliare e riprovare da solo, sviluppando fiducia nelle proprie capacità. Si sente a disagio quando viene costantemente guidato o corretto durante il gioco.",
+  },
+  2: {
+    titolo: "La Sacerdotessa",
+    adulto:
+      "Ti senti a tuo agio in ambienti tranquilli, dove puoi osservare prima di agire e riflettere senza fretta. Il tuo comfort nasce dal poter elaborare le cose internamente, lontano da pressioni sociali o richieste di risposte immediate. Il rumore, la fretta e l'esposizione eccessiva ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente al sicuro in momenti di calma e silenzio, magari da solo con i suoi pensieri o in giochi tranquilli. Ha bisogno di tempo per osservare prima di partecipare, senza essere spinto a esporsi. Ambienti troppo rumorosi o affollati possono sopraffarlo.",
+  },
+  3: {
+    titolo: "L'Imperatrice",
+    adulto:
+      "Ti senti a tuo agio quando puoi prenderti cura di qualcuno o qualcosa, creando un ambiente accogliente intorno a te. Il tuo comfort psicologico nasce dal nutrire relazioni e dal circondarti di bellezza e comodità. Contesti freddi, distaccati o privi di calore relazionale ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente sicuro in ambienti caldi e accoglienti, dove può prendersi cura di qualcosa (un peluche, una pianta, un animale). Ha bisogno di contatto fisico rassicurante e di sentirsi nutrito emotivamente. Si sente a disagio in contesti freddi o poco affettuosi.",
+  },
+  4: {
+    titolo: "L'Imperatore",
+    adulto:
+      "Ti senti a tuo agio quando hai una struttura chiara, regole definite e un ordine da seguire o da costruire. Il tuo comfort psicologico nasce dal senso di controllo e stabilità che deriva dall'organizzazione. L'imprevedibilità e il caos possono generarti forte disagio.",
+    bambino:
+      "Il bambino si sente sicuro con routine prevedibili e regole chiare da rispettare. Ha bisogno di sapere cosa succederà dopo e di avere punti fermi nella giornata. Cambiamenti improvvisi o mancanza di struttura possono renderlo ansioso.",
+  },
+  5: {
+    titolo: "Il Papa (Gerofante)",
+    adulto:
+      "Ti senti a tuo agio quando puoi trasmettere conoscenza o far parte di un gruppo con valori condivisi. Il tuo comfort psicologico nasce dall'appartenenza e dal seguire (o insegnare) principi in cui credi. Sentirsi esclusi o privi di riferimenti solidi ti mette a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando può imparare da una figura di riferimento fidata e sentirsi parte di un gruppo. Ha bisogno di regole condivise e di sapere cosa è giusto e cosa no. Si sente a disagio quando manca una guida chiara o si sente escluso.",
+  },
+  6: {
+    titolo: "Gli Amanti",
+    adulto:
+      "Ti senti a tuo agio quando puoi scegliere liberamente seguendo i tuoi valori, senza sentirti forzato in una direzione. Il tuo comfort psicologico nasce dall'armonia nelle relazioni e dalla libertà di decidere. Le imposizioni esterne o i conflitti di valore ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando può scegliere tra opzioni, anche piccole, e sentirsi ascoltato nelle sue preferenze. Ha bisogno di relazioni armoniose intorno a sé, senza tensioni. Litigi o imposizioni rigide possono metterlo a disagio.",
+  },
+  7: {
+    titolo: "Il Carro",
+    adulto:
+      "Ti senti a tuo agio quando sei in movimento verso un obiettivo, con una direzione chiara da seguire. Il tuo comfort psicologico nasce dalla sensazione di avanzamento e conquista. La stasi prolungata o la mancanza di progressi ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando ha una sfida o un traguardo da raggiungere, qualcosa che lo tiene attivo e motivato. Ha bisogno di muoversi, fare, andare avanti. Situazioni troppo statiche o ripetitive possono annoiarlo e agitarlo.",
+  },
+  8: {
+    titolo: "La Giustizia",
+    adulto:
+      "Ti senti a tuo agio in contesti equi, dove le regole valgono per tutti e le conseguenze sono logiche e prevedibili. Il tuo comfort psicologico nasce dal senso di correttezza ed equilibrio. Le ingiustizie o le decisioni arbitrarie ti mettono profondamente a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando le regole sono uguali per tutti e capisce perché certe cose sono permesse o vietate. Ha bisogno di coerenza tra ciò che viene detto e ciò che viene fatto. Le ingiustizie percepite (anche piccole) possono turbarlo molto.",
+  },
+  9: {
+    titolo: "L'Eremita",
+    adulto:
+      "Ti senti a tuo agio quando hai tempo e spazio per stare da solo con i tuoi pensieri, lontano da richieste sociali. Il tuo comfort psicologico nasce dall'introspezione e dalla ricerca di senso personale. La socialità forzata o continua ti prosciuga e ti mette a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando può ritagliarsi momenti di gioco solitario, senza essere costantemente sollecitato a interagire. Ha bisogno di tempo per stare con sé stesso. Ambienti troppo sociali o esigenti possono stancarlo rapidamente.",
+  },
+  10: {
+    titolo: "La Ruota della Fortuna",
+    adulto:
+      "Ti senti a tuo agio quando la vita porta cambiamenti e novità, e riesci ad adattarti con flessibilità. Il tuo comfort psicologico nasce dall'accettare che le cose cambiano e dal saperle cogliere. La rigidità e la monotonia prolungata ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando può esplorare novità e imprevisti con curiosità, senza troppa ansia da controllo. Ha bisogno di varietà negli stimoli e nelle attività. La monotonia eccessiva può renderlo irrequieto.",
+  },
+  11: {
+    titolo: "La Forza",
+    adulto:
+      "Ti senti a tuo agio quando puoi gestire le difficoltà con calma interiore, senza reagire d'impulso. Il tuo comfort psicologico nasce dalla pazienza e dal controllo emotivo che eserciti su te stesso, non sugli altri. Le situazioni che richiedono reazioni aggressive o impulsive ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando gli viene data la possibilità di gestire le proprie emozioni con calma, senza fretta di reprimerle. Ha bisogno di sentirsi accompagnato con dolcezza nelle difficoltà. Le richieste brusche o punitive possono metterlo a disagio.",
+  },
+  12: {
+    titolo: "L'Appeso",
+    adulto:
+      "Ti senti a tuo agio quando puoi fermarti, cambiare prospettiva e guardare le cose da un punto di vista diverso, senza fretta di agire. Il tuo comfort psicologico nasce dall'accettazione della pausa come momento utile. Essere spinto ad agire subito, senza tempo per riflettere, ti mette a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando ha tempo per guardare prima di partecipare, magari osservando gli altri giocare prima di unirsi. Ha bisogno di non essere forzato ad agire subito. Le pressioni a sbrigarsi possono metterlo a disagio.",
+  },
+  13: {
+    titolo: "La Morte (Trasformazione)",
+    adulto:
+      "Ti senti a tuo agio quando puoi lasciare andare ciò che non serve più e rinnovarti, anche attraverso cambiamenti importanti. Il tuo comfort psicologico nasce dalla capacità di chiudere cicli e ricominciare. Restare bloccato in situazioni immutabili ti mette a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando può lasciare un gioco per un altro senza sensi di colpa, adattandosi ai cambiamenti di attività. Ha bisogno di essere accompagnato con serenità nei passaggi (nuova scuola, nuova fase). Le transizioni brusche o imposte possono spaventarlo.",
+  },
+  14: {
+    titolo: "La Temperanza",
+    adulto:
+      "Ti senti a tuo agio quando riesci a trovare un equilibrio tra le diverse parti della tua vita, senza estremismi. Il tuo comfort psicologico nasce dalla moderazione e dall'armonizzare bisogni diversi. Gli eccessi, in qualunque direzione, ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente sicuro in ambienti equilibrati, dove gioco, riposo e regole si alternano senza estremi. Ha bisogno di ritmi bilanciati, né troppo stimolanti né troppo rigidi. Gli sbalzi eccessivi (troppa attività o troppa noia) possono disorientarlo.",
+  },
+  15: {
+    titolo: "Il Diavolo",
+    adulto:
+      "Ti senti a tuo agio quando puoi esprimere i tuoi desideri e la tua parte istintiva senza giudizio, con autenticità. Il tuo comfort psicologico nasce dal riconoscere e accettare i propri limiti e desideri senza reprimerli. Contesti eccessivamente moralistici o repressivi ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando può esprimere i suoi bisogni e desideri senza sentirsi giudicato o etichettato come capriccioso. Ha bisogno di spazio per essere autentico anche nelle sue parti più istintive. Il giudizio costante può farlo sentire a disagio.",
+  },
+  16: {
+    titolo: "La Torre",
+    adulto:
+      "Ti senti a tuo agio quando le cose sono stabili e prevedibili, e ti senti fortemente destabilizzato da crolli improvvisi o cambiamenti drastici. Il tuo comfort psicologico nasce dalla sicurezza strutturale. Le rotture improvvise mettono profondamente in crisi il tuo equilibrio.",
+    bambino:
+      "Il bambino si sente sicuro quando l'ambiente intorno a lui è stabile e senza scossoni improvvisi. Ha bisogno di essere preparato in anticipo ai cambiamenti importanti, anche piccoli. Le sorprese destabilizzanti o i litigi improvvisi possono spaventarlo molto.",
+  },
+  17: {
+    titolo: "La Stella",
+    adulto:
+      "Ti senti a tuo agio quando puoi coltivare speranza e fiducia nel futuro, anche nei momenti difficili. Il tuo comfort psicologico nasce dall'ispirazione e dalla possibilità di sognare in grande. Il pessimismo cronico intorno a te o la mancanza di prospettive ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando può sognare, immaginare e sperare, sentendosi incoraggiato nelle sue aspirazioni. Ha bisogno di adulti che alimentino la sua fiducia nel futuro. Un ambiente scoraggiante o critico può spegnere il suo entusiasmo.",
+  },
+  18: {
+    titolo: "La Luna",
+    adulto:
+      "Ti senti a tuo agio quando puoi esplorare la tua sensibilità e le tue emozioni più profonde senza doverle spiegare razionalmente. Il tuo comfort psicologico nasce dall'accettazione dell'ambiguità e dell'intuito. Gli ambienti eccessivamente razionali o che negano le emozioni ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando le sue emozioni, anche quelle confuse o difficili da spiegare, vengono accolte senza essere minimizzate. Ha bisogno di sentirsi capito anche quando non trova le parole giuste. Essere invitato a razionalizzare troppo presto può metterlo a disagio.",
+  },
+  19: {
+    titolo: "Il Sole",
+    adulto:
+      "Ti senti a tuo agio quando puoi essere te stesso apertamente, con vitalità e senza maschere. Il tuo comfort psicologico nasce dalla gioia condivisa e dal riconoscimento positivo. Gli ambienti cupi o repressivi verso l'espressione di sé ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando può essere spontaneo, giocoso e mostrarsi per quello che è, ricevendo approvazione e calore. Ha bisogno di essere visto e apprezzato apertamente. Un ambiente freddo o poco espressivo può farlo sentire a disagio.",
+  },
+  20: {
+    titolo: "Il Giudizio",
+    adulto:
+      "Ti senti a tuo agio quando puoi fare un bilancio della tua vita e sentirti chiamato a un rinnovamento consapevole. Il tuo comfort psicologico nasce dal sentirti riconosciuto per il tuo percorso e dalla possibilità di ripartire con nuova consapevolezza. Sentirsi giudicati ingiustamente o non ascoltati ti mette a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando i suoi progressi vengono riconosciuti e valorizzati, sentendosi capito nel suo percorso di crescita. Ha bisogno di sentire che ogni errore è un'occasione per ricominciare, non una condanna. Il giudizio severo o le etichette possono farlo sentire a disagio.",
+  },
+  21: {
+    titolo: "Il Mondo",
+    adulto:
+      "Ti senti a tuo agio quando puoi vedere il quadro d'insieme e sentire di aver completato qualcosa di significativo. Il tuo comfort psicologico nasce dal senso di realizzazione e integrazione delle diverse parti di te. Le situazioni frammentate o incompiute ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando può portare a termine un'attività e vedere il risultato del proprio impegno. Ha bisogno di sentire un senso di completezza nelle cose che fa. Essere interrotto continuamente prima di finire può metterlo a disagio.",
+  },
+  22: {
+    titolo: "Il Matto",
+    adulto:
+      "Ti senti a tuo agio quando puoi essere spontaneo, leggero e libero da aspettative e vincoli eccessivi. Il tuo comfort psicologico nasce dalla libertà di esplorare senza un piano rigido. Le strutture troppo rigide o le responsabilità eccessive ti mettono a disagio.",
+    bambino:
+      "Il bambino si sente sicuro quando può giocare liberamente, senza troppe regole o aspettative di prestazione. Ha bisogno di spazio per essere semplicemente sé stesso, in modo leggero e spontaneo. Le pressioni o le responsabilità premature possono metterlo a disagio.",
+  },
+};
+
 function calcolaPosizionePrognosiSegmento(fromKey, toKey, indice) {
   const from = CERCHI[fromKey];
   const to = CERCHI[toKey];
@@ -571,6 +728,19 @@ function disegnaMatrice(risultati) {
   }
 }
 
+function mostraDescrizioneCentro(numero, profilo) {
+  const panel = document.getElementById("descrizioneCentro");
+  const titolo = document.getElementById("comfortTitolo");
+  const testo = document.getElementById("comfortTesto");
+  const descrizione = DESCRIZIONI_CENTRO[numero];
+
+  if (!panel || !titolo || !testo || !descrizione) return;
+
+  titolo.textContent = `${numero} - ${descrizione.titolo}`;
+  testo.textContent = descrizione[profilo];
+  panel.hidden = false;
+}
+
 function initUiMotion() {
   const revealItems = document.querySelectorAll(".reveal");
   if (!revealItems.length) return;
@@ -770,6 +940,9 @@ function initHomePageInteractions() {
   btnCalcola.addEventListener("click", () => {
     const nome = inputNome.value.trim();
     const data = inputData.value;
+    const profilo = document.querySelector(
+      'input[name="profilo"]:checked',
+    ).value;
 
     erroreEl.hidden = true;
 
@@ -781,6 +954,7 @@ function initHomePageInteractions() {
 
     const risultati = calcolaMatrice(nome, data);
     disegnaMatrice(risultati);
+    mostraDescrizioneCentro(risultati.centro, profilo);
     mostraMappaAnimata();
     btnExport.disabled = false;
   });
