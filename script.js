@@ -5,16 +5,16 @@
 // Coordinate dei cerchi visibili nell'immagine (viewBox 1000x1000).
 // Se necessario puoi rifinire qualche coordinata di pochi pixel.
 const CERCHI = {
-  eta0: { x: 105, y: 518, fontSize: 40 }, //ok
-  eta10: { x: 215, y: 245, fontSize: 40 }, //ok
-  eta20: { x: 490, y: 135, fontSize: 40 }, //ok
-  eta30: { x: 755, y: 245, fontSize: 40 }, //ok
-  eta40: { x: 870, y: 518, fontSize: 40 }, //ok
-  eta50: { x: 755, y: 790, fontSize: 40 }, //ok
-  eta60: { x: 490, y: 900, fontSize: 40 }, //ok
-  eta70: { x: 220, y: 790, fontSize: 40 }, //ok
+  eta0: { x: 138, y: 502, fontSize: 40 }, //ok
+  eta10: { x: 244, y: 244, fontSize: 40 }, //ok
+  eta20: { x: 502, y: 138, fontSize: 40 }, //ok
+  eta30: { x: 759, y: 244, fontSize: 40 }, //ok
+  eta40: { x: 865, y: 502, fontSize: 40 }, //ok
+  eta50: { x: 759, y: 759, fontSize: 40 }, //ok
+  eta60: { x: 502, y: 865, fontSize: 40 }, //ok
+  eta70: { x: 244, y: 759, fontSize: 40 }, //ok
 
-  centro: { x: 488, y: 518, fontSize: 50 }, //ok
+  centro: { x: 502, y: 502, fontSize: 50 }, //ok
 
   top1: { x: 490, y: 210, fontSize: 30 }, //ok
   top2: { x: 490, y: 265, fontSize: 20 }, //ok
@@ -64,7 +64,7 @@ const PROGNOSI_SEGMENTI = [
 
 const PROGNOSI_PERIODI = ["a", "b", "c", "d", "e", "f", "g"];
 
-const MOSTRA_MAPPA_GUIDA = false;
+const MOSTRA_MAPPA_GUIDA = true; // Imposta a true per mostrare la mappa guida, false per nasconderla
 const INCLUDE_GUIDA_NELL_EXPORT = false;
 
 const DESCRIZIONI_CENTRO = {
