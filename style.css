@@ -742,7 +742,9 @@ body {
 
 .about-hero,
 .about-story,
-.about-cta {
+.about-cta,
+.about-intro,
+.about-energy {
   padding: 20px;
   border-radius: 24px;
   border: 1px solid rgba(149, 136, 112, 0.18);
@@ -750,10 +752,35 @@ body {
   box-shadow: var(--card-shadow);
 }
 
-.about-hero {
+.about-intro {
   display: grid;
-  grid-template-columns: 1.35fr 0.9fr;
-  gap: 14px;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+  gap: 22px;
+  align-items: center;
+}
+
+.about-portrait {
+  display: flex;
+  justify-content: center;
+}
+
+.portrait-frame {
+  position: relative;
+  width: min(100%, 360px);
+  aspect-ratio: 4 / 5;
+  border-radius: 32% 68% 55% 45% / 42% 34% 66% 58%;
+  overflow: hidden;
+  border: 1px solid rgba(128, 110, 97, 0.2);
+  background: linear-gradient(140deg, rgba(223, 213, 202, 0.9), rgba(233, 223, 212, 0.78));
+  box-shadow: 0 18px 28px rgba(80, 67, 57, 0.12);
+}
+
+.portrait-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  filter: saturate(0.96) contrast(1.03);
 }
 
 .about-kicker {
@@ -767,18 +794,22 @@ body {
 
 .about-hero h2,
 .about-story h2,
-.about-cta h2 {
+.about-cta h2,
+.about-intro h2,
+.about-energy h2 {
   margin: 8px 0 10px;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(1.9rem, 3.4vw, 2.7rem);
-  line-height: 1;
+  line-height: 1.02;
   font-style: italic;
   color: #415a4f;
 }
 
 .about-hero p,
 .about-story p,
-.about-cta p {
+.about-cta p,
+.about-intro p,
+.about-energy p {
   margin: 0;
   color: #4f615b;
   line-height: 1.65;
@@ -800,6 +831,40 @@ body {
   line-height: 1.2;
   color: #4e665d;
   font-style: italic;
+}
+
+.about-energy {
+  display: block;
+}
+
+.energy-copy {
+  display: grid;
+  gap: 14px;
+}
+
+.energy-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.energy-list li {
+  position: relative;
+  padding-left: 18px;
+  color: #4f615b;
+  line-height: 1.6;
+}
+
+.energy-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #7d9c85;
+  font-size: 1.2rem;
+  line-height: 1.2;
 }
 
 .about-grid {
@@ -1085,6 +1150,7 @@ input:focus-visible {
     grid-template-columns: 1fr;
   }
 
+  .about-intro,
   .about-hero {
     grid-template-columns: 1fr;
   }
@@ -1142,9 +1208,15 @@ input:focus-visible {
 
   .about-hero,
   .about-story,
-  .about-cta {
+  .about-cta,
+  .about-intro,
+  .about-energy {
     padding: 14px;
     border-radius: 18px;
+  }
+
+  .portrait-frame {
+    width: min(100%, 290px);
   }
 
   .about-grid {
