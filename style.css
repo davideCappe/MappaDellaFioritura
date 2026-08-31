@@ -497,6 +497,7 @@ body {
   border-left: 4px solid #8ea57f;
   background: rgba(255, 252, 249, 0.86);
   box-shadow: 0 12px 28px rgba(98, 80, 61, 0.1);
+  border-radius: 0 18px 18px 0;
 }
 
 .comfort-panel[hidden] {
@@ -542,7 +543,7 @@ body {
 }
 
 .tessera-head {
-  margin-bottom: 14px;
+  margin-bottom: 16px;  
 }
 
 .tessera-kicker {
@@ -565,84 +566,92 @@ body {
 
 .tessera-table-wrap {
   overflow-x: auto;
+  display: flex;
+  justify-content: center;
 }
 
 .tessera-table {
   width: min(100%, 640px);
   border-collapse: collapse;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 18px;
   border: 1px solid rgba(120, 137, 126, 0.22);
-  background: rgba(255, 252, 249, 0.95);
+  background: rgba(255, 252, 249, 0.96);
+  box-shadow: 0 10px 22px rgba(82, 67, 52, 0.08);
 }
 
 .tessera-table th,
 .tessera-table td {
   padding: 14px 16px;
   text-align: center;
-  border: 1px solid rgba(120, 137, 126, 0.2);
+  border: 1px solid rgba(120, 137, 126, 0.18);
   font-size: 0.96rem;
   font-weight: 700;
+  color: #2f413c;
 }
 
 .tessera-table thead th {
-  color: #f8faf7;
+  background: transparent;
+  color: #2f413c;
   font-size: 0.8rem;
   letter-spacing: 0.08em;
 }
 
-.tessera-col--fisico {
-  background: linear-gradient(180deg, #7da274 0%, #5e7c5a 100%);
-}
-
-.tessera-col--energia {
-  background: linear-gradient(180deg, #7aa9d7 0%, #5077a8 100%);
-}
-
+.tessera-col--fisico,
+.tessera-col--energia,
 .tessera-col--emozioni {
-  background: linear-gradient(180deg, #d3b4b7 0%, #b37b8e 100%);
+  background: transparent;
 }
 
 .tessera-table tbody tr {
-color: #aaa;
+  background: rgba(255, 255, 255, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .tessera-row--1 {
-  background: rgb(213, 168, 253);
+  background: rgba(213, 168, 253, 0.14);
+  box-shadow: inset 4px 0 0 rgb(213, 168, 253);
 }
 
 .tessera-row--2 {
-  background: rgb(0, 57, 249);
+  background: rgba(0, 57, 249, 0.12);
+  box-shadow: inset 4px 0 0 rgb(0, 57, 249);
 }
 
 .tessera-row--3 {
-  background: rgb(67, 209, 255);
+  background: rgba(67, 209, 255, 0.14);
+  box-shadow: inset 4px 0 0 rgb(67, 209, 255);
 }
 
 .tessera-row--4 {
-  background: rgb(102, 220, 134);
+  background: rgba(102, 220, 134, 0.14);
+  box-shadow: inset 4px 0 0 rgb(102, 220, 134);
 }
 
 .tessera-row--5 {
-  background: rgb(254, 242, 120);
+  background: rgba(254, 242, 120, 0.18);
+  box-shadow: inset 4px 0 0 rgb(254, 242, 120);
 }
 
 .tessera-row--6 {
-  background: rgb(255, 179, 104);
+  background: rgba(255, 179, 104, 0.14);
+  box-shadow: inset 4px 0 0 rgb(255, 179, 104);
 }
 
 .tessera-row--7 {
-  background: rgb(186, 0, 0);
+  background: rgba(186, 0, 0, 0.12);
+  box-shadow: inset 4px 0 0 rgb(186, 0, 0);
 }
 
 .tessera-row--totale {
-  background: #000000;
+  background: rgba(0, 0, 0, 0.96);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .tessera-row--totale td {
   color: #ffffff;
   font-weight: 800;
-  background: #000000;
+  background: rgba(0, 0, 0, 0.96);
 }
 
 .profile-choice {
