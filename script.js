@@ -616,6 +616,94 @@ function scomponiData(dataStr) {
   return { giorno, mese, anno };
 }
 
+function calcolaTesseraSanitaria(risultati) {
+  const righe = [
+    {
+      fisico: Number(risultati?.eta0 ?? 0),
+      energia: Number(risultati?.eta20 ?? 0),
+    },
+    {
+      fisico: Number(risultati?.left1 ?? 0),
+      energia: Number(risultati?.top1 ?? 0),
+    },
+    {
+      fisico: Number(risultati?.left2 ?? 0),
+      energia: Number(risultati?.top2 ?? 0),
+    },
+    {
+      fisico: Number(risultati?.left3 ?? 0),
+      energia: Number(risultati?.top3 ?? 0),
+    },
+    {
+      fisico: Number(risultati?.centro ?? 0),
+      energia: Number(risultati?.centro ?? 0),
+    },
+    {
+      fisico: Number(risultati?.right1 ?? 0),
+      energia: Number(risultati?.bottom1 ?? 0),
+    },
+    {
+      fisico: Number(risultati?.eta40 ?? 0),
+      energia: Number(risultati?.eta60 ?? 0),
+    },
+  ].map((riga) => ({
+    ...riga,
+    emozioni: riduciA22(
+      (Number(riga.fisico) || 0) + (Number(riga.energia) || 0),
+    ),
+  }));
+
+  const totaleFisico = riduciA22(
+    righe.reduce((somma, riga) => somma + (Number(riga.fisico) || 0), 0),
+  );
+  const totaleEnergia = riduciA22(
+    righe.reduce((somma, riga) => somma + (Number(riga.energia) || 0), 0),
+  );
+  const totaleEmozioni = riduciA22(
+    righe.reduce((somma, riga) => somma + (Number(riga.emozioni) || 0), 0),
+  );
+
+  return {
+    righe,
+    fisico: totaleFisico,
+    energia: totaleEnergia,
+    emozioni: totaleEmozioni,
+    totaleFisico,
+    totaleEnergia,
+    totaleEmozioni,
+  };
+}
+
+function disegnaTesseraSanitaria(risultati) {
+  const panel = document.getElementById("tesseraSanitariaPanel");
+  if (!panel) return;
+
+  const dati = calcolaTesseraSanitaria(risultati);
+  const tbody = panel.querySelector("tbody");
+  if (!tbody) return;
+
+  panel.hidden = false;
+  const righeHtml = dati.righe
+    .map(
+      (riga, indice) => `
+        <tr class="tessera-row tessera-row--${indice + 1}">
+          <td>${riga.fisico}</td>
+          <td>${riga.energia}</td>
+          <td>${riga.emozioni}</td>
+        </tr>
+      `,
+    )
+    .join("");
+
+  tbody.innerHTML = `${righeHtml}
+    <tr class="tessera-row tessera-row--totale">
+      <td>${dati.totaleFisico}</td>
+      <td>${dati.totaleEnergia}</td>
+      <td>${dati.totaleEmozioni}</td>
+    </tr>
+  `;
+}
+
 function calcolaMatrice(nome, dataNascita) {
   const { giorno, mese, anno } = scomponiData(dataNascita);
 
@@ -951,7 +1039,10 @@ function initNavMagneticHover() {
   });
 }
 
-const page = document.body.dataset.page || "home";
+const page =
+  typeof document !== "undefined"
+    ? document.body.dataset.page || "home"
+    : "home";
 
 function mostraMappaAnimata() {
   const matrixPanelEl = document.querySelector(".matrix-panel");
@@ -1017,6 +1108,7 @@ function initHomePageInteractions() {
 
     const risultati = calcolaMatrice(nome, data);
     disegnaMatrice(risultati);
+    disegnaTesseraSanitaria(risultati);
     mostraDescrizioneCentro(risultati.centro, profilo);
     mostraMappaAnimata();
     btnExport.disabled = false;
@@ -1047,4 +1139,12 @@ function initPageShell() {
   }
 }
 
-initPageShell();
+if (typeof document !== "undefined") {
+  initPageShell();
+}
+
+if (typeof module !== "undefined") {
+  module.exports = {
+    calcolaTesseraSanitaria,
+  };
+}

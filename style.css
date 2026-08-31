@@ -529,6 +529,122 @@ body {
   line-height: 1.7;
 }
 
+.tessera-panel {
+  padding: 24px 28px;
+  border-radius: 22px;
+  border: 1px solid rgba(125, 147, 124, 0.24);
+  background: linear-gradient(180deg, rgba(255, 252, 249, 0.86), rgba(241, 246, 238, 0.82));
+  box-shadow: 0 12px 28px rgba(98, 80, 61, 0.08);
+}
+
+.tessera-panel[hidden] {
+  display: none;
+}
+
+.tessera-head {
+  margin-bottom: 14px;
+}
+
+.tessera-kicker {
+  margin: 0 0 6px;
+  color: #6d8a6f;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tessera-head h2 {
+  margin: 0;
+  color: #3d544b;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.tessera-table-wrap {
+  overflow-x: auto;
+}
+
+.tessera-table {
+  width: min(100%, 640px);
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(120, 137, 126, 0.22);
+  background: rgba(255, 252, 249, 0.95);
+}
+
+.tessera-table th,
+.tessera-table td {
+  padding: 14px 16px;
+  text-align: center;
+  border: 1px solid rgba(120, 137, 126, 0.2);
+  font-size: 0.96rem;
+  font-weight: 700;
+}
+
+.tessera-table thead th {
+  color: #f8faf7;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+
+.tessera-col--fisico {
+  background: linear-gradient(180deg, #7da274 0%, #5e7c5a 100%);
+}
+
+.tessera-col--energia {
+  background: linear-gradient(180deg, #7aa9d7 0%, #5077a8 100%);
+}
+
+.tessera-col--emozioni {
+  background: linear-gradient(180deg, #d3b4b7 0%, #b37b8e 100%);
+}
+
+.tessera-table tbody tr {
+color: #aaa;
+}
+
+.tessera-row--1 {
+  background: rgb(213, 168, 253);
+}
+
+.tessera-row--2 {
+  background: rgb(0, 57, 249);
+}
+
+.tessera-row--3 {
+  background: rgb(67, 209, 255);
+}
+
+.tessera-row--4 {
+  background: rgb(102, 220, 134);
+}
+
+.tessera-row--5 {
+  background: rgb(254, 242, 120);
+}
+
+.tessera-row--6 {
+  background: rgb(255, 179, 104);
+}
+
+.tessera-row--7 {
+  background: rgb(186, 0, 0);
+}
+
+.tessera-row--totale {
+  background: #000000;
+}
+
+.tessera-row--totale td {
+  color: #ffffff;
+  font-weight: 800;
+  background: #000000;
+}
+
 .profile-choice {
   align-self: center;
   margin: 0;
