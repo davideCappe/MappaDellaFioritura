@@ -302,18 +302,13 @@ function centraTestoNelCerchio(textEl, pos) {
   const targetX = pos.x + (pos.dx || 0);
   const targetY = pos.y + (pos.dy || 0);
 
-  const bbox = textEl.getBBox();
-  const currentCenterX = bbox.x + bbox.width / 2;
-  const currentCenterY = bbox.y + bbox.height / 2;
-
-  const shiftX = targetX - currentCenterX;
-  const shiftY = targetY - currentCenterY;
-
-  const currentX = Number(textEl.getAttribute("x")) || 0;
-  const currentY = Number(textEl.getAttribute("y")) || 0;
-
-  textEl.setAttribute("x", String(currentX + shiftX));
-  textEl.setAttribute("y", String(currentY + shiftY));
+  // Il font ha metriche diverse (ascendenti/descendenti, kerning): usare
+  // getBBox() per compensare rende il risultato dipendente dal font e dal
+  // singolo carattere. Per centrare davvero sul punto desiderato, basta
+  // posizionare il testo direttamente sul centro del punto e lasciare che
+  // text-anchor="middle" e dominant-baseline="middle" facciano il loro lavoro.
+  textEl.setAttribute("x", String(targetX));
+  textEl.setAttribute("y", String(targetY));
 }
 
 function creaLayerSvg(id) {
@@ -730,6 +725,37 @@ function disegnaMatrice(risultati) {
   Object.entries(risultati).forEach(([chiave, valore]) => {
     const pos = CERCHI[chiave];
     if (!pos) return;
+
+    // const isPrognosiEsterna =
+    //   chiave.startsWith("prog") || pos.className === "numero-prognosi";
+
+    // if (!isPrognosiEsterna) {
+    //   const sfondo = document.createElementNS(
+    //     "http://www.w3.org/2000/svg",
+    //     "circle",
+    //   );
+    //   const raggio = Math.max(24, Math.min(38, (pos.fontSize || 24) * 0.95));
+    //   sfondo.setAttribute("cx", pos.x);
+    //   sfondo.setAttribute("cy", pos.y);
+    //   sfondo.setAttribute("r", String(raggio));
+    //   sfondo.setAttribute("fill", "rgba(255, 255, 255, 0.72)");
+    //   sfondo.setAttribute("stroke", "#42574d");
+    //   sfondo.setAttribute("stroke-width", "2");
+    //   sfondo.setAttribute("opacity", "0.95");
+    //   layer.appendChild(sfondo);
+
+    //   const centroCerchio = document.createElementNS(
+    //     "http://www.w3.org/2000/svg",
+    //     "circle",
+    //   );
+    //   const raggioCentro = Math.max(2.5, (pos.fontSize || 24) * 0.08);
+    //   centroCerchio.setAttribute("cx", pos.x);
+    //   centroCerchio.setAttribute("cy", pos.y);
+    //   centroCerchio.setAttribute("r", String(raggioCentro));
+    //   centroCerchio.setAttribute("fill", "#42574d");
+    //   centroCerchio.setAttribute("opacity", "0.9");
+    //   layer.appendChild(centroCerchio);
+    // }
 
     const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
     text.setAttribute("x", pos.x);
