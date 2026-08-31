@@ -351,13 +351,19 @@
                 return null;
             }
 
-            const t = (indice + 1) / (PROGNOSI_PERIODI.length + 1);
+            // Trasla tutto il blocco di 7 punti verso la fine del segmento,
+            // lasciando un margine simmetrico prima del primo e dopo l'ultimo.
+            const marginStart = 0.21;
+            const marginEnd = 0.78;
+            const t =
+                marginStart +
+                (indice / (PROGNOSI_PERIODI.length - 1)) * (marginEnd - marginStart);
             const baseX = from.x + (to.x - from.x) * t;
             const baseY = from.y + (to.y - from.y) * t;
             const vecX = baseX - centro.x;
             const vecY = baseY - centro.y;
             const modulo = Math.hypot(vecX, vecY) || 1;
-            const offset = 52;
+            const offset = 53;
 
             return {
                 x: baseX + (vecX / modulo) * offset,
@@ -694,7 +700,7 @@
                     updateForm();
                     renderList();
                     renderPoints();
-                    renderReferenceNumbers();
+                    // renderReferenceNumbers();
                 });
 
                 pointsLayer.appendChild(circle);
@@ -709,7 +715,7 @@
                 pointsLayer.appendChild(label);
             });
 
-            renderReferenceNumbers();
+            // renderReferenceNumbers();
         }
 
         function setSelectedPointFromInputs() {
