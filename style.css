@@ -529,6 +529,126 @@ body {
   line-height: 1.7;
 }
 
+.insights-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.insights-panel[hidden] {
+  display: none;
+}
+
+.health-card,
+.insight-card {
+  border: 1px solid rgba(149, 136, 112, 0.2);
+  background: rgba(255, 252, 249, 0.84);
+  box-shadow: 0 12px 28px rgba(98, 80, 61, 0.1);
+}
+
+.health-card {
+  padding: 24px 28px 28px;
+}
+
+.section-heading h2,
+.insight-card h2 {
+  margin: 0;
+  color: #3d544b;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.health-table-wrap {
+  overflow-x: auto;
+  margin-top: 18px;
+}
+
+.health-table {
+  width: 100%;
+  min-width: 420px;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.health-table th,
+.health-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(149, 136, 112, 0.2);
+}
+
+.health-table th {
+  color: #667b60;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.health-table td {
+  color: #3d544b;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.health-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.insight-card {
+  padding: 22px 24px;
+}
+
+.insight-card p {
+  margin: 10px 0 0;
+  color: #4f625c;
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+
+.value-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 20px 0 0;
+}
+
+.value-list div {
+  padding: 10px;
+  border-top: 1px solid rgba(141, 161, 132, 0.38);
+}
+
+.value-list dt {
+  color: #71816e;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.value-list dd {
+  margin: 4px 0 0;
+  color: #3d544b;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.value-list .value-total {
+  border-top-color: #8ea57f;
+}
+
+.insight-card-compact .value-list {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .profile-choice {
   align-self: center;
   margin: 0;
@@ -1013,6 +1133,15 @@ input:focus-visible {
 
   .matrix-panel {
     min-height: 280px;
+  }
+
+  .health-card,
+  .insight-card {
+    padding: 18px;
+  }
+
+  .insight-grid {
+    grid-template-columns: 1fr;
   }
 
   .about-hero,

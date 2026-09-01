@@ -761,6 +761,13 @@ function mostraDescrizioneCentro(numero, profilo) {
   panel.hidden = false;
 }
 
+function mostraApprofondimentiMappa() {
+  const panel = document.getElementById("approfondimentiMappa");
+  if (panel) {
+    panel.hidden = false;
+  }
+}
+
 function initUiMotion() {
   const revealItems = document.querySelectorAll(".reveal");
   if (!revealItems.length) return;
@@ -975,6 +982,7 @@ function initHomePageInteractions() {
     const risultati = calcolaMatrice(nome, data);
     disegnaMatrice(risultati);
     mostraDescrizioneCentro(risultati.centro, profilo);
+    mostraApprofondimentiMappa();
     mostraMappaAnimata();
     btnExport.disabled = false;
   });
