@@ -6,24 +6,26 @@
   --about-terracotta: #c86d51;
   --about-sage: #4a6b53;
   --about-ink: #344b3b;
+  --about-rule: rgba(74, 107, 83, 0.2);
 }
 
 .about-intro {
   display: grid;
-  grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
+  grid-template-columns: minmax(250px, 0.76fr) minmax(0, 1.24fr);
   align-items: center;
-  gap: clamp(32px, 7vw, 88px);
-  min-height: 520px;
-  padding: clamp(42px, 7vw, 82px) clamp(8px, 3vw, 32px);
+  gap: clamp(42px, 7vw, 96px);
+  min-height: 540px;
+  padding: clamp(52px, 8vw, 96px) clamp(8px, 3vw, 32px) clamp(62px, 9vw, 108px);
+  border-bottom: 1px solid var(--about-rule);
 }
 
 .about-photo-wrap {
   overflow: hidden;
   aspect-ratio: 4 / 5;
-  border: 1px solid rgba(128, 110, 97, 0.2);
-  border-radius: 32% 68% 55% 45% / 42% 34% 66% 58%;
-  background: linear-gradient(140deg, rgba(223, 213, 202, 0.9), rgba(233, 223, 212, 0.78));
-  box-shadow: 0 18px 28px rgba(80, 67, 57, 0.12);
+  border: 1px solid rgba(128, 110, 97, 0.26);
+  border-radius: 4px;
+  background: #e9dfd4;
+  box-shadow: 14px 14px 0 rgba(200, 109, 81, 0.12);
 }
 
 .about-photo {
@@ -36,11 +38,11 @@
 }
 
 .about-heading h1 {
-  max-width: 14ch;
-  margin: 0 0 28px;
+  max-width: 13ch;
+  margin: 0 0 24px;
   color: var(--about-sage);
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(3.25rem, 8vw, 6.8rem);
+  font-size: clamp(3.25rem, 7.1vw, 6.15rem);
   font-style: italic;
   font-weight: 600;
   letter-spacing: 0;
@@ -48,8 +50,8 @@
 }
 
 .about-heading h2 {
-  max-width: 28ch;
-  margin: 0 0 26px;
+  max-width: 32ch;
+  margin: 0 0 28px;
   padding-left: 18px;
   border-left: 3px solid var(--about-terracotta);
   color: var(--about-ink);
@@ -76,15 +78,14 @@
 }
 
 .numbers-reiki {
-  max-width: 860px;
+  max-width: 920px;
   margin: 0 auto;
-  padding: clamp(44px, 7vw, 76px) 0 clamp(56px, 8vw, 94px);
-  border-top: 1px solid rgba(200, 109, 81, 0.35);
-  text-align: center;
+  padding: clamp(42px, 6vw, 68px) 0 clamp(38px, 5vw, 56px);
+  text-align: left;
 }
 
 .numbers-reiki h2 {
-  margin: 0 0 28px;
+  margin: 0 0 24px;
   color: var(--about-sage);
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(2.2rem, 4vw, 3.45rem);
@@ -95,12 +96,11 @@
 }
 
 .numbers-reiki blockquote {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 4px 0 4px 24px;
+  max-width: 760px;
+  margin: 0;
+  padding: 4px 0 4px 28px;
   border-left: 3px solid var(--about-terracotta);
   color: var(--about-ink);
-  text-align: left;
 }
 
 .numbers-reiki blockquote p {
@@ -116,29 +116,32 @@
 .integrated-path {
   max-width: 920px;
   margin: 0 auto;
-  padding: 0 0 clamp(64px, 9vw, 108px);
+  padding: 0 0 clamp(52px, 7vw, 80px);
 }
 
 .integrated-path-intro {
   max-width: 70ch;
-  margin: 0 auto 36px;
+  margin: 0 0 40px;
   color: #4d5f54;
   font-size: 1rem;
   line-height: 1.75;
-  text-align: center;
 }
 
 .path-cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  border-top: 1px solid var(--about-rule);
+  border-bottom: 1px solid var(--about-rule);
 }
 
 .path-card {
-  min-height: 214px;
-  padding: clamp(26px, 4vw, 38px);
-  border: 1px solid rgba(74, 107, 83, 0.2);
-  border-radius: 6px;
+  min-height: 198px;
+  padding: clamp(30px, 4vw, 42px) clamp(26px, 4vw, 44px);
+}
+
+.path-card + .path-card {
+  border-left: 1px solid var(--about-rule);
+  background: rgba(229, 237, 224, 0.28);
 }
 
 .path-card h2 {
@@ -157,10 +160,6 @@
   line-height: 1.65;
 }
 
-.path-card-matrix {
-  background: rgba(255, 250, 246, 0.58);
-}
-
 .path-card-matrix h2 {
   color: var(--about-terracotta);
 }
@@ -169,29 +168,24 @@
   color: #66544d;
 }
 
-.path-card-reiki {
-  border-color: rgba(74, 107, 83, 0.34);
-  background: rgba(229, 237, 224, 0.42);
-}
-
 .path-card-reiki h2,
 .path-card-reiki p {
   color: var(--about-sage);
 }
 
 .about-closing {
-  margin: 0 0 32px;
-  padding: clamp(42px, 7vw, 76px) clamp(24px, 6vw, 78px);
-  border: 1px solid rgba(43, 70, 51, 0.28);
-  border-radius: 6px;
-  background: var(--about-sage);
-  color: #fffaf5;
+  margin: 0 auto 42px;
+  padding: clamp(42px, 6vw, 64px) clamp(24px, 7vw, 110px);
+  border-top: 1px solid var(--about-rule);
+  border-bottom: 1px solid var(--about-rule);
+  background: rgba(229, 237, 224, 0.3);
+  color: var(--about-ink);
   text-align: center;
 }
 
 .about-closing p {
-  max-width: 62ch;
-  margin: 0 auto 28px;
+  max-width: 57ch;
+  margin: 0 auto 30px;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(1.45rem, 2.7vw, 2.1rem);
   font-style: italic;
@@ -206,7 +200,7 @@
   justify-content: center;
   min-height: 46px;
   padding: 10px 22px;
-  border: 1px solid #fffaf5;
+  border: 1px solid var(--about-terracotta);
   border-radius: 4px;
   background: var(--about-terracotta);
   color: #fffaf5;
@@ -217,8 +211,8 @@
 }
 
 .about-closing-link:hover {
-  background: #fffaf5;
-  color: var(--about-sage);
+  background: transparent;
+  color: var(--about-terracotta);
   transform: translateY(-2px);
 }
 
@@ -227,7 +221,7 @@
     grid-template-columns: 1fr;
     gap: 30px;
     min-height: 0;
-    padding: 30px 8px 58px;
+    padding: 36px 8px 64px;
   }
 
   .about-photo-wrap {
@@ -241,8 +235,8 @@
 
   .about-heading h1 {
     max-width: none;
-    font-size: clamp(3.2rem, 17vw, 5rem);
     margin-bottom: 22px;
+    font-size: clamp(3.2rem, 17vw, 5rem);
   }
 
   .about-heading h2 {
@@ -259,7 +253,7 @@
   }
 
   .numbers-reiki {
-    padding: 44px 8px 60px;
+    padding: 40px 8px 42px;
   }
 
   .numbers-reiki h2 {
@@ -271,7 +265,7 @@
   }
 
   .integrated-path {
-    padding: 0 8px 68px;
+    padding: 0 8px 52px;
   }
 
   .integrated-path-intro {
@@ -280,15 +274,19 @@
 
   .path-cards {
     grid-template-columns: 1fr;
-    gap: 14px;
   }
 
   .path-card {
     min-height: 0;
   }
 
+  .path-card + .path-card {
+    border-top: 1px solid var(--about-rule);
+    border-left: 0;
+  }
+
   .about-closing {
-    margin-bottom: 22px;
-    padding: 42px 22px;
+    margin-bottom: 30px;
+    padding: 40px 22px;
   }
 }
