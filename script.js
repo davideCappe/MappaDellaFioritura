@@ -5,50 +5,38 @@
 // Coordinate dei cerchi visibili nell'immagine (viewBox 1000x1000).
 // Se necessario puoi rifinire qualche coordinata di pochi pixel.
 const CERCHI = {
-  eta0: { x: 105, y: 518, fontSize: 40 }, //ok
-  eta10: { x: 215, y: 245, fontSize: 40 }, //ok
-  eta20: { x: 490, y: 135, fontSize: 40 }, //ok
-  eta30: { x: 755, y: 245, fontSize: 40 }, //ok
-  eta40: { x: 870, y: 518, fontSize: 40 }, //ok
-  eta50: { x: 755, y: 790, fontSize: 40 }, //ok
-  eta60: { x: 490, y: 900, fontSize: 40 }, //ok
-  eta70: { x: 220, y: 790, fontSize: 40 }, //ok
-
-  centro: { x: 488, y: 518, fontSize: 50 }, //ok
-
-  top1: { x: 490, y: 210, fontSize: 30 }, //ok
-  top2: { x: 490, y: 265, fontSize: 20 }, //ok
-  top3: { x: 490, y: 368, fontSize: 20 }, //ok
-
-  left1: { x: 175, y: 518, fontSize: 30 }, //ok
-  left2: { x: 230, y: 518, fontSize: 20 }, //ok
-  left3: { x: 335, y: 518, fontSize: 20 }, //ok
-
-  right1: { x: 745, y: 518, fontSize: 20 }, //ok
-  right2: { x: 795, y: 518, fontSize: 30 }, //ok
-  right3: { x: 565, y: 518, fontSize: 30 },
-  right4: { x: 620, y: 518, fontSize: 20 },
-
-  bottom1: { x: 490, y: 775, fontSize: 20 }, //ok
-  bottom2: { x: 490, y: 830, fontSize: 30 }, //ok
-
-  upLeft1: { x: 270, y: 300, fontSize: 30 }, //ok
-  upLeft2: { x: 305, y: 340, fontSize: 20 }, //ok
-  upRight1: { x: 705, y: 300, fontSize: 30 }, //ok
-  upRight2: { x: 670, y: 340, fontSize: 20 }, //ok
-
-  downLeft2: { x: 305, y: 705, fontSize: 20 }, //ok
-  downLeft3: { x: 270, y: 740, fontSize: 30 }, //ok
-
-  downRight1: { x: 665, y: 700, fontSize: 20 },
-  downRight2: { x: 705, y: 735, fontSize: 30 },
-
-  moneyLove1: { x: 608, y: 638, fontSize: 20 }, // ok
-  moneyLove2: { x: 668, y: 625, fontSize: 20 }, // ok
-  moneyLove3: { x: 588, y: 702, fontSize: 20 }, //ok
-
-  leftSide1: { x: 230, y: 665, fontSize: 20 }, //ok
-  leftSide2: { x: 230, y: 700, fontSize: 20 }, //ok
+  eta0: { x: 138, y: 502, fontSize: 40 },
+  eta10: { x: 244, y: 244, fontSize: 40 },
+  eta20: { x: 502, y: 138, fontSize: 40 },
+  eta30: { x: 759, y: 244, fontSize: 40 },
+  eta40: { x: 865, y: 502, fontSize: 40 },
+  eta50: { x: 759, y: 759, fontSize: 40 },
+  eta60: { x: 502, y: 865, fontSize: 40 },
+  eta70: { x: 244, y: 759, fontSize: 40 },
+  centro: { x: 502, y: 502, fontSize: 50 },
+  top1: { x: 502, y: 210, fontSize: 30 },
+  top2: { x: 502, y: 262, fontSize: 20 },
+  top3: { x: 502, y: 361, fontSize: 20 },
+  left1: { x: 211, y: 502, fontSize: 30 },
+  left2: { x: 261, y: 502, fontSize: 20 },
+  left3: { x: 361, y: 502, fontSize: 20 },
+  right1: { x: 740, y: 502, fontSize: 20 },
+  right2: { x: 792, y: 502, fontSize: 30 },
+  right3: { x: 575, y: 502, fontSize: 30 },
+  right4: { x: 626, y: 502, fontSize: 20 },
+  bottom1: { x: 502, y: 741, fontSize: 20 },
+  bottom2: { x: 502, y: 793, fontSize: 30 },
+  upLeft1: { x: 295, y: 295, fontSize: 30 },
+  upLeft2: { x: 333, y: 333, fontSize: 20 },
+  upRight1: { x: 706, y: 295, fontSize: 30 },
+  upRight2: { x: 671, y: 333, fontSize: 20 },
+  downLeft2: { x: 333, y: 671, fontSize: 20 },
+  downLeft3: { x: 295, y: 707, fontSize: 30 },
+  downRight1: { x: 671, y: 671, fontSize: 20 },
+  downRight2: { x: 707, y: 707, fontSize: 30 },
+  moneyLove1: { x: 610, y: 610, fontSize: 20 },
+  moneyLove2: { x: 672, y: 548, fontSize: 20 },
+  moneyLove3: { x: 548, y: 673, fontSize: 20 },
 };
 
 const PROGNOSI_SEGMENTI = [
@@ -235,8 +223,8 @@ function calcolaPosizionePrognosiSegmento(fromKey, toKey, indice) {
 
   // Trasla tutto il blocco di 7 punti verso la fine del segmento,
   // lasciando un margine simmetrico prima del primo e dopo l'ultimo.
-  const marginStart = 0.18;
-  const marginEnd = 0.82;
+  const marginStart = 0.21;
+  const marginEnd = 0.78;
   const t =
     marginStart +
     (indice / (PROGNOSI_PERIODI.length - 1)) * (marginEnd - marginStart);
@@ -247,7 +235,7 @@ function calcolaPosizionePrognosiSegmento(fromKey, toKey, indice) {
   const modulo = Math.hypot(vecX, vecY) || 1;
 
   // Offset esterno maggiore per evitare sovrapposizioni con la matrice interna.
-  const offset = 52;
+  const offset = 53;
   return {
     x: baseX + (vecX / modulo) * offset,
     y: baseY + (vecY / modulo) * offset,
@@ -302,18 +290,13 @@ function centraTestoNelCerchio(textEl, pos) {
   const targetX = pos.x + (pos.dx || 0);
   const targetY = pos.y + (pos.dy || 0);
 
-  const bbox = textEl.getBBox();
-  const currentCenterX = bbox.x + bbox.width / 2;
-  const currentCenterY = bbox.y + bbox.height / 2;
-
-  const shiftX = targetX - currentCenterX;
-  const shiftY = targetY - currentCenterY;
-
-  const currentX = Number(textEl.getAttribute("x")) || 0;
-  const currentY = Number(textEl.getAttribute("y")) || 0;
-
-  textEl.setAttribute("x", String(currentX + shiftX));
-  textEl.setAttribute("y", String(currentY + shiftY));
+  // Il font ha metriche diverse (ascendenti/descendenti, kerning): usare
+  // getBBox() per compensare rende il risultato dipendente dal font e dal
+  // singolo carattere. Per centrare davvero sul punto desiderato, basta
+  // posizionare il testo direttamente sul centro del punto e lasciare che
+  // text-anchor="middle" e dominant-baseline="middle" facciano il loro lavoro.
+  textEl.setAttribute("x", String(targetX));
+  textEl.setAttribute("y", String(targetY));
 }
 
 function creaLayerSvg(id) {
