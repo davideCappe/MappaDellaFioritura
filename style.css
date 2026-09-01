@@ -646,12 +646,44 @@ body {
 
 .insight-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .insight-card {
-  padding: 22px 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 248px;
+  padding: 26px 28px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.insight-card:nth-child(1) {
+  grid-column: span 7;
+  border-color: rgba(104, 142, 110, 0.32);
+  background: linear-gradient(135deg, rgba(234, 242, 228, 0.94), rgba(255, 252, 249, 0.88));
+}
+
+.insight-card:nth-child(2) {
+  grid-column: span 5;
+  border-color: rgba(185, 130, 115, 0.34);
+  background: linear-gradient(135deg, rgba(251, 232, 224, 0.94), rgba(255, 252, 249, 0.88));
+}
+
+.insight-card:nth-child(3) {
+  grid-column: span 5;
+  min-height: 205px;
+  border-color: rgba(106, 133, 151, 0.32);
+  background: linear-gradient(135deg, rgba(230, 239, 242, 0.92), rgba(255, 252, 249, 0.88));
+}
+
+.insight-card:nth-child(4) {
+  grid-column: span 7;
+  min-height: 205px;
+  border-color: rgba(177, 142, 86, 0.36);
+  background: linear-gradient(135deg, rgba(252, 240, 213, 0.92), rgba(255, 252, 249, 0.88));
 }
 
 .insight-card p {
@@ -663,9 +695,10 @@ body {
 
 .value-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 150px;
   gap: 8px;
-  margin: 20px 0 0;
+  margin: auto 0 0;
+  padding-top: 24px;
 }
 
 .value-list div {
@@ -690,11 +723,43 @@ body {
 }
 
 .value-list .value-total {
-  border-top-color: #8ea57f;
+  display: grid;
+  place-content: center;
+  width: 150px;
+  min-height: 150px;
+  padding: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: #3d544b;
+  color: #f9f5ef;
+  text-align: center;
+  aspect-ratio: 1;
+  justify-self: center;
+}
+
+.value-list .value-total dt,
+.value-list .value-total dd {
+  color: inherit;
+}
+
+.value-list .value-total dd {
+  margin-top: 0;
 }
 
 .insight-card-compact .value-list {
   grid-template-columns: minmax(0, 1fr);
+}
+
+.insight-card-compact .value-list div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-top-color: currentColor;
+}
+
+.insight-card-compact .value-list dd {
+  margin: 0;
+  font-size: 2.5rem;
 }
 
 .profile-choice {
@@ -1190,6 +1255,28 @@ input:focus-visible {
 
   .insight-grid {
     grid-template-columns: 1fr;
+  }
+
+  .insight-card,
+  .insight-card:nth-child(n) {
+    grid-column: 1;
+    min-height: 0;
+  }
+
+  .value-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .value-list .value-total {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 82px;
+    min-height: 82px;
+  }
+
+  .insight-card-compact .value-list {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .about-hero,
