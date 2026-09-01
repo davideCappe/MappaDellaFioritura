@@ -592,6 +592,46 @@ body {
   font-weight: 600;
 }
 
+.health-table tbody tr {
+  --health-row-color: #000;
+}
+
+.health-table tbody tr:nth-child(1) {
+  --health-row-color: rgb(213, 168, 253);
+}
+
+.health-table tbody tr:nth-child(2) {
+  --health-row-color: rgb(0, 57, 249);
+}
+
+.health-table tbody tr:nth-child(3) {
+  --health-row-color: rgb(67, 209, 255);
+}
+
+.health-table tbody tr:nth-child(4) {
+  --health-row-color: rgb(102, 220, 134);
+}
+
+.health-table tbody tr:nth-child(5) {
+  --health-row-color: rgb(254, 242, 120);
+}
+
+.health-table tbody tr:nth-child(6) {
+  --health-row-color: rgb(255, 179, 104);
+}
+
+.health-table tbody tr:nth-child(7) {
+  --health-row-color: rgb(186, 0, 0);
+}
+
+.health-table tbody tr td:first-child {
+  border-left: 5px solid var(--health-row-color);
+}
+
+.health-table tbody tr:last-child td {
+  border-top: 2px solid var(--health-row-color);
+}
+
 .health-table tbody tr:last-child td {
   border-bottom: 0;
 }
