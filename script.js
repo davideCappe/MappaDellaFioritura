@@ -768,6 +768,66 @@ function mostraApprofondimentiMappa() {
   }
 }
 
+function aggiornaTesseraSanitaria(risultati) {
+  const valoriFisici = [
+    risultati.eta0,
+    risultati.left1,
+    risultati.left2,
+    risultati.left3,
+    risultati.centro,
+    risultati.right1,
+    risultati.eta40,
+  ];
+  const valoriEnergia = [
+    risultati.eta20,
+    risultati.top1,
+    risultati.top2,
+    risultati.top3,
+    risultati.centro,
+    risultati.bottom1,
+    risultati.eta60,
+  ];
+  const righe = document.querySelectorAll(".health-table tbody tr");
+
+  righe.forEach((riga, indice) => {
+    const celle = riga.querySelectorAll("td");
+    const valoreFisico = valoriFisici[indice];
+    const valoreEnergetico = valoriEnergia[indice];
+
+    if (
+      celle.length !== 3 ||
+      valoreFisico === undefined ||
+      valoreEnergetico === undefined
+    ) {
+      return;
+    }
+
+    celle[0].textContent = valoreFisico;
+    celle[1].textContent = valoreEnergetico;
+    celle[2].textContent = riduciA22(valoreFisico + valoreEnergetico);
+  });
+
+  const rigaTotali = righe[7];
+  const celleTotali = rigaTotali?.querySelectorAll("td");
+  if (celleTotali?.length !== 3) {
+    return;
+  }
+
+  const valoriEmotivi = valoriFisici.map((valoreFisico, indice) =>
+    riduciA22(valoreFisico + valoriEnergia[indice]),
+  );
+
+  celleTotali[0].textContent = riduciA22(
+    valoriFisici.reduce((totale, valore) => totale + valore, 0),
+  );
+  celleTotali[1].textContent = riduciA22(
+    valoriEnergia.reduce((totale, valore) => totale + valore, 0),
+  );
+  celleTotali[2].textContent = riduciA22(
+    valoriEmotivi.reduce((totale, valore) => totale + valore, 0),
+  );
+}
+
 function initUiMotion() {
   const revealItems = document.querySelectorAll(".reveal");
   if (!revealItems.length) return;
@@ -982,6 +1042,7 @@ function initHomePageInteractions() {
     const risultati = calcolaMatrice(nome, data);
     disegnaMatrice(risultati);
     mostraDescrizioneCentro(risultati.centro, profilo);
+    aggiornaTesseraSanitaria(risultati);
     mostraApprofondimentiMappa();
     mostraMappaAnimata();
     btnExport.disabled = false;
