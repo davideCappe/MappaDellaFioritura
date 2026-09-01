@@ -828,6 +828,34 @@ function aggiornaTesseraSanitaria(risultati) {
   );
 }
 
+function aggiornaApprofondimentiMappa(risultati) {
+  const terra = riduciA22(risultati.eta0 + risultati.eta40);
+  const cielo = riduciA22(risultati.eta20 + risultati.eta60);
+  const totaleRicerca = riduciA22(terra + cielo);
+  const maschile = riduciA22(risultati.eta10 + risultati.eta50);
+  const femminile = riduciA22(risultati.eta30 + risultati.eta70);
+  const totaleSocializzazione = riduciA22(maschile + femminile);
+  const armoniaSpirituale = riduciA22(totaleRicerca + totaleSocializzazione);
+  const planetario = riduciA22(totaleSocializzazione + armoniaSpirituale);
+  const valori = {
+    valoreTerra: terra,
+    valoreCielo: cielo,
+    valoreRicercaTotale: totaleRicerca,
+    valoreSocialeM: maschile,
+    valoreSocialeF: femminile,
+    valoreSocialeTotale: totaleSocializzazione,
+    valoreSpirituale: armoniaSpirituale,
+    valorePlanetario: planetario,
+  };
+
+  Object.entries(valori).forEach(([id, valore]) => {
+    const elemento = document.getElementById(id);
+    if (elemento) {
+      elemento.textContent = valore;
+    }
+  });
+}
+
 function initUiMotion() {
   const revealItems = document.querySelectorAll(".reveal");
   if (!revealItems.length) return;
@@ -1043,6 +1071,7 @@ function initHomePageInteractions() {
     disegnaMatrice(risultati);
     mostraDescrizioneCentro(risultati.centro, profilo);
     aggiornaTesseraSanitaria(risultati);
+    aggiornaApprofondimentiMappa(risultati);
     mostraApprofondimentiMappa();
     mostraMappaAnimata();
     btnExport.disabled = false;
