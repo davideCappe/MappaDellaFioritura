@@ -1128,6 +1128,13 @@ function initHomePageInteractions() {
   });
 }
 
+function aggiornaAnnoCopyright() {
+  const annoCopyright = document.getElementById("annoCopyright");
+  if (annoCopyright) {
+    annoCopyright.textContent = new Date().getFullYear();
+  }
+}
+
 function initPageShell() {
   inizializzaPosizioniPrognosi();
   disegnaMappaGuida();
@@ -1135,6 +1142,7 @@ function initPageShell() {
   initNavIndicator();
   initNavMagneticHover();
   initBackToTop();
+  aggiornaAnnoCopyright();
 
   if (page === "home") {
     initHomePageInteractions();
