@@ -237,8 +237,7 @@ body {
 
 #top,
 #contenuto,
-#calcolo,
-#storia {
+#calcolo {
   scroll-margin-top: 88px;
 }
 
@@ -594,10 +593,6 @@ body {
   background: rgba(255, 252, 249, 0.78);
 }
 
-/* =========================================================
-   ABOUT PAGE / CONTENT BLOCKS
-   ========================================================= */
-
 .note-band h2 {
   margin: 0 0 8px;
   font-family: 'Cormorant Garamond', Georgia, serif;
@@ -614,97 +609,6 @@ body {
   color: #4f625c;
 }
 
-
-.about-hero,
-.about-story,
-.about-cta {
-  padding: 20px;
-  border-radius: 24px;
-  border: 1px solid rgba(149, 136, 112, 0.18);
-  background: linear-gradient(150deg, rgba(255, 252, 249, 0.84), rgba(246, 238, 230, 0.66));
-  box-shadow: var(--card-shadow);
-}
-
-.about-hero {
-  display: grid;
-  grid-template-columns: 1.35fr 0.9fr;
-  gap: 14px;
-}
-
-.about-kicker {
-  margin: 0;
-  font-size: 0.74rem;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: #7f8f88;
-  font-weight: 700;
-}
-
-.about-hero h2,
-.about-story h2,
-.about-cta h2 {
-  margin: 8px 0 10px;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(1.9rem, 3.4vw, 2.7rem);
-  line-height: 1;
-  font-style: italic;
-  color: #415a4f;
-}
-
-.about-hero p,
-.about-story p,
-.about-cta p {
-  margin: 0;
-  color: #4f615b;
-  line-height: 1.65;
-  max-width: 68ch;
-}
-
-.about-quote {
-  border-radius: 16px;
-  border: 1px solid rgba(157, 132, 116, 0.24);
-  padding: 16px;
-  background: rgba(255, 251, 247, 0.9);
-  align-self: center;
-}
-
-.about-quote p {
-  margin: 0;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.35rem;
-  line-height: 1.2;
-  color: #4e665d;
-  font-style: italic;
-}
-
-.about-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.about-card {
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(155, 132, 108, 0.24);
-  background: rgba(255, 251, 247, 0.92);
-}
-
-.about-card h3 {
-  margin: 0 0 8px;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: 1.45rem;
-  line-height: 1;
-  color: #486157;
-}
-
-.about-card p {
-  margin: 0;
-  color: #52635d;
-  font-size: 0.92rem;
-  line-height: 1.58;
-}
 
 .skip-link {
   position: absolute;
@@ -960,14 +864,6 @@ input:focus-visible {
     grid-template-columns: 1fr;
   }
 
-  .about-hero {
-    grid-template-columns: 1fr;
-  }
-
-  .about-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .footer-wrap {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1013,17 +909,6 @@ input:focus-visible {
 
   .matrix-panel {
     min-height: 280px;
-  }
-
-  .about-hero,
-  .about-story,
-  .about-cta {
-    padding: 14px;
-    border-radius: 18px;
-  }
-
-  .about-grid {
-    grid-template-columns: 1fr;
   }
 
   .footer-wrap {
