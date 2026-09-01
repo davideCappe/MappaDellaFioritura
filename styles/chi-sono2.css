@@ -1,0 +1,308 @@
+/* =========================================================
+   ABOUT PAGE
+   ========================================================= */
+
+:root {
+  --about-terracotta: #c86d51;
+  --about-sage: #4a6b53;
+  --about-ink: #344b3b;
+  --about-rule: rgba(74, 107, 83, 0.2);
+  --about-ivory: #f7f1ea;
+  --about-panel: rgba(255, 255, 255, 0.42);
+  --about-shadow-soft: 0 20px 45px rgba(52, 75, 59, 0.08);
+  --about-shadow-strong: 0 26px 60px rgba(52, 75, 59, 0.12);
+}
+
+.about-intro {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.76fr) minmax(0, 1.24fr);
+  align-items: center;
+  gap: clamp(42px, 7vw, 96px);
+  min-height: 540px;
+  padding: clamp(46px, 6vw, 72px) clamp(8px, 3vw, 32px) clamp(46px, 6vw, 68px);
+  border-bottom: 1px solid var(--about-rule);
+  background: linear-gradient(135deg, rgba(247, 241, 234, 0.94), rgba(233, 239, 231, 0.9));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.36);
+}
+
+.about-photo-wrap {
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border: 1px solid rgba(128, 110, 97, 0.26);
+  border-radius: 22px;
+  background: linear-gradient(160deg, #e9dfd4 0%, #f6efe9 100%);
+  box-shadow: 18px 18px 0 rgba(200, 109, 81, 0.12), var(--about-shadow-soft);
+  transform: rotate(-0.8deg);
+}
+
+.about-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  filter: saturate(0.96) contrast(1.03);
+  transition: transform 0.35s ease;
+}
+
+.about-photo-wrap:hover .about-photo {
+  transform: scale(1.03);
+}
+
+.about-heading h1 {
+  max-width: none;
+  margin: 0 0 24px;
+  color: var(--about-sage);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(3.25rem, 4.8vw, 4.6rem);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 0.88;
+}
+
+.about-heading h2 {
+  max-width: 32ch;
+  margin: 0 0 28px;
+  padding-left: 18px;
+  border-left: 3px solid var(--about-terracotta);
+  color: var(--about-ink);
+  font-size: clamp(1.15rem, 1.8vw, 1.42rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.45;
+}
+
+.about-heading p {
+  max-width: 59ch;
+  margin: 0;
+  color: #4d5f54;
+  font-size: 0.98rem;
+  line-height: 1.72;
+}
+
+.about-heading p + p {
+  margin-top: 18px;
+}
+
+.about-heading p:last-child {
+  color: var(--about-sage);
+}
+
+.numbers-reiki {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: clamp(34px, 4.5vw, 52px) 0 clamp(36px, 4.5vw, 50px);
+  text-align: left;
+}
+
+.numbers-reiki h2 {
+  margin: 0 0 24px;
+  color: var(--about-sage);
+  font-size: clamp(1.25rem, 2.1vw, 1.7rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.numbers-reiki blockquote {
+  max-width: 760px;
+  margin: 0;
+  padding: 4px 0 4px 28px;
+  border-left: 3px solid var(--about-terracotta);
+  color: var(--about-ink);
+}
+
+.numbers-reiki blockquote p {
+  margin: 0;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.45rem, 2.5vw, 2rem);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+.integrated-path {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 0 clamp(52px, 7vw, 80px);
+}
+
+.integrated-path-intro {
+  max-width: 70ch;
+  margin: 0 0 40px;
+  color: #4d5f54;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.path-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--about-rule);
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: var(--about-shadow-soft);
+}
+
+.path-card {
+  min-height: 198px;
+  padding: clamp(30px, 4vw, 42px) clamp(26px, 4vw, 44px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.path-card:hover {
+  transform: translateY(-4px);
+  box-shadow: inset 0 0 0 1px rgba(74, 107, 83, 0.08);
+}
+
+.path-card + .path-card {
+  border-left: 1px solid var(--about-rule);
+  background: linear-gradient(180deg, rgba(229, 237, 224, 0.5), rgba(255, 255, 255, 0.08));
+}
+
+.path-card h2 {
+  margin: 0 0 16px;
+  font-size: clamp(1.1rem, 1.7vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.path-card p {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
+.path-card-matrix h2 {
+  color: var(--about-terracotta);
+}
+
+.path-card-matrix p {
+  color: #66544d;
+}
+
+.path-card-reiki h2,
+.path-card-reiki p {
+  color: var(--about-sage);
+}
+
+.about-closing {
+  margin: 0 auto 42px;
+  padding: clamp(42px, 6vw, 64px) clamp(24px, 7vw, 110px);
+  border-top: 1px solid var(--about-rule);
+  border-bottom: 1px solid var(--about-rule);
+  background: linear-gradient(180deg, rgba(229, 237, 224, 0.34), rgba(247, 241, 234, 0.72));
+  color: var(--about-ink);
+  text-align: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.about-closing p {
+  max-width: 57ch;
+  margin: 0 auto 30px;
+  font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.6;
+}
+
+.about-closing-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 10px 22px;
+  border: 1px solid var(--about-terracotta);
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--about-terracotta) 0%, #d37a58 100%);
+  color: #fffaf5;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 12px 22px rgba(200, 109, 81, 0.2);
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.about-closing-link:hover {
+  background: transparent;
+  color: var(--about-terracotta);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px rgba(200, 109, 81, 0.12);
+}
+
+@media (max-width: 880px) {
+  .about-intro {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    min-height: 0;
+    padding: 36px 8px 52px;
+  }
+
+  .about-photo-wrap {
+    width: min(100%, 390px);
+    justify-self: center;
+  }
+
+  .about-heading {
+    text-align: center;
+  }
+
+  .about-heading h1 {
+    max-width: none;
+    margin-bottom: 22px;
+    font-size: clamp(3.2rem, 17vw, 5rem);
+  }
+
+  .about-heading h2 {
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0 0 14px;
+    border-bottom: 3px solid var(--about-terracotta);
+    border-left: 0;
+  }
+
+  .about-heading p {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .numbers-reiki {
+    padding: 40px 8px 42px;
+  }
+
+  .numbers-reiki h2 {
+    margin-bottom: 24px;
+  }
+
+  .numbers-reiki blockquote {
+    padding-left: 18px;
+  }
+
+  .integrated-path {
+    padding: 0 8px 52px;
+  }
+
+  .integrated-path-intro {
+    margin-bottom: 28px;
+  }
+
+  .path-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .path-card {
+    min-height: 0;
+  }
+
+  .path-card + .path-card {
+    border-top: 1px solid var(--about-rule);
+    border-left: 0;
+  }
+
+  .about-closing {
+    margin-bottom: 30px;
+    padding: 40px 22px;
+  }
+}
