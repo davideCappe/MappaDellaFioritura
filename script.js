@@ -761,6 +761,44 @@ function mostraDescrizioneCentro(numero, profilo) {
   panel.hidden = false;
 }
 
+function calcolaEta(dataNascita) {
+  const { anno, mese, giorno } = scomponiData(dataNascita);
+  const oggi = new Date();
+  let eta = oggi.getFullYear() - anno;
+  const compleannoGiaPassato =
+    oggi.getMonth() + 1 > mese ||
+    (oggi.getMonth() + 1 === mese && oggi.getDate() >= giorno);
+
+  if (!compleannoGiaPassato) {
+    eta -= 1;
+  }
+
+  return eta;
+}
+
+function mostraEtaECompleanno(dataNascita) {
+  const riepilogo = document.getElementById("riepilogoPersona");
+  const etaEl = document.getElementById("etaPersona");
+  const messaggioCompleanno = document.getElementById("messaggioCompleanno");
+  const { mese, giorno } = scomponiData(dataNascita);
+  const oggi = new Date();
+
+  if (etaEl) {
+    const eta = calcolaEta(dataNascita);
+    etaEl.textContent = `${eta} ${eta === 1 ? "anno" : "anni"}`;
+  }
+
+  if (messaggioCompleanno) {
+    messaggioCompleanno.hidden = !(
+      oggi.getMonth() + 1 === mese && oggi.getDate() === giorno
+    );
+  }
+
+  if (riepilogo) {
+    riepilogo.hidden = false;
+  }
+}
+
 function mostraApprofondimentiMappa() {
   const panel = document.getElementById("approfondimentiMappa");
   if (panel) {
@@ -1070,6 +1108,7 @@ function initHomePageInteractions() {
     const risultati = calcolaMatrice(nome, data);
     disegnaMatrice(risultati);
     mostraDescrizioneCentro(risultati.centro, profilo);
+    mostraEtaECompleanno(data);
     aggiornaTesseraSanitaria(risultati);
     aggiornaApprofondimentiMappa(risultati);
     mostraApprofondimentiMappa();
