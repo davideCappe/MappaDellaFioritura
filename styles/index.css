@@ -472,28 +472,179 @@ body {
   line-height: 1.7;
 }
 
-.birthday-note {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
+.matrix-container.is-birthday {
+  animation: birthday-frame 4.6s ease-out both;
+}
+
+.birthday-particles {
+  position: absolute;
+  inset: 14px;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: var(--radius-media);
+  pointer-events: none;
+}
+
+.birthday-particles::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 9%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255, 241, 190, 0.9);
+  box-shadow: 0 0 24px 17px rgba(242, 187, 116, 0.44);
+  transform: translate(-50%, -50%) scale(0);
+  animation: birthday-core 1.8s ease-out both;
+}
+
+.birthday-particles::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7%;
+  aspect-ratio: 1;
+  border: 2px solid rgba(242, 187, 116, 0.82);
+  border-radius: 50%;
+  box-shadow: 0 0 0 10px rgba(217, 138, 99, 0.17), 0 0 0 24px rgba(141, 161, 132, 0.1);
+  transform: translate(-50%, -50%) scale(0.2);
+  opacity: 0;
+  animation: birthday-rings 2.1s ease-out 0.12s both;
+}
+
+.birthday-particles span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: var(--color);
+  font-family: Georgia, serif;
+  font-size: var(--size);
+  line-height: 1;
+  opacity: 0;
+  text-shadow: 0 0 8px rgba(255, 241, 190, 0.9);
+  animation: birthday-star-burst 3.2s cubic-bezier(0.2, 0.78, 0.25, 1) var(--delay) both;
+}
+
+.birthday-greeting {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  width: min(84%, 440px);
+  color: #80584d;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  text-align: center;
+  text-shadow: 0 2px 16px rgba(255, 252, 249, 0.96), 0 0 20px rgba(255, 241, 190, 0.92);
+  transform: translate(-50%, -50%);
+  animation: birthday-greeting 4.2s ease-in-out both;
+}
+
+.birthday-greeting p,
+.birthday-greeting strong {
+  display: block;
   margin: 0;
-  padding: 7px 11px;
-  border: 1px solid rgba(178, 136, 111, 0.35);
-  border-radius: 999px;
-  background: rgba(248, 226, 217, 0.7);
-  color: var(--terracotta-deep);
-  font-size: 0.82rem;
+}
+
+.birthday-greeting p {
+  font-size: 1.35rem;
+  font-style: italic;
   font-weight: 600;
 }
 
-.birthday-note::before {
-  content: '✦';
-  margin-right: 7px;
-  color: var(--terracotta-accent);
+.birthday-greeting strong {
+  margin-top: -2px;
+  overflow-wrap: anywhere;
+  color: var(--terracotta);
+  font-size: 2.5rem;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 0.95;
 }
 
-.birthday-note[hidden] {
-  display: none;
+@keyframes birthday-core {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(2.5);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(8);
+  }
+}
+
+@keyframes birthday-rings {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+
+  24% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(11);
+  }
+}
+
+@keyframes birthday-star-burst {
+  0% {
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) rotate(0deg);
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  100% {
+    top: var(--y);
+    left: var(--x);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.35) rotate(120deg);
+  }
+}
+
+@keyframes birthday-greeting {
+  0%,
+  12% {
+    opacity: 0;
+    transform: translate(-50%, -38%);
+  }
+
+  24%,
+  72% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -58%);
+  }
+}
+
+@keyframes birthday-frame {
+  0%,
+  100% {
+    box-shadow: var(--shadow-panel);
+  }
+
+  18%,
+  54% {
+    box-shadow: 0 20px 48px rgba(200, 109, 81, 0.3), 0 0 0 9px rgba(217, 138, 99, 0.13);
+  }
 }
 
 .insights-panel {

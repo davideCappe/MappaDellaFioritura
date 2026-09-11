@@ -779,24 +779,64 @@ function calcolaEta(dataNascita) {
 function mostraEtaECompleanno(dataNascita) {
   const riepilogo = document.getElementById("riepilogoPersona");
   const etaEl = document.getElementById("etaPersona");
-  const messaggioCompleanno = document.getElementById("messaggioCompleanno");
-  const { mese, giorno } = scomponiData(dataNascita);
-  const oggi = new Date();
 
   if (etaEl) {
     const eta = calcolaEta(dataNascita);
     etaEl.textContent = `${eta} ${eta === 1 ? "anno" : "anni"}`;
   }
 
-  if (messaggioCompleanno) {
-    messaggioCompleanno.hidden = !(
-      oggi.getMonth() + 1 === mese && oggi.getDate() === giorno
-    );
-  }
-
   if (riepilogo) {
     riepilogo.hidden = false;
   }
+}
+
+function celebraCompleanno(dataNascita, nome) {
+  const matrixContainer = document.querySelector(".matrix-container");
+  const { mese, giorno } = scomponiData(dataNascita);
+  const oggi = new Date();
+
+  if (!matrixContainer) return;
+
+  window.clearTimeout(matrixContainer.birthdayTimer);
+  matrixContainer.querySelector(".birthday-celebration")?.remove();
+  matrixContainer.classList.remove("is-birthday");
+
+  if (oggi.getMonth() + 1 !== mese || oggi.getDate() !== giorno) return;
+
+  matrixContainer.classList.add("is-birthday");
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const particles = document.createElement("div");
+  particles.className = "birthday-celebration birthday-particles";
+  particles.setAttribute("aria-hidden", "true");
+
+  const colori = ["#d98a63", "#c86d51", "#d0a44c", "#8da184"];
+
+  Array.from({ length: 46 }, (_, index) => {
+    const particle = document.createElement("span");
+    const angle = (Math.PI * 2 * index) / 46 + (Math.random() - 0.5) * 0.28;
+    const distance = 18 + Math.random() * 30;
+    particle.textContent = index % 4 === 0 ? "\u2726" : "\u00b7";
+    particle.style.setProperty("--x", `${50 + Math.cos(angle) * distance}%`);
+    particle.style.setProperty("--y", `${50 + Math.sin(angle) * distance}%`);
+    particle.style.setProperty("--delay", `${Math.random() * 0.5}s`);
+    particle.style.setProperty("--size", `${0.7 + Math.random() * 1.05}rem`);
+    particle.style.setProperty("--color", colori[index % colori.length]);
+    particles.appendChild(particle);
+  });
+
+  const saluto = document.createElement("div");
+  saluto.className = "birthday-greeting";
+  saluto.innerHTML = "<p>Buon compleanno</p><strong></strong>";
+  saluto.querySelector("strong").textContent = nome;
+  particles.appendChild(saluto);
+
+  matrixContainer.appendChild(particles);
+  matrixContainer.birthdayTimer = window.setTimeout(() => {
+    particles.remove();
+    matrixContainer.classList.remove("is-birthday");
+  }, 4600);
 }
 
 function mostraApprofondimentiMappa() {
@@ -1123,6 +1163,7 @@ function initHomePageInteractions() {
     disegnaMatrice(risultati);
     mostraDescrizioneCentro(risultati.centro, profilo);
     mostraEtaECompleanno(data);
+    celebraCompleanno(data, nome);
     aggiornaTesseraSanitaria(risultati);
     aggiornaApprofondimentiMappa(risultati);
     mostraApprofondimentiMappa();
