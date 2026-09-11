@@ -2,26 +2,6 @@
    ABOUT PAGE
    ========================================================= */
 
-:root {
-  --about-terracotta: #c86d51;
-  --about-terracotta-soft: #d98a63;
-  --about-sage: #4a6b53;
-  --about-ink: #344b3b;
-  --about-text: #4d5f54;
-  --about-text-warm: #66544d;
-  --about-rule: rgba(74, 107, 83, 0.2);
-  --about-photo-border: rgba(128, 110, 97, 0.26);
-  --about-photo-background: #e9dfd4;
-  --about-photo-shadow: rgba(200, 109, 81, 0.12);
-  --about-quote-background: rgba(255, 255, 255, 0.4);
-  --about-matrix-background: rgba(229, 237, 224, 0.55);
-  --about-reiki-background: rgba(200, 109, 81, 0.12);
-  --about-paper: #f7f1ea;
-  --about-cta-hover: rgba(200, 109, 81, 0.1);
-  --about-cta-shadow: rgba(101, 76, 62, 0.1);
-  --about-focus: rgba(74, 107, 83, 0.58);
-}
-
 .about-intro {
   display: grid;
   grid-template-columns: minmax(250px, 0.76fr) minmax(0, 1.24fr);
@@ -118,7 +98,7 @@
   margin: 0 auto;
   padding: clamp(26px, 4vw, 38px) clamp(30px, 6vw, 60px);
   border: 1px solid var(--about-terracotta-soft);
-  border-radius: 18px;
+  border-radius: var(--radius-card);
   background: var(--about-quote-background);
 }
 
@@ -252,7 +232,7 @@
   min-height: 46px;
   padding: 10px 24px;
   border: 1px solid var(--about-terracotta);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: transparent;
   color: var(--about-terracotta);
   font: inherit;

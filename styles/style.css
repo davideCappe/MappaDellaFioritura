@@ -6,17 +6,58 @@
   --ink: #3d4e49;
   --ink-soft: #667672;
   --ink-strong: #2f413c;
-  --clay: #b2886f;
+  --terracotta: #c86d51;
+  --terracotta-soft: #d98a63;
+  --sage-deep: #4a6b53;
   --sage: #8da184;
+  --sage-action: #8ea57f;
+  --sage-action-deep: #768d68;
+  --heading-green: #415a4f;
+  --card-text: #4f625c;
+  --terracotta-deep: #80584d;
+  --terracotta-accent: #ba7b64;
   --rose: #c8a2a8;
   --paper: #f7f1ea;
   --paper-soft: #fbf7f3;
   --line: rgba(111, 101, 86, 0.22);
+  --clay: var(--terracotta);
   --card-shadow: 0 22px 54px rgba(69, 57, 44, 0.12);
+  --shadow-soft: 0 12px 28px rgba(98, 80, 61, 0.1);
+  --shadow-panel: 0 16px 36px rgba(98, 80, 61, 0.12);
+  --shadow-hover: 0 20px 40px rgba(98, 80, 61, 0.2);
+  --shadow-action: 0 10px 20px rgba(85, 108, 75, 0.24);
+  --shadow-action-hover: 0 14px 24px rgba(85, 108, 75, 0.28);
+  --shadow-float: 0 10px 20px rgba(59, 80, 53, 0.24);
+  --shadow-float-hover: 0 14px 24px rgba(59, 80, 53, 0.3);
+  --shadow-control: 0 8px 16px rgba(101, 76, 62, 0.1);
+  --radius-control: 13px;
+  --radius-panel: 20px;
+  --radius-card: 12px;
+  --radius-media: 16px;
+  --radius-shell: 24px;
+  --radius-pill: 999px;
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;
   --space-4: 40px;
+
+  --about-terracotta: var(--terracotta);
+  --about-terracotta-soft: var(--terracotta-soft);
+  --about-sage: var(--sage-deep);
+  --about-ink: var(--ink-strong);
+  --about-text: #4d5f54;
+  --about-text-warm: #66544d;
+  --about-rule: rgba(74, 107, 83, 0.2);
+  --about-photo-border: rgba(128, 110, 97, 0.26);
+  --about-photo-background: #e9dfd4;
+  --about-photo-shadow: rgba(200, 109, 81, 0.12);
+  --about-quote-background: rgba(255, 255, 255, 0.4);
+  --about-matrix-background: rgba(229, 237, 224, 0.55);
+  --about-reiki-background: rgba(200, 109, 81, 0.12);
+  --about-paper: var(--paper);
+  --about-cta-hover: rgba(200, 109, 81, 0.1);
+  --about-cta-shadow: rgba(101, 76, 62, 0.1);
+  --about-focus: rgba(74, 107, 83, 0.58);
 }
 
 * {
@@ -123,12 +164,12 @@ input:focus-visible {
 
 .site-footer {
   margin-top: 20px;
-  border-radius: 22px;
+  border-radius: var(--radius-shell);
   overflow: hidden;
   border: 1px solid rgba(132, 115, 97, 0.2);
   background: linear-gradient(140deg, rgba(64, 79, 61, 0.92), rgba(88, 66, 52, 0.92));
   color: #f4ede3;
-  box-shadow: 0 12px 30px rgba(85, 63, 48, 0.18);
+  box-shadow: var(--shadow-soft);
 }
 
 .footer-wrap {
