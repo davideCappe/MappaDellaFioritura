@@ -10,105 +10,79 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/chi-sono.css">
 </head>
 
 <body data-page="about">
-
-    <a class="skip-link" href="#contenuto">Salta al contenuto</a>
-
-    <div class="ambient" aria-hidden="true">
-        <span class="blob blob-a"></span>
-        <span class="blob blob-b"></span>
-        <span class="blob blob-c"></span>
-        <span class="grain"></span>
-    </div>
 
     <div class="app">
 
         <nav class="main-nav reveal" aria-label="Menu principale">
             <a class="nav-link" href="index.html">Mappa</a>
+            <a class="nav-link is-active" href="chi-sono.html" aria-current="page">Chi sono</a>
         </nav>
 
-        <header class="app-header reveal" id="top">
-            <div class="brand-mark" aria-hidden="true">
-                <img src="images/logo.png" alt="" class="brand-logo">
-            </div>
-            <h1>Chi sono</h1>
-            <p class="subtitle">Il mio approccio alla lettura numerologica e al percorso personale.</p>
-            <a class="hero-link" href="#storia">Leggi il mio percorso</a>
-        </header>
-
-        <main class="experience" id="contenuto">
-            <section class="about-hero reveal" id="storia">
-                <div class="about-hero-text">
-                    <p class="about-kicker">Su di me</p>
-                    <h2>Trasformo i numeri in direzione, non in predizioni rigide.</h2>
+        <main>
+            <section class="about-intro reveal" aria-labelledby="about-title">
+                <div class="about-photo-wrap">
+                    <img src="images/unnamed.jpg" alt="Silvia sorridente" class="about-photo">
+                </div>
+                <div class="about-heading">
+                    <h1 id="about-title">Ciao, sono Silvia!</h1>
+                    <h2>Benvenuta nel mio mondo fatto di numeri, profonda consapevolezza ed energia.</h2>
+                    <p>Mi chiamo Silvia e la mia storia professionale nasce con una laurea in Scienze dell’Educazione.
+                        Per molti anni ho lavorato a stretto contatto con famiglie e bambini,
+                        ma è stato con la nascita di mia figlia che qualcosa dentro di me ha vissuto una vera e
+                        propria fioritura.
+                    </p>
                     <p>
-                        Accompagno persone che desiderano piu chiarezza su talenti, blocchi e cicli personali.
-                        La Mappa della Fioritura nasce dall'unione tra studio numerologico, ascolto e pratica
-                        quotidiana: una bussola concreta per scegliere con piu consapevolezza.
+                        Da questa trasformazione personale è nata la <b>Mappa della Fioritura</b>: uno strumento d'amore
+                        e scoperta che utilizza la Matrice del Destino e la data di nascita per accompagnare adulti e
+                        ragazzi a comprendere a fondo la propria identità, i propri talenti e le dinamiche di
+                        relazione.
                     </p>
                 </div>
-                <aside class="about-quote" aria-label="Visione professionale">
-                    <p>
-                        "Ogni lettura e una conversazione viva: i numeri indicano direzioni, la persona sceglie il
-                        passo."
-                    </p>
-                </aside>
             </section>
 
-            <section class="about-grid reveal" aria-label="Metodo di lavoro">
-                <article class="about-card">
-                    <h3>Metodo chiaro</h3>
-                    <p>
-                        Ogni consulenza segue un percorso semplice: ascolto iniziale, lettura della mappa,
-                        sintesi operativa e indicazioni applicabili nella vita reale.
-                    </p>
-                </article>
-                <article class="about-card">
-                    <h3>Approccio umano</h3>
-                    <p>
-                        Metto al centro la persona, non il tecnicismo. Linguaggio comprensibile,
-                        esempi concreti e spazio alle domande durante tutto il percorso.
-                    </p>
-                </article>
-                <article class="about-card">
-                    <h3>Visione evolutiva</h3>
-                    <p>
-                        La mappa non etichetta: aiuta a vedere opportunita di crescita in modo progressivo,
-                        con attenzione a tempi, relazioni, lavoro e benessere.
-                    </p>
-                </article>
+            <section class="numbers-reiki reveal" aria-labelledby="numbers-reiki-title">
+                <h2 id="numbers-reiki-title">Il legame tra Numeri e il Reiki</h2>
+                <blockquote>
+                    <p>Se la Matrice del Destino è la mappa che ci mostra chi siamo e dove stiamo andando, il
+                        Reiki è il soffio di energia che ci sostiene nel viaggio.</p>
+                </blockquote>
             </section>
 
-            <section class="about-story reveal" aria-label="Percorso personale">
-                <h2>Il mio percorso</h2>
-                <p>
-                    Negli anni ho integrato pratiche di lettura simbolica e tecniche di accompagnamento
-                    orientate all'azione. Questo mi permette di offrire sessioni che non si fermano al "significato",
-                    ma diventano una guida concreta per decisioni e cambiamenti.
-                </p>
-                <p>
-                    L'obiettivo e aiutarti a riconoscere i tuoi punti di forza, gestire i momenti di passaggio
-                    e trovare una rotta personale stabile anche quando il contesto cambia.
-                </p>
+            <section class="integrated-path reveal" aria-label="Percorso integrato">
+                <p class="integrated-path-intro">Lavorando con le persone mi sono resa conto che la sola
+                    consapevolezza mentale a volte non basta: i blocchi, le paure e i condizionamenti vivono anche
+                    nel nostro corpo energetico. Per questo ho integrato i trattamenti Reiki nei miei percorsi:</p>
+
+                <div class="path-cards">
+                    <article class="path-card path-card-matrix">
+                        <h2>Con la Matrice</h2>
+                        <p>Portiamo luce e chiarezza sui tuoi schemi e sul tuo potenziale.</p>
+                    </article>
+                    <article class="path-card path-card-reiki">
+                        <h2>Il Reiki</h2>
+                        <p>Riequilibriamo il campo energetico, sciogliendo le tensioni per permetterti di radicare
+                            davvero quella consapevolezza nella tua vita quotidiana.</p>
+                    </article>
+                </div>
             </section>
 
-            <section class="about-cta reveal" aria-label="Invito all'azione">
-                <h2>Vuoi iniziare dalla tua mappa personale?</h2>
-                <p>
-                    Torna alla pagina principale e genera la tua matrice: da li possiamo costruire un percorso
-                    su misura, passo dopo passo.
-                </p>
-                <a class="hero-cta" href="index.html#calcolo">Vai al calcolo</a>
+            <section class="about-closing reveal" aria-label="Invito al calcolo della Matrice">
+                <p>Che tu sia qui per scoprire la tua mappa evolutiva, per riequilibrare la tua energia o per
+                    portare armonia nelle relazioni della tua famiglia, sono qui per accompagnarti a sbocciare nella
+                    versione più autentica di te.</p>
+                <a href="index.html" class="about-closing-link">Calcola la tua Matrice</a>
             </section>
         </main>
 
         <footer class="site-footer reveal" aria-label="Footer sito">
             <div class="footer-wrap">
                 <div class="footer-brand">
-                    <img src="images/logo-no-sfondo.png" alt="Mappa della Fioritura" class="footer-logo">
+                    <img src="images/logo.png" alt="Mappa della Fioritura" class="footer-logo">
                     <p class="footer-title">Mappa della Fioritura</p>
                     <!-- <p class="footer-copy">Piccola descrizione</p> -->
                 </div>
@@ -148,8 +122,6 @@
         </footer>
 
     </div>
-
-    <a class="back-to-top" href="#top" aria-label="Torna all'inizio della pagina">Torna su</a>
 
     <script src="script.js"></script>
 </body>
