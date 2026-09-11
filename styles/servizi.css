@@ -54,7 +54,7 @@
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   max-width: 920px;
-  margin: 0 auto;
+  margin: 0 auto 34px;
   border-bottom: 1px solid var(--about-rule);
 }
 
@@ -190,6 +190,8 @@
 .offer-grid-single {
   grid-template-columns: minmax(0, 1fr);
   max-width: 430px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .offer-card {
@@ -448,6 +450,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-right: 8px;
     margin-left: 8px;
+    margin-bottom: 26px;
   }
 
   .services-index a:last-child {
