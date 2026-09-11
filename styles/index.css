@@ -1307,6 +1307,36 @@ input:focus-visible {
     padding: 18px;
   }
 
+  .health-table-wrap {
+    overflow-x: visible;
+  }
+
+  .health-table {
+    min-width: 0;
+    table-layout: fixed;
+  }
+
+  .health-table th,
+  .health-table td {
+    padding: 8px 3px;
+  }
+
+  .health-table th {
+    font-size: 0.58rem;
+    letter-spacing: 0.03em;
+    line-height: 1.15;
+    white-space: normal;
+  }
+
+  .health-table tbody th {
+    font-size: 0.66rem;
+    line-height: 1.15;
+  }
+
+  .health-table td {
+    font-size: 1.1rem;
+  }
+
   .insight-grid {
     grid-template-columns: 1fr;
   }
