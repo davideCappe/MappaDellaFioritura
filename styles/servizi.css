@@ -17,7 +17,7 @@
 .services-intro {
   max-width: 780px;
   margin: 0 auto;
-  padding: clamp(42px, 7vw, 78px) 8px clamp(48px, 7vw, 78px);
+  padding: clamp(22px, 3vw, 30px) 8px clamp(26px, 3.5vw, 36px);
   text-align: center;
 }
 
@@ -399,9 +399,11 @@
 }
 
 .services-contact {
-  max-width: 680px;
-  margin: 0 auto 34px;
-  padding: clamp(38px, 5vw, 58px) clamp(24px, 7vw, 88px);
+  width: 100%;
+  margin: 32px 0 34px;
+  padding: clamp(34px, 5vw, 52px) clamp(24px, 7vw, 110px);
+  border-top: 1px solid var(--about-rule);
+  border-bottom: 1px solid var(--about-rule);
   background: var(--about-paper);
   color: var(--about-sage);
   text-align: center;
@@ -412,9 +414,11 @@
 }
 
 .services-contact p:not(.services-kicker) {
-  max-width: 48ch;
-  margin: 20px auto 26px;
-  color: var(--about-text);
+  max-width: 57ch;
+  margin: 0 auto 30px;
+  color: var(--about-sage);
+  font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+  font-weight: 500;
   line-height: 1.7;
 }
 
@@ -426,7 +430,9 @@
   padding: 10px 24px;
   border: 1px solid var(--terracotta);
   border-radius: var(--radius-pill);
+  background: transparent;
   color: var(--terracotta);
+  font: inherit;
   font-weight: 600;
   text-decoration: none;
   transition: background 0.2s ease, box-shadow 0.2s ease;
@@ -439,8 +445,8 @@
 
 @media (max-width: 760px) {
   .services-intro {
-    padding-top: 36px;
-    padding-bottom: 42px;
+    padding-top: 20px;
+    padding-bottom: 28px;
   }
 
   .services-list {
@@ -521,6 +527,7 @@
   }
 
   .services-contact {
+    margin-top: 26px;
     margin-bottom: 24px;
     padding: 36px 22px;
   }
