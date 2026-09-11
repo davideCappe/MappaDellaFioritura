@@ -35,6 +35,13 @@
   object-fit: cover;
   object-position: center 18%;
   filter: saturate(0.96) contrast(1.03);
+  transition: transform 500ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    filter 500ms ease;
+}
+
+.about-photo-wrap:hover .about-photo {
+  transform: scale(1.04);
+  filter: saturate(1) contrast(1.04);
 }
 
 .about-heading h1 {
@@ -320,5 +327,12 @@
   .about-closing {
     margin-bottom: 30px;
     padding: 40px 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-photo {
+    transform: none;
+    transition: none;
   }
 }
