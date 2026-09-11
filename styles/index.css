@@ -133,14 +133,6 @@ body {
   color: #415a4f;
 }
 
-.subtitle {
-  margin: 12px auto 0;
-  max-width: 56ch;
-  color: #4c6059;
-  font-size: 1.02rem;
-  line-height: 1.6;
-}
-
 .hero-cta {
   display: inline-flex;
   align-items: center;
@@ -632,6 +624,16 @@ body {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.health-table tbody th {
+  color: #3d544b;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: normal;
+  text-align: left;
+  text-transform: none;
+  white-space: nowrap;
 }
 
 .health-table td {
