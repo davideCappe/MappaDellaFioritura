@@ -1149,6 +1149,16 @@ function aggiornaAnnoCopyright() {
   }
 }
 
+function mostraPaginaDopoCaricamentoFont() {
+  const pageReady = () => document.body.classList.remove("page-loading");
+  const fontReady = document.fonts?.ready || Promise.resolve();
+
+  Promise.race([
+    fontReady,
+    new Promise((resolve) => window.setTimeout(resolve, 900)),
+  ]).then(pageReady);
+}
+
 function initPageShell() {
   inizializzaPosizioniPrognosi();
   disegnaMappaGuida();
@@ -1158,6 +1168,7 @@ function initPageShell() {
   initNavMagneticHover();
   initBackToTop();
   aggiornaAnnoCopyright();
+  mostraPaginaDopoCaricamentoFont();
 
   if (page === "home") {
     initHomePageInteractions();

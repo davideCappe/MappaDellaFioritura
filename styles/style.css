@@ -84,6 +84,14 @@ body {
   overflow-x: hidden;
 }
 
+body.page-loading .app {
+  opacity: 0;
+}
+
+.app {
+  transition: opacity 180ms ease;
+}
+
 .app {
   position: relative;
   z-index: 1;
