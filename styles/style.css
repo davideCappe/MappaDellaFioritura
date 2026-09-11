@@ -168,9 +168,9 @@ input:focus-visible {
   margin-top: 20px;
   border-radius: var(--radius-shell);
   overflow: hidden;
-  border: 1px solid rgba(132, 115, 97, 0.2);
-  background: linear-gradient(140deg, rgba(64, 79, 61, 0.92), rgba(88, 66, 52, 0.92));
-  color: #f4ede3;
+  border: 1px solid color-mix(in srgb, var(--terracotta) 24%, transparent);
+  background: linear-gradient(140deg, rgba(255, 252, 249, 0.9), rgba(246, 238, 230, 0.84));
+  color: var(--sage-deep);
   box-shadow: var(--shadow-soft);
 }
 
@@ -199,6 +199,7 @@ input:focus-visible {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 1.45rem;
   font-style: italic;
+  color: var(--terracotta);
 }
 
 .footer-heading {
@@ -206,22 +207,22 @@ input:focus-visible {
   font-size: 0.73rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(244, 237, 227, 0.62);
+  color: var(--sage-deep);
 }
 
 .site-footer a {
   width: fit-content;
   margin-bottom: 6px;
   font-size: 0.9rem;
-  color: #f7e9d6;
+  color: var(--sage-deep);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .site-footer a:hover {
-  color: #fff7ec;
-  border-bottom-color: rgba(255, 247, 236, 0.72);
+  color: var(--terracotta);
+  border-bottom-color: color-mix(in srgb, var(--terracotta) 72%, transparent);
   transform: translateY(-1px);
 }
 
@@ -249,18 +250,18 @@ input:focus-visible {
 
 .footer-city {
   margin: 2px 0 0;
-  color: rgba(244, 237, 227, 0.82);
+  color: var(--card-text);
 }
 
 .footer-bottom {
   padding: 10px 22px 12px;
-  border-top: 1px solid rgba(255, 237, 213, 0.16);
+  border-top: 1px solid color-mix(in srgb, var(--sage-deep) 18%, transparent);
 }
 
 .footer-bottom p {
   margin: 0;
   font-size: 0.76rem;
-  color: rgba(244, 237, 227, 0.72);
+  color: color-mix(in srgb, var(--card-text) 76%, transparent);
 }
 
 .reveal,
