@@ -529,14 +529,20 @@ body {
 
 .birthday-greeting {
   position: absolute;
-  top: 50%;
+  top: 38%;
   left: 50%;
   z-index: 3;
   width: min(84%, 440px);
-  color: #80584d;
+  padding: 13px 28px 16px;
+  border-top: 1px solid rgba(183, 129, 73, 0.78);
+  border-bottom: 1px solid rgba(183, 129, 73, 0.78);
+  background: linear-gradient(90deg, rgba(255, 252, 249, 0.08), rgba(255, 252, 249, 0.9) 18%, rgba(255, 248, 225, 0.94) 50%, rgba(255, 252, 249, 0.9) 82%, rgba(255, 252, 249, 0.08));
+  color: #5a3a31;
   font-family: 'Cormorant Garamond', Georgia, serif;
   text-align: center;
-  text-shadow: 0 2px 16px rgba(255, 252, 249, 0.96), 0 0 20px rgba(255, 241, 190, 0.92);
+  text-shadow: 0 2px 12px rgba(255, 252, 249, 1), 0 0 20px rgba(255, 241, 190, 0.96);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
   transform: translate(-50%, -50%);
   animation: birthday-greeting 4.2s ease-in-out both;
 }
@@ -548,19 +554,22 @@ body {
 }
 
 .birthday-greeting p {
-  font-size: 1.35rem;
+  color: #70463b;
+  font-size: 1.5rem;
   font-style: italic;
   font-weight: 600;
+  line-height: 1;
 }
 
 .birthday-greeting strong {
-  margin-top: -2px;
+  margin-top: 2px;
   overflow-wrap: anywhere;
-  color: var(--terracotta);
-  font-size: 2.5rem;
+  color: #a84832;
+  font-size: 2.85rem;
   font-style: italic;
   font-weight: 700;
-  line-height: 0.95;
+  line-height: 0.9;
+  text-shadow: 0 2px 10px rgba(255, 252, 249, 1), 0 0 18px rgba(237, 187, 116, 0.78);
 }
 
 @keyframes birthday-core {
