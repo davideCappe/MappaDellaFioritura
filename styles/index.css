@@ -647,6 +647,14 @@ body {
   --health-row-color: #000;
 }
 
+.health-table tbody tr:not(:last-child) {
+  background-color: color-mix(in srgb, var(--health-row-color) 14%, var(--paper-soft));
+}
+
+.health-table tbody tr:last-child {
+  background-color: #ebe8e3;
+}
+
 .health-table tbody tr:nth-child(1) {
   --health-row-color: rgb(213, 168, 253);
 }
@@ -676,19 +684,8 @@ body {
 }
 
 .health-table tbody td:last-child {
-  position: relative;
   color: #3d544b;
   font-weight: 700;
-}
-
-.health-table tbody td:last-child::before {
-  content: '';
-  position: absolute;
-  inset: 7px calc(50% - 23px);
-  border: 2px solid var(--health-row-color);
-  border-radius: 50%;
-  opacity: 0.72;
-  pointer-events: none;
 }
 
 .health-table tbody tr:last-child td {
