@@ -277,6 +277,63 @@ input:focus-visible {
   color: color-mix(in srgb, var(--card-text) 76%, transparent);
 }
 
+.back-to-top {
+  --scroll-progress: 0%;
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 14;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 0;
+  background: conic-gradient(
+    from -90deg,
+    rgba(99, 130, 88, 0.98) var(--scroll-progress),
+    rgba(151, 172, 141, 0.28) var(--scroll-progress)
+  );
+  color: transparent;
+  text-decoration: none;
+  font-size: 0;
+  line-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+  box-shadow: var(--shadow-float);
+}
+
+.back-to-top::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: rgba(249, 244, 238, 0.96);
+  border: 1px solid rgba(108, 135, 98, 0.28);
+}
+
+.back-to-top::after {
+  content: '↑';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -54%);
+  font-size: 20px;
+  line-height: 1;
+  color: #31453f;
+  font-weight: 700;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  box-shadow: var(--shadow-float-hover);
+}
+
 .reveal,
 .reveal.is-visible {
   opacity: 1;
@@ -330,6 +387,11 @@ input:focus-visible {
   .footer-bottom {
     padding: 8px 16px 10px;
   }
+
+  .back-to-top {
+    right: 12px;
+    bottom: 12px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -343,5 +405,10 @@ input:focus-visible {
     transition: none !important;
     transform: none !important;
     opacity: 1 !important;
+  }
+
+  .back-to-top {
+    transition: none !important;
+    transform: none !important;
   }
 }
