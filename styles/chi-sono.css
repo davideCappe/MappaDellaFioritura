@@ -192,7 +192,7 @@
   width: min(170px, 70%);
   height: 18px;
   margin: 12px auto 0;
-  background: url("../images/elemento.png") center / contain no-repeat;
+  background: url("../images/elemento.webp") center / contain no-repeat;
 }
 
 .path-card p {
