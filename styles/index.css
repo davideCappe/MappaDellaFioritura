@@ -1094,8 +1094,8 @@ input:focus-visible {
   margin-top: 20px;
   border-radius: var(--radius-shell);
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--terracotta) 24%, transparent);
-  background: linear-gradient(140deg, rgba(255, 252, 249, 0.9), rgba(246, 238, 230, 0.84));
+  border: 1px solid color-mix(in srgb, var(--terracotta) 30%, transparent);
+  background: linear-gradient(140deg, rgba(200, 109, 81, 0.16), rgba(255, 252, 249, 0.9) 58%, rgba(217, 138, 99, 0.1));
   color: var(--sage-deep);
   box-shadow: var(--shadow-soft);
 }
