@@ -998,6 +998,20 @@ function initNavIndicator() {
   window.addEventListener("resize", () => placeLine(activeLink));
 }
 
+function initNavScrollSurface() {
+  const nav = document.querySelector(".main-nav");
+  if (!nav) {
+    return;
+  }
+
+  const updateSurface = () => {
+    nav.classList.toggle("is-scrolled", window.scrollY > 48);
+  };
+
+  updateSurface();
+  window.addEventListener("scroll", updateSurface, { passive: true });
+}
+
 function initNavMagneticHover() {
   const nav = document.querySelector(".main-nav");
   if (!nav) {
@@ -1140,6 +1154,7 @@ function initPageShell() {
   disegnaMappaGuida();
   initUiMotion();
   initNavIndicator();
+  initNavScrollSurface();
   initNavMagneticHover();
   initBackToTop();
   aggiornaAnnoCopyright();

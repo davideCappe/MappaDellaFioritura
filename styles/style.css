@@ -30,6 +30,7 @@
   --shadow-float: 0 10px 20px rgba(59, 80, 53, 0.24);
   --shadow-float-hover: 0 14px 24px rgba(59, 80, 53, 0.3);
   --shadow-control: 0 8px 16px rgba(101, 76, 62, 0.1);
+  --shadow-nav: 0 8px 22px rgba(69, 57, 44, 0.08);
   --radius-control: 13px;
   --radius-panel: 20px;
   --radius-card: 12px;
@@ -99,13 +100,25 @@ body {
   display: flex;
   justify-content: flex-end;
   gap: 14px;
-  margin: 0 0 8px;
-  padding: 0 0 6px;
+  width: 100vw;
+  margin: 0 0 8px calc(50% - 50vw);
+  padding: 8px max(20px, calc((100vw - 1080px) / 2 + 20px)) 10px;
   position: sticky;
-  top: 10px;
+  top: 0;
   z-index: 12;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   --nav-line-left: 0px;
   --nav-line-width: 0px;
+}
+
+.main-nav.is-scrolled {
+  border-bottom-color: color-mix(in srgb, var(--sage-deep) 18%, transparent);
+  background: rgba(247, 241, 234, 0.68);
+  box-shadow: var(--shadow-nav);
 }
 
 .main-nav::after {
@@ -284,8 +297,8 @@ input:focus-visible {
   .main-nav {
     justify-content: center;
     gap: 18px;
-    margin-bottom: 12px;
-    top: 6px;
+    margin: 0 0 12px calc(50% - 50vw);
+    padding: 6px 14px 8px;
   }
 
   .footer-wrap {
