@@ -154,25 +154,35 @@ body {
   display: flex;
   justify-content: flex-end;
   gap: 14px;
-  width: 100vw;
-  margin: 0 0 8px calc(50% - 50vw);
-  padding: 8px max(20px, calc((100vw - 1080px) / 2 + 20px)) 10px;
+  width: 100%;
+  margin: 0 0 8px;
+  padding: 8px 0 10px;
   position: sticky;
   top: 0;
   z-index: 12;
+  isolation: isolate;
   border-bottom: 1px solid transparent;
-  background: transparent;
-  box-shadow: none;
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
   --nav-line-left: 0px;
   --nav-line-width: 0px;
 }
 
 .main-nav.is-scrolled {
-  border-bottom-color: color-mix(in srgb, var(--sage-deep) 18%, transparent);
+  border-bottom-color: transparent;
+}
+
+.main-nav.is-scrolled::before {
+  content: '';
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 52px;
+  border-bottom: 1px solid color-mix(in srgb, var(--sage-deep) 18%, transparent);
   background: rgba(247, 241, 234, 0.68);
   box-shadow: var(--shadow-nav);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
 }
 
 .main-nav::after {
@@ -232,6 +242,7 @@ body {
 .experience {
   display: grid;
   gap: var(--space-3);
+  min-width: 0;
 }
 
 /* =========================================================
@@ -481,6 +492,7 @@ body {
 }
 
 .comfort-panel {
+  min-width: 0;
   padding: 24px 28px;
   border-left: 4px solid var(--sage-action);
   background: rgba(255, 252, 249, 0.86);
@@ -569,6 +581,7 @@ body {
 .insights-panel {
   display: grid;
   gap: 16px;
+  min-width: 0;
 }
 
 .insights-panel[hidden] {
@@ -577,6 +590,7 @@ body {
 
 .health-card,
 .insight-card {
+  min-width: 0;
   border-radius: var(--radius-card);
   border: 1px solid rgba(149, 136, 112, 0.2);
   background: rgba(255, 252, 249, 0.84);
@@ -599,6 +613,7 @@ body {
 
 .health-table-wrap {
   overflow-x: auto;
+  min-width: 0;
   margin-top: 18px;
 }
 
@@ -1298,8 +1313,12 @@ input:focus-visible {
   .main-nav {
     justify-content: center;
     gap: 18px;
-    margin: 0 0 12px calc(50% - 50vw);
-    padding: 6px 14px 8px;
+    margin: 0 0 12px;
+    padding: 6px 0 8px;
+  }
+
+  .main-nav.is-scrolled::before {
+    height: 48px;
   }
 
   .nav-link {
