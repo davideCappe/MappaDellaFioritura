@@ -84,16 +84,28 @@ body {
   overflow-x: hidden;
 }
 
-body.page-loading .app {
+body.page-loading .page-content {
   opacity: 0;
+  transform: translateY(6px);
 }
 
-body.page-exiting .app {
-  opacity: 0;
+.page-content {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 160ms cubic-bezier(0.2, 0, 0, 1),
+    transform 160ms cubic-bezier(0.2, 0, 0, 1);
+  will-change: opacity, transform;
 }
 
-.app {
-  transition: opacity 120ms ease;
+.page-content.page-content-exiting {
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+
+.page-content.page-content-entering {
+  opacity: 0;
+  transform: translateY(-4px);
 }
 
 .app {
