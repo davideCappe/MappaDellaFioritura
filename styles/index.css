@@ -796,6 +796,8 @@ body {
 
 .insight-card:nth-child(-n + 2) .value-list {
   grid-template-columns: minmax(0, 1fr) minmax(110px, 150px);
+  width: 100%;
+  margin: auto 0 0;
   align-items: center;
 }
 
