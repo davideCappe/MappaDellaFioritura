@@ -36,6 +36,8 @@
   --radius-media: 16px;
   --radius-shell: 24px;
   --radius-pill: 999px;
+  --display-title-size: clamp(2.8rem, 5.7vw, 4.7rem);
+  --about-logo-size: clamp(56px, 7vw, 78px);
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;

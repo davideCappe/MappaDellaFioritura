@@ -2,13 +2,25 @@
    ABOUT PAGE
    ========================================================= */
 
+.about-brand-mark {
+  display: flex;
+  justify-content: center;
+  padding-top: 4px;
+}
+
+.about-brand-logo {
+  width: var(--about-logo-size);
+  height: auto;
+  filter: drop-shadow(0 8px 14px rgba(99, 71, 63, 0.14));
+}
+
 .about-intro {
   display: grid;
   grid-template-columns: minmax(250px, 0.76fr) minmax(0, 1.24fr);
   align-items: center;
   gap: clamp(42px, 7vw, 96px);
   min-height: 500px;
-  padding: clamp(40px, 5vw, 60px) clamp(8px, 3vw, 32px) clamp(40px, 5vw, 56px);
+  padding: clamp(24px, 3.5vw, 42px) clamp(8px, 3vw, 32px) clamp(40px, 5vw, 56px);
   border-bottom: 1px solid var(--about-rule);
 }
 
@@ -42,11 +54,11 @@
   margin: 0 0 24px;
   color: var(--about-terracotta);
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(3.25rem, 4.8vw, 4.6rem);
+  font-size: var(--display-title-size);
   font-style: italic;
   font-weight: 600;
   letter-spacing: 0;
-  line-height: 0.88;
+  line-height: 0.92;
 }
 
 .about-heading h2 {
