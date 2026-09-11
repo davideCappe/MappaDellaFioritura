@@ -88,8 +88,12 @@ body.page-loading .app {
   opacity: 0;
 }
 
+body.page-exiting .app {
+  opacity: 0;
+}
+
 .app {
-  transition: opacity 180ms ease;
+  transition: opacity 120ms ease;
 }
 
 .app {
@@ -427,6 +431,10 @@ input:focus-visible {
     transition: none !important;
     transform: none !important;
     opacity: 1 !important;
+  }
+
+  .app {
+    transition: none !important;
   }
 
   .back-to-top {

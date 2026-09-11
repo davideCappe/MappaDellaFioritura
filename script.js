@@ -1159,6 +1159,46 @@ function mostraPaginaDopoCaricamentoFont() {
   ]).then(pageReady);
 }
 
+function initPageTransitions() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  const currentUrl = new URL(window.location.href);
+  const pageLinks = document.querySelectorAll("a[href]:not([target])");
+
+  pageLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+
+      const destination = new URL(link.href, window.location.href);
+      const isPageNavigation =
+        destination.origin === currentUrl.origin &&
+        destination.pathname !== currentUrl.pathname;
+
+      if (!isPageNavigation) {
+        return;
+      }
+
+      event.preventDefault();
+      document.body.classList.add("page-exiting");
+
+      window.setTimeout(() => {
+        window.location.href = destination.href;
+      }, 120);
+    });
+  });
+}
+
 function initPageShell() {
   inizializzaPosizioniPrognosi();
   disegnaMappaGuida();
@@ -1169,6 +1209,7 @@ function initPageShell() {
   initBackToTop();
   aggiornaAnnoCopyright();
   mostraPaginaDopoCaricamentoFont();
+  initPageTransitions();
 
   if (page === "home") {
     initHomePageInteractions();
