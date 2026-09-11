@@ -116,6 +116,10 @@
   border: 1px solid var(--about-rule);
 }
 
+.service-summary {
+  display: none;
+}
+
 .service-section:last-child {
   margin-bottom: 0;
 }
@@ -487,6 +491,72 @@
 
   .service-section {
     padding: 42px 8px;
+  }
+
+  .service-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: -18px -2px 24px;
+    padding: 12px 2px;
+    color: var(--sage-deep);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .service-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .service-summary::after {
+    content: "+  Apri";
+    color: var(--terracotta);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  details[open] > .service-summary::after {
+    content: "-  Chiudi";
+  }
+
+  .service-summary span {
+    color: var(--terracotta);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .service-summary strong {
+    flex: 1;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .service-section:not([open]) {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .service-section:not([open]) > .service-summary {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .service-section:not([open]) .service-section-heading,
+  .service-section:not([open]) > .offer-grid,
+  .service-section:not([open]) > .integrated-options {
+    display: none;
+  }
+
+  .service-section-heading .service-number,
+  .service-section-heading .services-kicker,
+  .service-section-heading h2 {
+    display: none;
   }
 
   .offer-grid,

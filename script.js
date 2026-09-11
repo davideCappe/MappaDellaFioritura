@@ -1266,8 +1266,36 @@ function initPageTransitions() {
   });
 }
 
+function initMobileServicesAccordion() {
+  const sections = document.querySelectorAll(
+    ".services-catalogue > details.service-section",
+  );
+  if (!sections.length) return;
+
+  const mobileQuery = window.matchMedia("(max-width: 760px)");
+
+  const syncSections = () => {
+    sections.forEach((section, index) => {
+      section.open = !mobileQuery.matches || index === 0;
+    });
+  };
+
+  document.querySelectorAll(".services-index a").forEach((link) => {
+    link.addEventListener("click", () => {
+      const target = document.querySelector(link.hash);
+      if (target?.matches("details.service-section")) {
+        target.open = true;
+      }
+    });
+  });
+
+  syncSections();
+  mobileQuery.addEventListener("change", syncSections);
+}
+
 function initPageShell() {
   initUiMotion();
+  initMobileServicesAccordion();
   initNavIndicator();
   initNavScrollSurface();
   initNavMagneticHover();
