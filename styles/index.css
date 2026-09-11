@@ -113,7 +113,7 @@ body {
   font-style: italic;
   font-weight: 600;
   letter-spacing: -0.03em;
-  color: var(--heading-green);
+  color: var(--terracotta);
 }
 
 .hero-cta {
@@ -252,6 +252,7 @@ body {
 
 .input-panel h2 {
   margin: 0;
+  color: var(--sage-deep);
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 1.8rem;
   font-weight: 600;
@@ -489,7 +490,7 @@ body {
 
 .comfort-panel h2 {
   margin: 0 0 10px;
-  color: #3d544b;
+  color: var(--sage-deep);
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 2rem;
   font-style: italic;
@@ -577,7 +578,7 @@ body {
 .section-heading h2,
 .insight-card h2 {
   margin: 0;
-  color: #3d544b;
+  color: var(--sage-deep);
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 2rem;
   font-style: italic;
