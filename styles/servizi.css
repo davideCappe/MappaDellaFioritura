@@ -111,8 +111,13 @@
 
 .service-section {
   display: block;
-  padding: clamp(44px, 6vw, 72px) 0;
-  border-bottom: 1px solid var(--about-rule);
+  margin-bottom: 18px;
+  padding: clamp(20px, 3vw, 30px) clamp(16px, 3vw, 30px) clamp(36px, 5vw, 56px);
+  border: 1px solid var(--about-rule);
+}
+
+.service-section:last-child {
+  margin-bottom: 0;
 }
 
 .service-section-sage {
@@ -170,7 +175,7 @@
 .offer-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: 16px;
 }
 
 .service-section > .offer-grid,
@@ -451,7 +456,8 @@
   }
 
   .service-section {
-    padding: 42px 8px;
+    margin-bottom: 14px;
+    padding: 20px 16px 36px;
   }
 
   .service-section > .offer-grid,
