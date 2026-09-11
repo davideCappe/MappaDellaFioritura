@@ -792,6 +792,8 @@ function mostraEtaECompleanno(dataNascita) {
 
 function celebraCompleanno(dataNascita, nome) {
   const matrixContainer = document.querySelector(".matrix-container");
+  const matrixSvg = document.getElementById("matrixSvg");
+  const logoOverlay = document.getElementById("logoOverlay");
   const { mese, giorno } = scomponiData(dataNascita);
   const oggi = new Date();
 
@@ -799,13 +801,22 @@ function celebraCompleanno(dataNascita, nome) {
 
   window.clearTimeout(matrixContainer.birthdayTimer);
   matrixContainer.querySelector(".birthday-celebration")?.remove();
+  matrixSvg?.querySelector(".birthday-svg-celebration")?.remove();
   matrixContainer.classList.remove("is-birthday");
+  logoOverlay?.classList.remove("is-birthday-bloom");
 
   if (oggi.getMonth() + 1 !== mese || oggi.getDate() !== giorno) return;
 
   matrixContainer.classList.add("is-birthday");
+  logoOverlay?.classList.add("is-birthday-bloom");
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    matrixContainer.birthdayTimer = window.setTimeout(() => {
+      matrixContainer.classList.remove("is-birthday");
+      logoOverlay?.classList.remove("is-birthday-bloom");
+    }, 4600);
+    return;
+  }
 
   const particles = document.createElement("div");
   particles.className = "birthday-celebration birthday-particles";
@@ -815,8 +826,8 @@ function celebraCompleanno(dataNascita, nome) {
 
   Array.from({ length: 46 }, (_, index) => {
     const particle = document.createElement("span");
-    const angle = (Math.PI * 2 * index) / 46 + (Math.random() - 0.5) * 0.28;
-    const distance = 18 + Math.random() * 30;
+    const angle = (Math.PI * 2 * (index % 8)) / 8;
+    const distance = 14 + Math.floor(index / 8) * 6 + Math.random() * 2;
     particle.textContent = index % 4 === 0 ? "\u2726" : "\u00b7";
     particle.style.setProperty("--x", `${50 + Math.cos(angle) * distance}%`);
     particle.style.setProperty("--y", `${50 + Math.sin(angle) * distance}%`);
@@ -832,10 +843,25 @@ function celebraCompleanno(dataNascita, nome) {
   saluto.querySelector("strong").textContent = nome;
   particles.appendChild(saluto);
 
+  if (matrixSvg) {
+    const svgNamespace = "http://www.w3.org/2000/svg";
+    const layer = document.createElementNS(svgNamespace, "g");
+    const anello = document.createElementNS(svgNamespace, "circle");
+    layer.setAttribute("class", "birthday-svg-celebration");
+    anello.setAttribute("class", "birthday-center-ring");
+    anello.setAttribute("cx", "502");
+    anello.setAttribute("cy", "502");
+    anello.setAttribute("r", "46");
+    layer.appendChild(anello);
+    matrixSvg.appendChild(layer);
+  }
+
   matrixContainer.appendChild(particles);
   matrixContainer.birthdayTimer = window.setTimeout(() => {
     particles.remove();
+    matrixSvg?.querySelector(".birthday-svg-celebration")?.remove();
     matrixContainer.classList.remove("is-birthday");
+    logoOverlay?.classList.remove("is-birthday-bloom");
   }, 4600);
 }
 

@@ -476,6 +476,23 @@ body {
   animation: birthday-frame 4.6s ease-out both;
 }
 
+#logoOverlay.is-birthday-bloom {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: birthday-flower-pulse 1.35s ease-in-out 0.2s 3;
+}
+
+.birthday-center-ring {
+  fill: none;
+  stroke: #d0a44c;
+  stroke-width: 4;
+  stroke-dasharray: 22 10;
+  filter: drop-shadow(0 0 5px rgba(242, 187, 116, 0.9));
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: birthday-center-ring 2.6s ease-in-out 0.15s both;
+}
+
 .birthday-particles {
   position: absolute;
   inset: 14px;
@@ -586,6 +603,38 @@ body {
   100% {
     opacity: 0;
     transform: translate(-50%, -50%) scale(8);
+  }
+}
+
+@keyframes birthday-flower-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.72;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes birthday-center-ring {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 92;
+    transform: scale(0.72) rotate(-24deg);
+  }
+
+  30%,
+  68% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+    transform: scale(1.28) rotate(32deg);
   }
 }
 
