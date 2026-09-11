@@ -794,6 +794,39 @@ body {
   margin-top: 0;
 }
 
+.insight-card:nth-child(-n + 2) .value-list {
+  grid-template-columns: minmax(0, 1fr) minmax(110px, 150px);
+  align-items: center;
+}
+
+.insight-card:nth-child(-n + 2) .value-list > div:not(.value-total) {
+  grid-column: 1;
+}
+
+.insight-card:nth-child(-n + 2) .value-list .value-total {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-height: 0;
+  margin: 4px 0;
+  padding: 8px 0 8px 30px;
+  border: 0;
+  border-left: 3px solid var(--clay);
+  border-radius: 0;
+  background: transparent;
+  color: #3d544b;
+  aspect-ratio: auto;
+}
+
+.insight-card:nth-child(-n + 2) .value-list .value-total dd {
+  font-size: 2.25rem;
+}
+
 .insight-card-compact .value-list {
   grid-template-columns: minmax(0, 1fr);
 }
