@@ -1200,8 +1200,6 @@ function initPageTransitions() {
 }
 
 function initPageShell() {
-  inizializzaPosizioniPrognosi();
-  disegnaMappaGuida();
   initUiMotion();
   initNavIndicator();
   initNavScrollSurface();
@@ -1212,6 +1210,8 @@ function initPageShell() {
   initPageTransitions();
 
   if (page === "home") {
+    inizializzaPosizioniPrognosi();
+    disegnaMappaGuida();
     initHomePageInteractions();
   }
 }
