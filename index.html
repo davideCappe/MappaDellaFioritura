@@ -3,6 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        // Reindirizza alla versione EN se e' la preferenza salvata, o alla prima visita
+        // se il browser e' in inglese e l'utente non ha mai scelto una lingua.
+        (function () {
+            try {
+                var pref = localStorage.getItem("mappaFioritura:lingua");
+                var browserEn = /^en/i.test(navigator.language || navigator.userLanguage || "");
+                if (pref === "en" || (!pref && browserEn)) {
+                    location.replace("en/index.html");
+                }
+            } catch (e) { }
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mappa della Fioritura</title>
     <link rel="icon" type="image/webp" href="images/logo.webp">

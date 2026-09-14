@@ -1269,6 +1269,16 @@ const LINGUE_SUPPORTATE = [
   { code: "en", folder: "en", label: "EN" },
 ];
 
+const CHIAVE_PREFERENZA_LINGUA = "mappaFioritura:lingua";
+
+function salvaPreferenzaLingua(codiceLingua) {
+  try {
+    localStorage.setItem(CHIAVE_PREFERENZA_LINGUA, codiceLingua);
+  } catch (error) {
+    // Storage non disponibile (es. modalità privata): nessuna preferenza salvata.
+  }
+}
+
 function calcolaHrefLingua(currentFolder, targetFolder, filename) {
   if (!currentFolder) {
     return targetFolder ? `${targetFolder}/${filename}` : filename;
@@ -1450,6 +1460,7 @@ function initPageTransitions() {
     // Il cambio lingua ricarica la pagina intera: la nav differisce tra IT ed EN
     // e non viene ricostruita dalla transizione SPA (che sostituisce solo #page-content).
     if (link.classList.contains("nav-lang")) {
+      salvaPreferenzaLingua(link.getAttribute("hreflang") || link.lang);
       return;
     }
 
