@@ -200,6 +200,15 @@ body.page-loading .page-content {
   font-weight: 700;
 }
 
+.nav-link.nav-lang {
+  margin-left: 6px;
+  padding-left: 14px;
+  border-left: 1px solid color-mix(in srgb, var(--sage-deep) 30%, transparent);
+  font-size: 0.82em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 a:focus-visible,
 button:focus-visible,
 input:focus-visible {
