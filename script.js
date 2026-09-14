@@ -1258,32 +1258,52 @@ function setActiveNavLink(targetUrl) {
     }
   });
 
-  updateNavLangLink(targetUrl);
+  aggiornaSelettoreLingua(targetUrl);
   updateNavIndicatorLine(matchedLink);
 }
 
-// La nav non viene ricreata durante le transizioni SPA: l'href del link
-// lingua va ricalcolato ad ogni navigazione in base alla pagina mostrata.
-function updateNavLangLink(targetUrl) {
+// Elenco centralizzato delle lingue disponibili: per aggiungerne una nuova
+// basta aggiungere una voce qui (folder "" = radice del sito).
+const LINGUE_SUPPORTATE = [
+  { code: "it", folder: "", label: "IT" },
+  { code: "en", folder: "en", label: "EN" },
+];
+
+function calcolaHrefLingua(currentFolder, targetFolder, filename) {
+  if (!currentFolder) {
+    return targetFolder ? `${targetFolder}/${filename}` : filename;
+  }
+  return targetFolder ? `../${targetFolder}/${filename}` : `../${filename}`;
+}
+
+// La nav non viene ricreata durante le transizioni SPA: il gruppo lingue va
+// rigenerato ad ogni navigazione in base alla pagina effettivamente mostrata.
+function aggiornaSelettoreLingua(targetUrl) {
   const nav = document.querySelector(".main-nav");
-  const langLink = nav?.querySelector(".nav-lang");
-  if (!langLink) return;
+  const gruppo = nav?.querySelector(".nav-lang-group");
+  if (!gruppo) return;
 
   const segments = (targetUrl.pathname || "").split("/").filter(Boolean);
-  const isEnglish = segments[0] === "en";
+  const currentFolder = LINGUE_SUPPORTATE.some(
+    (lingua) => lingua.folder && lingua.folder === segments[0],
+  )
+    ? segments[0]
+    : "";
   const filename = segments[segments.length - 1] || "index.html";
 
-  if (isEnglish) {
-    langLink.setAttribute("href", `../${filename}`);
-    langLink.setAttribute("hreflang", "it");
-    langLink.setAttribute("lang", "it");
-    langLink.textContent = "IT";
-  } else {
-    langLink.setAttribute("href", `en/${filename}`);
-    langLink.setAttribute("hreflang", "en");
-    langLink.setAttribute("lang", "en");
-    langLink.textContent = "EN";
-  }
+  gruppo.innerHTML = LINGUE_SUPPORTATE.map((lingua, indice) => {
+    const separatore =
+      indice === 0
+        ? ""
+        : '<span class="nav-lang-sep" aria-hidden="true">&middot;</span>';
+
+    if (lingua.folder === currentFolder) {
+      return `${separatore}<span class="nav-lang is-current" lang="${lingua.code}" aria-current="true">${lingua.label}</span>`;
+    }
+
+    const href = calcolaHrefLingua(currentFolder, lingua.folder, filename);
+    return `${separatore}<a class="nav-lang" href="${href}" hreflang="${lingua.code}" lang="${lingua.code}">${lingua.label}</a>`;
+  }).join("");
 }
 
 async function navigatePage(destination, pushHistory = true) {

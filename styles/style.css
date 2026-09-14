@@ -200,24 +200,44 @@ body.page-loading .page-content {
   font-weight: 700;
 }
 
-.nav-link.nav-lang {
-  margin-left: 10px;
-  min-height: auto;
-  padding: 4px 11px;
-  border: 1px solid color-mix(in srgb, var(--sage-deep) 32%, transparent);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--sage) 12%, transparent);
-  color: var(--sage-deep);
-  font-size: 0.76em;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.nav-lang-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 14px;
+  padding-left: 14px;
+  border-left: 1px solid color-mix(in srgb, var(--sage-deep) 24%, transparent);
 }
 
-.nav-link.nav-lang:hover {
-  background: color-mix(in srgb, var(--sage) 22%, transparent);
+.nav-lang {
+  font-size: 0.8em;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+}
+
+.nav-lang-sep {
+  color: color-mix(in srgb, var(--sage-deep) 40%, transparent);
+  font-size: 0.8em;
+}
+
+a.nav-lang {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--sage-deep) 40%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+a.nav-lang:hover {
   color: #2f413c;
-  --my: 0px;
+  text-decoration-color: currentColor;
+}
+
+.nav-lang.is-current {
+  color: #2f413c;
+  font-weight: 700;
+  cursor: default;
 }
 
 a:focus-visible,
