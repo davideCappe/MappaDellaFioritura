@@ -177,6 +177,39 @@
   margin-bottom: 0;
 }
 
+.age-bands {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.age-band {
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--sage) 28%, transparent);
+  background: rgba(255, 252, 249, 0.58);
+}
+
+.service-section-heading .age-band h4 {
+  margin: 0 0 8px;
+  color: var(--sage-deep);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.age-band h4 span {
+  display: block;
+  margin-top: 3px;
+  color: var(--terracotta);
+}
+
+.service-section-heading .age-band p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
 .offer-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -560,7 +593,8 @@
   }
 
   .offer-grid,
-  .offer-grid-two {
+  .offer-grid-two,
+  .age-bands {
     grid-template-columns: 1fr;
   }
 
