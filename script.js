@@ -1026,7 +1026,7 @@ function initNavIndicator() {
     return;
   }
 
-  const links = Array.from(nav.querySelectorAll(".nav-link"));
+  const links = Array.from(nav.querySelectorAll(".nav-link:not(.nav-lang)"));
   if (!links.length) {
     return;
   }
@@ -1098,7 +1098,7 @@ function initNavMagneticHover() {
     return;
   }
 
-  const links = nav.querySelectorAll(".nav-link");
+  const links = nav.querySelectorAll(".nav-link:not(.nav-lang)");
 
   links.forEach((link) => {
     link.addEventListener("mousemove", (event) => {
@@ -1239,7 +1239,7 @@ function setActiveNavLink(targetUrl) {
   const nav = document.querySelector(".main-nav");
   if (!nav) return;
 
-  const links = Array.from(nav.querySelectorAll(".nav-link"));
+  const links = Array.from(nav.querySelectorAll(".nav-link:not(.nav-lang)"));
   const targetPath =
     (targetUrl.pathname || "").split("/").pop() || "index.html";
 
@@ -1258,7 +1258,32 @@ function setActiveNavLink(targetUrl) {
     }
   });
 
+  updateNavLangLink(targetUrl);
   updateNavIndicatorLine(matchedLink);
+}
+
+// La nav non viene ricreata durante le transizioni SPA: l'href del link
+// lingua va ricalcolato ad ogni navigazione in base alla pagina mostrata.
+function updateNavLangLink(targetUrl) {
+  const nav = document.querySelector(".main-nav");
+  const langLink = nav?.querySelector(".nav-lang");
+  if (!langLink) return;
+
+  const segments = (targetUrl.pathname || "").split("/").filter(Boolean);
+  const isEnglish = segments[0] === "en";
+  const filename = segments[segments.length - 1] || "index.html";
+
+  if (isEnglish) {
+    langLink.setAttribute("href", `../${filename}`);
+    langLink.setAttribute("hreflang", "it");
+    langLink.setAttribute("lang", "it");
+    langLink.textContent = "IT";
+  } else {
+    langLink.setAttribute("href", `en/${filename}`);
+    langLink.setAttribute("hreflang", "en");
+    langLink.setAttribute("lang", "en");
+    langLink.textContent = "EN";
+  }
 }
 
 async function navigatePage(destination, pushHistory = true) {
@@ -1356,7 +1381,7 @@ async function navigatePage(destination, pushHistory = true) {
 }
 
 function prefetchNavPages() {
-  const links = document.querySelectorAll(".main-nav a[href]");
+  const links = document.querySelectorAll(".main-nav a[href]:not(.nav-lang)");
   links.forEach((link) => {
     const dest = new URL(link.href, window.location.href);
     if (
@@ -1399,6 +1424,12 @@ function initPageTransitions() {
       href.startsWith("tel:") ||
       href.startsWith("javascript:")
     ) {
+      return;
+    }
+
+    // Il cambio lingua ricarica la pagina intera: la nav differisce tra IT ed EN
+    // e non viene ricostruita dalla transizione SPA (che sostituisce solo #page-content).
+    if (link.classList.contains("nav-lang")) {
       return;
     }
 

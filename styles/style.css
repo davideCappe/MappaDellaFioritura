@@ -201,12 +201,23 @@ body.page-loading .page-content {
 }
 
 .nav-link.nav-lang {
-  margin-left: 6px;
-  padding-left: 14px;
-  border-left: 1px solid color-mix(in srgb, var(--sage-deep) 30%, transparent);
-  font-size: 0.82em;
-  letter-spacing: 0.04em;
+  margin-left: 10px;
+  min-height: auto;
+  padding: 4px 11px;
+  border: 1px solid color-mix(in srgb, var(--sage-deep) 32%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sage) 12%, transparent);
+  color: var(--sage-deep);
+  font-size: 0.76em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.nav-link.nav-lang:hover {
+  background: color-mix(in srgb, var(--sage) 22%, transparent);
+  color: #2f413c;
+  --my: 0px;
 }
 
 a:focus-visible,
