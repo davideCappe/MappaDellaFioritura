@@ -366,12 +366,15 @@ body {
   filter: blur(1px) saturate(0.75);
 }
 
-.matrix-panel.is-locked .matrix-container::after {
-  content: 'Premi Calcola per rivelare la tua mappa';
+.matrix-panel.is-locked .matrix-lock-message {
+  position: absolute;
+  inset: 14px;
+  z-index: 2;
   display: grid;
   place-items: center;
   text-align: center;
   padding: 20px;
+  border-radius: 16px;
   color: #3f544d;
   letter-spacing: 0.01em;
   font-weight: 600;
@@ -379,9 +382,10 @@ body {
   background: linear-gradient(180deg, rgba(255, 251, 246, 0.82), rgba(245, 237, 229, 0.86));
   border: 1px dashed rgba(118, 137, 107, 0.5);
   opacity: 1;
+  transition: opacity 0.35s ease;
 }
 
-.matrix-panel.is-active .matrix-container::after {
+.matrix-panel.is-active .matrix-lock-message {
   opacity: 0;
 }
 

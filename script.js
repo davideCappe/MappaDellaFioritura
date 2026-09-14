@@ -417,6 +417,19 @@ function getCurrentLanguage() {
   return window.location.pathname.includes("/en/") ? "en" : "it";
 }
 
+function syncLanguageStyles() {
+  const lang = getCurrentLanguage();
+  const message =
+    lang === "en"
+      ? "Click Calculate to reveal your map"
+      : "Premi Calcola per rivelare la tua mappa";
+
+  const lockMessage = document.querySelector(".matrix-lock-message");
+  if (lockMessage) {
+    lockMessage.textContent = message;
+  }
+}
+
 function t(key, fallback = "") {
   const lang = getCurrentLanguage();
   const map = TESTI_APP[lang] || TESTI_APP.it;
@@ -1758,6 +1771,7 @@ function initCurrentPage(pageName) {
 }
 
 function initPageShell() {
+  syncLanguageStyles();
   initNavIndicator();
   initNavScrollSurface();
   initNavMagneticHover();
