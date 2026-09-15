@@ -277,6 +277,29 @@
   background: rgba(255, 245, 239, 0.82);
 }
 
+.offer-card-unavailable {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--card-text) 28%, transparent);
+  background: rgba(255, 252, 249, 0.42);
+  opacity: 0.72;
+}
+
+.offer-card-unavailable h3,
+.offer-card-unavailable p {
+  color: color-mix(in srgb, var(--card-text) 78%, transparent);
+}
+
+.offer-card-status {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--card-text);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
 .integrated-options {
   display: grid;
   gap: 28px;
