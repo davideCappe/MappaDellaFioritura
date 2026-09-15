@@ -300,166 +300,38 @@
         const PROGNOSI_PERIODI = ["a", "b", "c", "d", "e", "f", "g"];
 
         const DEFAULT_COORDS = {
-            eta0: {
-                x: 138,
-                y: 502,
-                fontSize: 40,
-            },
-            eta10: {
-                x: 244,
-                y: 244,
-                fontSize: 40,
-            },
-            eta20: {
-                x: 502,
-                y: 138,
-                fontSize: 40,
-            },
-            eta30: {
-                x: 759,
-                y: 244,
-                fontSize: 40,
-            },
-            eta40: {
-                x: 865,
-                y: 502,
-                fontSize: 40,
-            },
-            eta50: {
-                x: 759,
-                y: 759,
-                fontSize: 40,
-            },
-            eta60: {
-                x: 502,
-                y: 865,
-                fontSize: 40,
-            },
-            eta70: {
-                x: 244,
-                y: 759,
-                fontSize: 40,
-            },
-            centro: {
-                x: 502,
-                y: 502,
-                fontSize: 50,
-            },
-            top1: {
-                x: 502,
-                y: 210,
-                fontSize: 30,
-            },
-            top2: {
-                x: 502,
-                y: 262,
-                fontSize: 20,
-            },
-            top3: {
-                x: 502,
-                y: 361,
-                fontSize: 20,
-            },
-            left1: {
-                x: 211,
-                y: 502,
-                fontSize: 30,
-            },
-            left2: {
-                x: 261,
-                y: 502,
-                fontSize: 20,
-            },
-            left3: {
-                x: 361,
-                y: 502,
-                fontSize: 20,
-            },
-            right1: {
-                x: 740,
-                y: 502,
-                fontSize: 20,
-            },
-            right2: {
-                x: 792,
-                y: 502,
-                fontSize: 30,
-            },
-            right3: {
-                x: 575,
-                y: 502,
-                fontSize: 30,
-            },
-            right4: {
-                x: 626,
-                y: 502,
-                fontSize: 20,
-            },
-            bottom1: {
-                x: 502,
-                y: 741,
-                fontSize: 20,
-            },
-            bottom2: {
-                x: 502,
-                y: 793,
-                fontSize: 30,
-            },
-            upLeft1: {
-                x: 295,
-                y: 295,
-                fontSize: 30,
-            },
-            upLeft2: {
-                x: 333,
-                y: 333,
-                fontSize: 20,
-            },
-            upRight1: {
-                x: 706,
-                y: 295,
-                fontSize: 30,
-            },
-            upRight2: {
-                x: 671,
-                y: 333,
-                fontSize: 20,
-            },
-            downLeft2: {
-                x: 333,
-                y: 671,
-                fontSize: 20,
-            },
-            downLeft3: {
-                x: 295,
-                y: 707,
-                fontSize: 30,
-            },
-            downRight1: {
-                x: 671,
-                y: 671,
-                fontSize: 20,
-            },
-            downRight2: {
-                x: 707,
-                y: 707,
-                fontSize: 30,
-            },
-            moneyLove1: {
-                x: 610,
-                y: 610,
-                fontSize: 20,
-            },
-            moneyLove2: {
-                x: 672,
-                y: 548,
-                fontSize: 20,
-            },
-            moneyLove3: {
-                x: 548,
-                y: 673,
-                fontSize: 20,
-            },
+            eta0: { x: 121, y: 500, fontSize: 40 },
+            eta10: { x: 233, y: 233, fontSize: 40 },
+            eta20: { x: 501, y: 122, fontSize: 40 },
+            eta30: { x: 768, y: 233, fontSize: 40 },
+            eta40: { x: 879, y: 500, fontSize: 40 },
+            eta50: { x: 768, y: 768, fontSize: 40 },
+            eta60: { x: 501, y: 879, fontSize: 40 },
+            eta70: { x: 233, y: 768, fontSize: 40 },
+            centro: { x: 502, y: 500, fontSize: 50 },
+            top1: { x: 501, y: 198, fontSize: 30 },
+            top2: { x: 501, y: 252, fontSize: 20 },
+            top3: { x: 501, y: 355, fontSize: 20 },
+            left1: { x: 197, y: 500, fontSize: 30 },
+            left2: { x: 251, y: 500, fontSize: 20 },
+            left3: { x: 355, y: 500, fontSize: 20 },
+            right1: { x: 750, y: 500, fontSize: 20 },
+            right2: { x: 803, y: 500, fontSize: 30 },
+            right3: { x: 576, y: 500, fontSize: 30 },
+            right4: { x: 630, y: 500, fontSize: 20 },
+            bottom1: { x: 501, y: 750, fontSize: 20 },
+            bottom2: { x: 501, y: 803, fontSize: 30 },
+            upLeft1: { x: 286, y: 286, fontSize: 30 },
+            upLeft2: { x: 324, y: 324, fontSize: 20 },
+            upRight1: { x: 714, y: 286, fontSize: 30 },
+            upRight2: { x: 677, y: 324, fontSize: 20 },
+            downLeft2: { x: 324, y: 677, fontSize: 20 },
+            downLeft3: { x: 286, y: 714, fontSize: 30 },
+            downRight1: { x: 677, y: 677, fontSize: 20 },
+            downRight2: { x: 714, y: 714, fontSize: 30 },
+            moneyLove1: { x: 613, y: 613, fontSize: 20 },
+            moneyLove2: { x: 678, y: 548, fontSize: 20 },
+            moneyLove3: { x: 548, y: 677, fontSize: 20 },
         };
 
         function calcolaPosizionePrognosiSegmento(fromKey, toKey, indice) {
@@ -483,7 +355,7 @@
             const vecX = baseX - centro.x;
             const vecY = baseY - centro.y;
             const modulo = Math.hypot(vecX, vecY) || 1;
-            const offset = 53;
+            const offset = 57;
 
             return {
                 x: baseX + (vecX / modulo) * offset,

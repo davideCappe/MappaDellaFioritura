@@ -478,7 +478,7 @@ function calcolaPosizionePrognosiSegmento(fromKey, toKey, indice) {
   const modulo = Math.hypot(vecX, vecY) || 1;
 
   // Offset esterno maggiore per evitare sovrapposizioni con la matrice interna.
-  const offset = 53;
+  const offset = 57;
   return {
     x: baseX + (vecX / modulo) * offset,
     y: baseY + (vecY / modulo) * offset,
