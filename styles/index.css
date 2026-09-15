@@ -490,8 +490,7 @@ body {
 }
 
 #numeriLayer .numero-rivelato {
-  transform-box: fill-box;
-  transform-origin: center;
+  font-size: var(--numero-size);
   animation: numero-entra 0.42s cubic-bezier(0.22, 1.35, 0.45, 1) var(--numero-delay) both;
 }
 
@@ -501,15 +500,11 @@ body {
 
 @keyframes numero-entra {
   0% {
-    transform: scale(0);
-  }
-
-  68% {
-    transform: scale(1.22);
+    font-size: 0;
   }
 
   100% {
-    transform: scale(1);
+    font-size: var(--numero-size);
   }
 }
 

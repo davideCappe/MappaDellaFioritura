@@ -959,7 +959,7 @@ function disegnaMatrice(risultati) {
     text.setAttribute("x", pos.x);
     text.setAttribute("y", pos.y);
     text.setAttribute("class", pos.className || "numero-punto");
-    text.style.fontSize = `${pos.fontSize || 24}px`;
+    text.style.setProperty("--numero-size", `${pos.fontSize || 24}px`);
     text.setAttribute("fill", pos.fill || "#1a1a1a");
     text.setAttribute("font-weight", pos.fontWeight || "700");
     text.setAttribute("text-anchor", "middle");
