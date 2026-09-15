@@ -109,7 +109,14 @@
                     <!-- MATRIX VISUALIZATION AREA -->
                     <section class="matrix-panel is-locked" aria-hidden="true">
                         <div class="matrix-container">
-                            <div class="matrix-lock-message" aria-live="polite">Click Calculate to reveal your map</div>
+                            <div class="matrix-lock-message" aria-live="polite">
+                                <div class="matrix-lock-mark" aria-hidden="true">
+                                    <img src="../images/logo.webp" alt="">
+                                </div>
+                                <p class="matrix-lock-kicker">Your map</p>
+                                <p class="matrix-lock-title">Ready to bloom</p>
+                                <p class="matrix-lock-copy" data-lock-message>Click Calculate to reveal your map</p>
+                            </div>
                             <svg id="matrixSvg" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
                                 <!-- Matrix background image -->
                                 <image href="../images/ENGmatrice.webp" x="0" y="0" width="1000" height="1000" />

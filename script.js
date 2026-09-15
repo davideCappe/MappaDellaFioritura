@@ -424,7 +424,7 @@ function syncLanguageStyles() {
       ? "Click Calculate to reveal your map"
       : "Premi Calcola per rivelare la tua mappa";
 
-  const lockMessage = document.querySelector(".matrix-lock-message");
+  const lockMessage = document.querySelector("[data-lock-message]");
   if (lockMessage) {
     lockMessage.textContent = message;
   }
@@ -951,7 +951,7 @@ function disegnaMatrice(risultati) {
 
   layer.innerHTML = "";
 
-  Object.entries(risultati).forEach(([chiave, valore]) => {
+  Object.entries(risultati).forEach(([chiave, valore], indice) => {
     const pos = CERCHI[chiave];
     if (!pos) return;
 
@@ -968,6 +968,8 @@ function disegnaMatrice(risultati) {
       "font-family",
       pos.fontFamily || "'Segoe UI', system-ui, sans-serif",
     );
+    text.classList.add("numero-rivelato");
+    text.style.setProperty("--numero-delay", `${indice * 28}ms`);
     text.textContent = String(valore);
 
     layer.appendChild(text);
@@ -1374,30 +1376,12 @@ function mostraMappaAnimata() {
     return;
   }
 
-  const firstReveal = !matrixPanelEl.classList.contains("is-active");
-
-  if (firstReveal) {
+  if (!matrixPanelEl.classList.contains("is-active")) {
     matrixPanelEl.classList.remove("is-locked");
   }
 
   matrixPanelEl.classList.add("is-active");
   matrixPanelEl.setAttribute("aria-hidden", "false");
-  matrixContainerEl.classList.remove("reveal-play");
-  window.requestAnimationFrame(() => {
-    matrixContainerEl.classList.add("reveal-play");
-  });
-
-  window.setTimeout(() => {
-    matrixContainerEl.classList.remove("reveal-play");
-  }, 980);
-
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-
-  if (prefersReducedMotion) {
-    return;
-  }
 }
 
 function initHomePageInteractions() {
