@@ -250,7 +250,7 @@
 
 .offer-card strong {
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 35px;
   color: var(--terracotta);
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 1.65rem;
@@ -289,15 +289,34 @@
   color: color-mix(in srgb, var(--card-text) 78%, transparent);
 }
 
+.offer-card-unavailable strong {
+  color: color-mix(in srgb, var(--terracotta) 70%, transparent);
+}
+
 .offer-card-status {
-  display: block;
-  margin-bottom: 12px;
-  color: var(--card-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  margin: 0 0 12px;
+  color: color-mix(in srgb, var(--card-text) 70%, transparent);
   font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-weight: 500;
+  letter-spacing: 0;
   line-height: 1.4;
-  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.offer-card-live strong {
+  margin-bottom: 6px;
+}
+
+.italian-flag {
+  display: inline-block;
+  width: 12px;
+  height: 9px;
+  border: 1px solid color-mix(in srgb, var(--card-text) 30%, transparent);
+  background: linear-gradient(to right, #008c45 0 33.333%, #ffffff 33.333% 66.666%, #cd212a 66.666%);
 }
 
 .integrated-options {
