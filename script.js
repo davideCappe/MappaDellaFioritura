@@ -684,7 +684,14 @@ async function toDataUrl(url) {
     const blob = await response.blob();
     return await new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
+      reader.onload = async () => {
+        try {
+          // PNG is more consistently supported than WebP inside an SVG blob.
+          resolve(await immagineComeDataUrl(reader.result));
+        } catch (error) {
+          reject(error);
+        }
+      };
       reader.onerror = () =>
         reject(new Error(t("errore_conversione_immagine")));
       reader.readAsDataURL(blob);
@@ -815,9 +822,15 @@ async function esportaPng() {
     const absUrl = new URL(rawHref, window.location.href).href;
     const dataUrl = await toDataUrl(absUrl);
     imageEl.setAttribute("href", dataUrl);
+    imageEl.setAttributeNS(
+      "http://www.w3.org/1999/xlink",
+      "xlink:href",
+      dataUrl,
+    );
   }
 
   svgClone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  svgClone.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
   const serializedSvg = new XMLSerializer().serializeToString(svgClone);
   const svgBlob = new Blob([serializedSvg], {
     type: "image/svg+xml;charset=utf-8",
