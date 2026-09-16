@@ -735,14 +735,7 @@ function scaricaBlob(blob, filename) {
 }
 
 function preferisciCondivisione() {
-  if (navigator.userAgentData?.mobile !== undefined) {
-    return navigator.userAgentData.mobile;
-  }
-
-  return (
-    window.matchMedia("(pointer: coarse)").matches &&
-    navigator.maxTouchPoints > 0
-  );
+  return navigator.maxTouchPoints > 0;
 }
 
 async function condividiOPng(blob, filename) {
