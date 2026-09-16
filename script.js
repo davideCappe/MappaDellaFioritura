@@ -753,6 +753,14 @@ async function esportaPng() {
 
   applicaStiliCalcolatiSvg(matrixSvg, svgClone);
 
+  svgClone.querySelectorAll(".numero-rivelato").forEach((text) => {
+    const finalSize = text.style.getPropertyValue("--numero-size");
+    text.style.setProperty("animation", "none");
+    if (finalSize) {
+      text.style.setProperty("font-size", finalSize);
+    }
+  });
+
   if (!INCLUDE_GUIDA_NELL_EXPORT) {
     const guide = svgClone.querySelector("#guideLayer");
     if (guide) {
@@ -786,6 +794,12 @@ async function esportaPng() {
       reject(new Error("Errore rendering SVG per export PNG."));
     img.src = svgUrl;
   });
+
+  if (typeof image.decode === "function") {
+    try {
+      await image.decode();
+    } catch {}
+  }
 
   URL.revokeObjectURL(svgUrl);
 
