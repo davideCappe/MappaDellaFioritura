@@ -727,6 +727,30 @@ function scaricaBlob(blob, filename) {
   URL.revokeObjectURL(url);
 }
 
+async function condividiOPng(blob, filename) {
+  const file = new File([blob], filename, { type: "image/png" });
+  const canShareFile =
+    typeof navigator.share === "function" &&
+    (!navigator.canShare || navigator.canShare({ files: [file] }));
+
+  if (!canShareFile) {
+    scaricaBlob(blob, filename);
+    return;
+  }
+
+  try {
+    await navigator.share({
+      files: [file],
+      title: "Mappa della Fioritura",
+    });
+  } catch (error) {
+    console.log("share fallita:", error.name, error.message);
+    if (error.name !== "AbortError") {
+      scaricaBlob(blob, filename);
+    }
+  }
+}
+
 function creaNomeFilePng() {
   const nomeInput = document.getElementById("nome");
   const dataInput = document.getElementById("dataNascita");
@@ -831,7 +855,7 @@ async function esportaPng() {
     }, "image/png");
   });
 
-  scaricaBlob(pngBlob, creaNomeFilePng());
+  return pngBlob;
 }
 
 // Riduzione numerologica nello spazio 1..22.
@@ -1409,6 +1433,7 @@ function initHomePageInteractions() {
     return;
   }
 
+  let exportPngPromise = null;
   btnExport.disabled = true;
 
   btnCalcola.addEventListener("click", () => {
@@ -1426,6 +1451,7 @@ function initHomePageInteractions() {
       return;
     }
 
+    btnExport.disabled = true;
     const risultati = calcolaMatrice(nome, data);
     disegnaMatrice(risultati);
     mostraDescrizioneCentro(risultati.centro, profilo);
@@ -1435,14 +1461,34 @@ function initHomePageInteractions() {
     aggiornaApprofondimentiMappa(risultati);
     mostraApprofondimentiMappa();
     mostraMappaAnimata();
-    btnExport.disabled = false;
+
+    exportPngPromise = esportaPng();
+    const currentExport = exportPngPromise;
+    currentExport
+      .then(() => {
+        if (exportPngPromise === currentExport) {
+          btnExport.disabled = false;
+        }
+      })
+      .catch((error) => {
+        if (exportPngPromise === currentExport) {
+          btnExport.disabled = true;
+          erroreEl.textContent = error.message || t("errore_export");
+          erroreEl.hidden = false;
+        }
+      });
   });
 
   btnExport.addEventListener("click", async () => {
     erroreEl.hidden = true;
 
     try {
-      await esportaPng();
+      if (!exportPngPromise) {
+        return;
+      }
+
+      const pngBlob = await exportPngPromise;
+      await condividiOPng(pngBlob, creaNomeFilePng());
     } catch (error) {
       erroreEl.textContent = error.message || t("errore_export");
       erroreEl.hidden = false;
