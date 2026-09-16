@@ -727,11 +727,24 @@ function scaricaBlob(blob, filename) {
   URL.revokeObjectURL(url);
 }
 
+function preferisciCondivisione() {
+  if (navigator.userAgentData?.mobile !== undefined) {
+    return navigator.userAgentData.mobile;
+  }
+
+  return (
+    window.matchMedia("(pointer: coarse)").matches &&
+    navigator.maxTouchPoints > 0
+  );
+}
+
 async function condividiOPng(blob, filename) {
   const file = new File([blob], filename, { type: "image/png" });
   const canShareFile =
+    preferisciCondivisione() &&
     typeof navigator.share === "function" &&
-    (!navigator.canShare || navigator.canShare({ files: [file] }));
+    typeof navigator.canShare === "function" &&
+    navigator.canShare({ files: [file] });
 
   if (!canShareFile) {
     scaricaBlob(blob, filename);
