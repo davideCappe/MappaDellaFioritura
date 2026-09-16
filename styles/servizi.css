@@ -250,7 +250,7 @@
 
 .offer-card strong {
   display: block;
-  margin-bottom: 35px;
+  margin-bottom: 12px;
   color: var(--terracotta);
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 1.65rem;
@@ -308,7 +308,25 @@
 }
 
 .offer-card-live strong {
-  margin-bottom: 6px;
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+.offer-card-live {
+  display: block;
+}
+
+.offer-card-live .offer-card-status {
+  position: relative;
+  top: 4px;
+  display: inline-flex;
+  margin-left: 8px;
+  margin-bottom: 12px;
+  vertical-align: middle;
+}
+
+.offer-card-live > p {
+  margin-top: 8px;
 }
 
 .italian-flag {
