@@ -812,22 +812,49 @@ async function esportaPng() {
     }
   }
 
-  const imageEls = svgClone.querySelectorAll("image");
+  const imageLayers = [];
+  const imageEls = [...matrixSvg.querySelectorAll("image")];
   for (const imageEl of imageEls) {
-    const rawHref = imageEl.getAttribute("href");
-    if (!rawHref || rawHref.startsWith("data:")) {
-      continue;
-    }
+    const rawHref =
+      imageEl.getAttribute("href") ||
+      imageEl.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+    if (!rawHref) continue;
 
     const absUrl = new URL(rawHref, window.location.href).href;
     const dataUrl = await toDataUrl(absUrl);
-    imageEl.setAttribute("href", dataUrl);
-    imageEl.setAttributeNS(
-      "http://www.w3.org/1999/xlink",
-      "xlink:href",
-      dataUrl,
-    );
+    const layerImage = await new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = async () => {
+        if (typeof image.decode === "function") {
+          try {
+            await image.decode();
+          } catch {}
+        }
+        resolve(image);
+      };
+      image.onerror = () => reject(new Error(t("errore_export_immagine")));
+      image.src = dataUrl;
+    });
+
+    let opacity = 1;
+    for (let element = imageEl; element; element = element.parentElement) {
+      opacity *= Number.parseFloat(getComputedStyle(element).opacity) || 1;
+    }
+
+    imageLayers.push({
+      image: layerImage,
+      opacity,
+      x: Number.parseFloat(imageEl.getAttribute("x")) || 0,
+      y: Number.parseFloat(imageEl.getAttribute("y")) || 0,
+      width: Number.parseFloat(imageEl.getAttribute("width")) || 0,
+      height: Number.parseFloat(imageEl.getAttribute("height")) || 0,
+      preserveAspectRatio:
+        imageEl.getAttribute("preserveAspectRatio") || "xMidYMid meet",
+    });
   }
+
+  // Draw bitmap layers directly on canvas; some tablet SVG renderers omit them.
+  svgClone.querySelectorAll("image").forEach((imageEl) => imageEl.remove());
 
   svgClone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
   svgClone.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
@@ -851,8 +878,6 @@ async function esportaPng() {
     } catch {}
   }
 
-  URL.revokeObjectURL(svgUrl);
-
   const viewBox = matrixSvg.viewBox.baseVal;
   const width = viewBox && viewBox.width ? viewBox.width : 1000;
   const height = viewBox && viewBox.height ? viewBox.height : 1000;
@@ -860,6 +885,10 @@ async function esportaPng() {
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
+
+  if (canvas.width !== width || canvas.height !== height) {
+    throw new Error(t("errore_canvas"));
+  }
 
   const ctx = canvas.getContext("2d");
   if (!ctx) {
@@ -869,7 +898,33 @@ async function esportaPng() {
   // Forza uno sfondo bianco nel PNG esportato.
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, width, height);
+
+  imageLayers.forEach(
+    ({
+      image: layerImage,
+      opacity,
+      x,
+      y,
+      width: layerWidth,
+      height: layerHeight,
+      preserveAspectRatio,
+    }) => {
+      const preserveMeet = !preserveAspectRatio.includes("slice");
+      const scale = preserveMeet
+        ? Math.min(layerWidth / layerImage.naturalWidth, layerHeight / layerImage.naturalHeight)
+        : Math.max(layerWidth / layerImage.naturalWidth, layerHeight / layerImage.naturalHeight);
+      const drawnWidth = layerImage.naturalWidth * scale;
+      const drawnHeight = layerImage.naturalHeight * scale;
+      const offsetX = x + (layerWidth - drawnWidth) / 2;
+      const offsetY = y + (layerHeight - drawnHeight) / 2;
+
+    ctx.globalAlpha = opacity;
+      ctx.drawImage(layerImage, offsetX, offsetY, drawnWidth, drawnHeight);
+    },
+  );
+  ctx.globalAlpha = 1;
   ctx.drawImage(image, 0, 0, width, height);
+  URL.revokeObjectURL(svgUrl);
 
   const pngBlob = await new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
