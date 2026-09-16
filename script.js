@@ -5,38 +5,38 @@
 // Coordinate dei cerchi visibili nell'immagine (viewBox 1000x1000).
 // Se necessario puoi rifinire qualche coordinata di pochi pixel.
 const CERCHI = {
-  eta0: { x: 138, y: 502, fontSize: 40 },
-  eta10: { x: 244, y: 244, fontSize: 40 },
-  eta20: { x: 502, y: 138, fontSize: 40 },
-  eta30: { x: 759, y: 244, fontSize: 40 },
-  eta40: { x: 865, y: 502, fontSize: 40 },
-  eta50: { x: 759, y: 759, fontSize: 40 },
-  eta60: { x: 502, y: 865, fontSize: 40 },
-  eta70: { x: 244, y: 759, fontSize: 40 },
-  centro: { x: 502, y: 502, fontSize: 50 },
-  top1: { x: 502, y: 210, fontSize: 30 },
-  top2: { x: 502, y: 262, fontSize: 20 },
-  top3: { x: 502, y: 361, fontSize: 20 },
-  left1: { x: 211, y: 502, fontSize: 30 },
-  left2: { x: 261, y: 502, fontSize: 20 },
-  left3: { x: 361, y: 502, fontSize: 20 },
-  right1: { x: 740, y: 502, fontSize: 20 },
-  right2: { x: 792, y: 502, fontSize: 30 },
-  right3: { x: 575, y: 502, fontSize: 30 },
-  right4: { x: 626, y: 502, fontSize: 20 },
-  bottom1: { x: 502, y: 741, fontSize: 20 },
-  bottom2: { x: 502, y: 793, fontSize: 30 },
-  upLeft1: { x: 295, y: 295, fontSize: 30 },
-  upLeft2: { x: 333, y: 333, fontSize: 20 },
-  upRight1: { x: 706, y: 295, fontSize: 30 },
-  upRight2: { x: 671, y: 333, fontSize: 20 },
-  downLeft2: { x: 333, y: 671, fontSize: 20 },
-  downLeft3: { x: 295, y: 707, fontSize: 30 },
-  downRight1: { x: 671, y: 671, fontSize: 20 },
-  downRight2: { x: 707, y: 707, fontSize: 30 },
-  moneyLove1: { x: 610, y: 610, fontSize: 20 },
-  moneyLove2: { x: 672, y: 548, fontSize: 20 },
-  moneyLove3: { x: 548, y: 673, fontSize: 20 },
+  eta0: { x: 121, y: 500, fontSize: 40 },
+  eta10: { x: 233, y: 233, fontSize: 40 },
+  eta20: { x: 501, y: 122, fontSize: 40 },
+  eta30: { x: 768, y: 233, fontSize: 40 },
+  eta40: { x: 879, y: 500, fontSize: 40 },
+  eta50: { x: 768, y: 768, fontSize: 40 },
+  eta60: { x: 501, y: 879, fontSize: 40 },
+  eta70: { x: 233, y: 768, fontSize: 40 },
+  centro: { x: 502, y: 500, fontSize: 50 },
+  top1: { x: 501, y: 198, fontSize: 30 },
+  top2: { x: 501, y: 252, fontSize: 20 },
+  top3: { x: 501, y: 355, fontSize: 20 },
+  left1: { x: 197, y: 500, fontSize: 30 },
+  left2: { x: 251, y: 500, fontSize: 20 },
+  left3: { x: 355, y: 500, fontSize: 20 },
+  right1: { x: 750, y: 500, fontSize: 20 },
+  right2: { x: 803, y: 500, fontSize: 30 },
+  right3: { x: 576, y: 500, fontSize: 30 },
+  right4: { x: 630, y: 500, fontSize: 20 },
+  bottom1: { x: 501, y: 750, fontSize: 20 },
+  bottom2: { x: 501, y: 803, fontSize: 30 },
+  upLeft1: { x: 286, y: 286, fontSize: 30 },
+  upLeft2: { x: 324, y: 324, fontSize: 20 },
+  upRight1: { x: 714, y: 286, fontSize: 30 },
+  upRight2: { x: 677, y: 324, fontSize: 20 },
+  downLeft2: { x: 324, y: 677, fontSize: 20 },
+  downLeft3: { x: 286, y: 714, fontSize: 30 },
+  downRight1: { x: 677, y: 677, fontSize: 20 },
+  downRight2: { x: 714, y: 714, fontSize: 30 },
+  moneyLove1: { x: 613, y: 613, fontSize: 20 },
+  moneyLove2: { x: 678, y: 548, fontSize: 20 },
+  moneyLove3: { x: 548, y: 677, fontSize: 20 },
 };
 
 const PROGNOSI_SEGMENTI = [
@@ -212,6 +212,249 @@ const DESCRIZIONI_CENTRO = {
   },
 };
 
+const DESCRIZIONI_CENTRO_EN = {
+  1: {
+    titolo: "The Magician",
+    adulto:
+      "You feel comfortable when you can take initiative and directly steer a project without waiting for other people's approval. Your psychological comfort comes from decision-making autonomy and the chance to turn an idea into concrete action. Situations that require passivity or long waiting can make you uneasy.",
+    bambino:
+      "The child feels safe in activities that let them experiment firsthand, without too many instructions imposed from outside. They need space to make mistakes and try again on their own, building confidence in their own abilities. They feel uncomfortable when they are constantly guided or corrected during play.",
+  },
+  2: {
+    titolo: "The High Priestess",
+    adulto:
+      "You feel at ease in quiet environments where you can observe before acting and reflect without rushing. Your comfort comes from processing things internally, away from social pressure or demands for immediate answers. Noise, haste, and too much exposure unsettle you.",
+    bambino:
+      "The child feels safe in moments of calm and silence, perhaps alone with their thoughts or in quiet play. They need time to observe before joining in, without being pushed to expose themselves. Too much noise or crowds can overwhelm them.",
+  },
+  3: {
+    titolo: "The Empress",
+    adulto:
+      "You feel comfortable when you can care for someone or something and create a warm environment around you. Your psychological comfort comes from nurturing relationships and surrounding yourself with beauty and ease. Cold, detached, or emotionally barren contexts make you uneasy.",
+    bambino:
+      "The child feels safe in warm, welcoming environments where they can care for something (a plush toy, a plant, an animal). They need reassuring physical contact and emotional nourishment. They feel uncomfortable in cold or unloving contexts.",
+  },
+  4: {
+    titolo: "The Emperor",
+    adulto:
+      "You feel comfortable when there is a clear structure, defined rules, and an order to follow or build. Your psychological comfort comes from the sense of control and stability that organization provides. Unpredictability and chaos can make you very uneasy.",
+    bambino:
+      "The child feels safe with predictable routines and clear rules to follow. They need to know what comes next and have firm anchors in the day. Sudden changes or a lack of structure can make them anxious.",
+  },
+  5: {
+    titolo: "The Hierophant",
+    adulto:
+      "You feel comfortable when you can transmit knowledge or be part of a group with shared values. Your psychological comfort comes from belonging and following (or teaching) principles you believe in. Feeling excluded or without solid reference points makes you uncomfortable.",
+    bambino:
+      "The child feels safe when they can learn from a trusted guide and feel part of a group. They need shared rules and to know what is right and what is not. They feel uncomfortable when there is no clear guidance or they feel left out.",
+  },
+  6: {
+    titolo: "The Lovers",
+    adulto:
+      "You feel comfortable when you can choose freely according to your values, without feeling forced in one direction. Your psychological comfort comes from harmony in relationships and the freedom to decide. External impositions or value conflicts unsettle you.",
+    bambino:
+      "The child feels safe when they can choose from options, even small ones, and feel listened to in their preferences. They need harmonious relationships around them, without tension. Arguments or rigid impositions can make them uncomfortable.",
+  },
+  7: {
+    titolo: "The Chariot",
+    adulto:
+      "You feel comfortable when you are moving toward a goal with a clear direction to follow. Your psychological comfort comes from the feeling of progress and achievement. Prolonged stagnation or lack of progress unsettles you.",
+    bambino:
+      "The child feels safe when they have a challenge or goal to reach, something that keeps them active and motivated. They need to move, do, and keep going. Too static or repetitive situations can bore and agitate them.",
+  },
+  8: {
+    titolo: "Justice",
+    adulto:
+      "You feel comfortable in fair contexts, where the rules apply to everyone and consequences are logical and predictable. Your psychological comfort comes from a sense of correctness and balance. Injustice or arbitrary decisions deeply unsettle you.",
+    bambino:
+      "The child feels safe when rules are the same for everyone and they understand why some things are allowed and others are not. They need consistency between what is said and what is done. Perceived unfairness, even small, can deeply disturb them.",
+  },
+  9: {
+    titolo: "The Hermit",
+    adulto:
+      "You feel comfortable when you have time and space to be alone with your thoughts, away from social demands. Your psychological comfort comes from introspection and the search for personal meaning. Forced or constant socializing drains you and unsettles you.",
+    bambino:
+      "The child feels safe when they can carve out moments of solitary play without being constantly prompted to interact. They need time to be with themselves. Overly social or demanding environments can tire them quickly.",
+  },
+  10: {
+    titolo: "Wheel of Fortune",
+    adulto:
+      "You feel comfortable when life brings change and novelty and you can adapt with flexibility. Your psychological comfort comes from accepting that things change and knowing how to seize that momentum. Rigidity and prolonged monotony unsettle you.",
+    bambino:
+      "The child feels safe when they can explore novelty and surprises with curiosity, without too much anxiety about control. They need variety in stimuli and activities. Excessive monotony makes them restless.",
+  },
+  11: {
+    titolo: "Strength",
+    adulto:
+      "You feel comfortable when you can handle difficulties with inner calm without reacting impulsively. Your psychological comfort comes from patience and emotional control exercised on yourself, not on others. Situations that require aggressive or impulsive reactions unsettle you.",
+    bambino:
+      "The child feels safe when they are given room to manage their emotions calmly, without being rushed to suppress them. They need to be gently accompanied through difficult moments. Harsh or punitive demands can make them uncomfortable.",
+  },
+  12: {
+    titolo: "The Hanged Man",
+    adulto:
+      "You feel comfortable when you can pause, change perspective, and look at things from a different angle without rushing to act. Your psychological comfort comes from accepting the pause as a useful moment. Being pushed to act immediately, without time to reflect, unsettles you.",
+    bambino:
+      "The child feels safe when they have time to watch before joining in, perhaps observing others play before joining. They need not to be forced into acting right away. Pressure to hurry can make them uncomfortable.",
+  },
+  13: {
+    titolo: "Death (Transformation)",
+    adulto:
+      "You feel comfortable when you can let go of what no longer serves you and renew yourself, even through major changes. Your psychological comfort comes from the ability to close cycles and start again. Remaining stuck in immutable situations unsettles you.",
+    bambino:
+      "The child feels safe when they can leave one game for another without guilt, adapting to changes in activity. They need to be gently accompanied through transitions (new school, new phase). Abrupt or forced transitions can frighten them.",
+  },
+  14: {
+    titolo: "Temperance",
+    adulto:
+      "You feel comfortable when you can find balance between the different parts of your life without extremes. Your psychological comfort comes from moderation and harmonizing different needs. Excesses in any direction unsettle you.",
+    bambino:
+      "The child feels safe in balanced environments where play, rest, and rules alternate without extremes. They need rhythm that is neither overstimulating nor too rigid. Excessive swings (too much activity or too much boredom) can disorient them.",
+  },
+  15: {
+    titolo: "The Devil",
+    adulto:
+      "You feel comfortable when you can express your desires and instinctive side without judgment, with authenticity. Your psychological comfort comes from recognizing and accepting your limits and desires without suppressing them. Excessively moralistic or repressive environments unsettle you.",
+    bambino:
+      "The child feels safe when they can express their needs and desires without feeling judged or labeled as spoiled. They need space to be authentic even in their most instinctive parts. Constant judgment can make them uncomfortable.",
+  },
+  16: {
+    titolo: "The Tower",
+    adulto:
+      "You feel comfortable when things are stable and predictable, and you feel strongly destabilized by sudden collapses or drastic change. Your psychological comfort comes from structural security. Sudden breakdowns deeply disrupt your balance.",
+    bambino:
+      "The child feels safe when their environment is stable and free from sudden shocks. They need to be prepared in advance for important changes, even small ones. Disturbing surprises or sudden arguments can scare them a lot.",
+  },
+  17: {
+    titolo: "The Star",
+    adulto:
+      "You feel comfortable when you can cultivate hope and trust in the future, even in difficult moments. Your psychological comfort comes from inspiration and the ability to dream big. Chronic pessimism around you or lack of perspective unsettles you.",
+    bambino:
+      "The child feels safe when they can dream, imagine, and hope, feeling encouraged in their aspirations. They need adults who nourish their confidence in the future. A discouraging or critical environment can extinguish their enthusiasm.",
+  },
+  18: {
+    titolo: "The Moon",
+    adulto:
+      "You feel comfortable when you can explore your sensitivity and your deepest emotions without having to explain them rationally. Your psychological comfort comes from accepting ambiguity and intuition. Overly rational environments that deny emotion unsettle you.",
+    bambino:
+      "The child feels safe when their emotions, even confusing or hard to explain ones, are welcomed without being minimized. They need to feel understood even when they cannot find the right words. Being pushed to rationalize too early can make them uncomfortable.",
+  },
+  19: {
+    titolo: "The Sun",
+    adulto:
+      "You feel comfortable when you can be yourself openly, with vitality and without masks. Your psychological comfort comes from shared joy and positive recognition. Dark or repressive environments toward self-expression unsettle you.",
+    bambino:
+      "The child feels safe when they can be spontaneous, playful, and show themselves as they are, receiving approval and warmth. They need to be seen and appreciated openly. A cold or unexpressive environment can make them uncomfortable.",
+  },
+  20: {
+    titolo: "Judgement",
+    adulto:
+      "You feel comfortable when you can take stock of your life and feel called to conscious renewal. Your psychological comfort comes from being recognized for your path and from the possibility of starting again with new awareness. Being unjustly judged or not listened to unsettles you.",
+    bambino:
+      "The child feels safe when their progress is recognized and valued, feeling understood in their growth journey. They need to feel that every mistake is an opportunity to begin again, not a condemnation. Harsh judgment or labels can make them uncomfortable.",
+  },
+  21: {
+    titolo: "The World",
+    adulto:
+      "You feel comfortable when you can see the bigger picture and feel that you have completed something significant. Your psychological comfort comes from a sense of realization and integration of different parts of yourself. Fragmented or unfinished situations unsettle you.",
+    bambino:
+      "The child feels safe when they can bring an activity to completion and see the result of their effort. They need to feel a sense of completeness in what they do. Being interrupted continuously before finishing can make them uncomfortable.",
+  },
+  22: {
+    titolo: "The Fool",
+    adulto:
+      "You feel comfortable when you can be spontaneous, light, and free from excessive expectations and constraints. Your psychological comfort comes from the freedom to explore without a rigid plan. Structures that are too rigid or excessive responsibilities unsettle you.",
+    bambino:
+      "The child feels safe when they can play freely, without too many rules or performance expectations. They need space to simply be themselves, in a light and spontaneous way. Pressure or premature responsibilities can make them uncomfortable.",
+  },
+};
+
+const TESTI_APP = {
+  it: {
+    immagine_non_disponibile: "Immagine non disponibile.",
+    errore_conversione_immagine: "Errore conversione immagine.",
+    errore_export_immagine:
+      "Impossibile leggere l'immagine di sfondo per l'export.",
+    errore_canvas: "Impossibile inizializzare il canvas per l'export PNG.",
+    errore_png: "Impossibile generare il PNG.",
+    inserisci_dati: "Inserisci nome e data di nascita.",
+    errore_export: "Errore durante l'export PNG.",
+    anni: "anni",
+    anno: "anno",
+    buon_compleanno: "Buon compleanno",
+    titolo_mappa: "Mappa",
+  },
+  en: {
+    immagine_non_disponibile: "Image unavailable.",
+    errore_conversione_immagine: "Image conversion error.",
+    errore_export_immagine: "Unable to read the background image for export.",
+    errore_canvas: "Unable to initialize the canvas for PNG export.",
+    errore_png: "Unable to generate the PNG.",
+    inserisci_dati: "Enter name and date of birth.",
+    errore_export: "Error during PNG export.",
+    anni: "years",
+    anno: "year",
+    buon_compleanno: "Happy birthday",
+    titolo_mappa: "Map",
+  },
+};
+
+function getCurrentLanguage() {
+  const htmlLang = document.documentElement.lang || "";
+  if (htmlLang.toLowerCase().startsWith("en")) {
+    return "en";
+  }
+
+  try {
+    const saved = localStorage.getItem(CHIAVE_PREFERENZA_LINGUA);
+    if (saved === "en") {
+      return "en";
+    }
+  } catch (error) {
+    // storage non disponibile: si usa la lingua della pagina
+  }
+
+  return window.location.pathname.includes("/en/") ? "en" : "it";
+}
+
+function syncLanguageStyles() {
+  const lang = getCurrentLanguage();
+  const message =
+    lang === "en"
+      ? "Click Calculate to reveal your map"
+      : "Premi Calcola per rivelare la tua mappa";
+
+  const lockMessage = document.querySelector("[data-lock-message]");
+  if (lockMessage) {
+    lockMessage.textContent = message;
+  }
+}
+
+function t(key, fallback = "") {
+  const lang = getCurrentLanguage();
+  const map = TESTI_APP[lang] || TESTI_APP.it;
+  return map[key] || TESTI_APP.it[key] || fallback || key;
+}
+
+function getCentroDescrizione(numero, profilo) {
+  const descrizione = DESCRIZIONI_CENTRO[numero];
+  if (!descrizione) {
+    return null;
+  }
+
+  const isEnglish = getCurrentLanguage() === "en";
+  const english = DESCRIZIONI_CENTRO_EN[numero];
+
+  return {
+    titolo:
+      (isEnglish && english ? english.titolo : descrizione.titolo) ||
+      descrizione.titolo,
+    testo:
+      (isEnglish && english ? english[profilo] : descrizione[profilo]) ||
+      descrizione[profilo],
+  };
+}
+
 function calcolaPosizionePrognosiSegmento(fromKey, toKey, indice) {
   const from = CERCHI[fromKey];
   const to = CERCHI[toKey];
@@ -235,7 +478,7 @@ function calcolaPosizionePrognosiSegmento(fromKey, toKey, indice) {
   const modulo = Math.hypot(vecX, vecY) || 1;
 
   // Offset esterno maggiore per evitare sovrapposizioni con la matrice interna.
-  const offset = 53;
+  const offset = 57;
   return {
     x: baseX + (vecX / modulo) * offset,
     y: baseY + (vecY / modulo) * offset,
@@ -435,14 +678,22 @@ async function toDataUrl(url) {
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error("Immagine non disponibile.");
+      throw new Error(t("immagine_non_disponibile"));
     }
 
     const blob = await response.blob();
     return await new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = () => reject(new Error("Errore conversione immagine."));
+      reader.onload = async () => {
+        try {
+          // PNG is more consistently supported than WebP inside an SVG blob.
+          resolve(await immagineComeDataUrl(reader.result));
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = () =>
+        reject(new Error(t("errore_conversione_immagine")));
       reader.readAsDataURL(blob);
     });
   } catch (error) {
@@ -460,17 +711,14 @@ function immagineComeDataUrl(url) {
 
       const context = canvas.getContext("2d");
       if (!context) {
-        reject(new Error("Impossibile preparare l'immagine per l'export."));
+        reject(new Error(t("errore_export_immagine")));
         return;
       }
 
       context.drawImage(image, 0, 0);
       resolve(canvas.toDataURL("image/png"));
     };
-    image.onerror = () =>
-      reject(
-        new Error("Impossibile leggere l'immagine di sfondo per l'export."),
-      );
+    image.onerror = () => reject(new Error(t("errore_export_immagine")));
     image.src = url;
   });
 }
@@ -484,6 +732,36 @@ function scaricaBlob(blob, filename) {
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
+}
+
+function preferisciCondivisione() {
+  return navigator.maxTouchPoints > 0;
+}
+
+async function condividiOPng(blob, filename) {
+  const file = new File([blob], filename, { type: "image/png" });
+  const canShareFile =
+    preferisciCondivisione() &&
+    typeof navigator.share === "function" &&
+    typeof navigator.canShare === "function" &&
+    navigator.canShare({ files: [file] });
+
+  if (!canShareFile) {
+    scaricaBlob(blob, filename);
+    return;
+  }
+
+  try {
+    await navigator.share({
+      files: [file],
+      title: "Mappa della Fioritura",
+    });
+  } catch (error) {
+    console.log("share fallita:", error.name, error.message);
+    if (error.name !== "AbortError") {
+      scaricaBlob(blob, filename);
+    }
+  }
 }
 
 function creaNomeFilePng() {
@@ -512,6 +790,14 @@ async function esportaPng() {
 
   applicaStiliCalcolatiSvg(matrixSvg, svgClone);
 
+  svgClone.querySelectorAll(".numero-rivelato").forEach((text) => {
+    const finalSize = text.style.getPropertyValue("--numero-size");
+    text.style.setProperty("animation", "none");
+    if (finalSize) {
+      text.style.setProperty("font-size", finalSize);
+    }
+  });
+
   if (!INCLUDE_GUIDA_NELL_EXPORT) {
     const guide = svgClone.querySelector("#guideLayer");
     if (guide) {
@@ -519,19 +805,52 @@ async function esportaPng() {
     }
   }
 
-  const imageEls = svgClone.querySelectorAll("image");
+  const imageLayers = [];
+  const imageEls = [...matrixSvg.querySelectorAll("image")];
   for (const imageEl of imageEls) {
-    const rawHref = imageEl.getAttribute("href");
-    if (!rawHref || rawHref.startsWith("data:")) {
-      continue;
-    }
+    const rawHref =
+      imageEl.getAttribute("href") ||
+      imageEl.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+    if (!rawHref) continue;
 
     const absUrl = new URL(rawHref, window.location.href).href;
     const dataUrl = await toDataUrl(absUrl);
-    imageEl.setAttribute("href", dataUrl);
+    const layerImage = await new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = async () => {
+        if (typeof image.decode === "function") {
+          try {
+            await image.decode();
+          } catch {}
+        }
+        resolve(image);
+      };
+      image.onerror = () => reject(new Error(t("errore_export_immagine")));
+      image.src = dataUrl;
+    });
+
+    let opacity = 1;
+    for (let element = imageEl; element; element = element.parentElement) {
+      opacity *= Number.parseFloat(getComputedStyle(element).opacity) || 1;
+    }
+
+    imageLayers.push({
+      image: layerImage,
+      opacity,
+      x: Number.parseFloat(imageEl.getAttribute("x")) || 0,
+      y: Number.parseFloat(imageEl.getAttribute("y")) || 0,
+      width: Number.parseFloat(imageEl.getAttribute("width")) || 0,
+      height: Number.parseFloat(imageEl.getAttribute("height")) || 0,
+      preserveAspectRatio:
+        imageEl.getAttribute("preserveAspectRatio") || "xMidYMid meet",
+    });
   }
 
+  // Draw bitmap layers directly on canvas; some tablet SVG renderers omit them.
+  svgClone.querySelectorAll("image").forEach((imageEl) => imageEl.remove());
+
   svgClone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  svgClone.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
   const serializedSvg = new XMLSerializer().serializeToString(svgClone);
   const svgBlob = new Blob([serializedSvg], {
     type: "image/svg+xml;charset=utf-8",
@@ -546,7 +865,11 @@ async function esportaPng() {
     img.src = svgUrl;
   });
 
-  URL.revokeObjectURL(svgUrl);
+  if (typeof image.decode === "function") {
+    try {
+      await image.decode();
+    } catch {}
+  }
 
   const viewBox = matrixSvg.viewBox.baseVal;
   const width = viewBox && viewBox.width ? viewBox.width : 1000;
@@ -556,27 +879,57 @@ async function esportaPng() {
   canvas.width = width;
   canvas.height = height;
 
+  if (canvas.width !== width || canvas.height !== height) {
+    throw new Error(t("errore_canvas"));
+  }
+
   const ctx = canvas.getContext("2d");
   if (!ctx) {
-    throw new Error("Impossibile inizializzare il canvas per l'export PNG.");
+    throw new Error(t("errore_canvas"));
   }
 
   // Forza uno sfondo bianco nel PNG esportato.
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, width, height);
+
+  imageLayers.forEach(
+    ({
+      image: layerImage,
+      opacity,
+      x,
+      y,
+      width: layerWidth,
+      height: layerHeight,
+      preserveAspectRatio,
+    }) => {
+      const preserveMeet = !preserveAspectRatio.includes("slice");
+      const scale = preserveMeet
+        ? Math.min(layerWidth / layerImage.naturalWidth, layerHeight / layerImage.naturalHeight)
+        : Math.max(layerWidth / layerImage.naturalWidth, layerHeight / layerImage.naturalHeight);
+      const drawnWidth = layerImage.naturalWidth * scale;
+      const drawnHeight = layerImage.naturalHeight * scale;
+      const offsetX = x + (layerWidth - drawnWidth) / 2;
+      const offsetY = y + (layerHeight - drawnHeight) / 2;
+
+    ctx.globalAlpha = opacity;
+      ctx.drawImage(layerImage, offsetX, offsetY, drawnWidth, drawnHeight);
+    },
+  );
+  ctx.globalAlpha = 1;
   ctx.drawImage(image, 0, 0, width, height);
+  URL.revokeObjectURL(svgUrl);
 
   const pngBlob = await new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
       if (!blob) {
-        reject(new Error("Impossibile generare il PNG."));
+        reject(new Error(t("errore_png")));
         return;
       }
       resolve(blob);
     }, "image/png");
   });
 
-  scaricaBlob(pngBlob, creaNomeFilePng());
+  return pngBlob;
 }
 
 // Riduzione numerologica nello spazio 1..22.
@@ -710,7 +1063,7 @@ function disegnaMatrice(risultati) {
 
   layer.innerHTML = "";
 
-  Object.entries(risultati).forEach(([chiave, valore]) => {
+  Object.entries(risultati).forEach(([chiave, valore], indice) => {
     const pos = CERCHI[chiave];
     if (!pos) return;
 
@@ -718,7 +1071,7 @@ function disegnaMatrice(risultati) {
     text.setAttribute("x", pos.x);
     text.setAttribute("y", pos.y);
     text.setAttribute("class", pos.className || "numero-punto");
-    text.style.fontSize = `${pos.fontSize || 24}px`;
+    text.style.setProperty("--numero-size", `${pos.fontSize || 24}px`);
     text.setAttribute("fill", pos.fill || "#1a1a1a");
     text.setAttribute("font-weight", pos.fontWeight || "700");
     text.setAttribute("text-anchor", "middle");
@@ -727,6 +1080,8 @@ function disegnaMatrice(risultati) {
       "font-family",
       pos.fontFamily || "'Segoe UI', system-ui, sans-serif",
     );
+    text.classList.add("numero-rivelato");
+    text.style.setProperty("--numero-delay", `${indice * 28}ms`);
     text.textContent = String(valore);
 
     layer.appendChild(text);
@@ -752,12 +1107,12 @@ function mostraDescrizioneCentro(numero, profilo) {
   const panel = document.getElementById("descrizioneCentro");
   const titolo = document.getElementById("comfortTitolo");
   const testo = document.getElementById("comfortTesto");
-  const descrizione = DESCRIZIONI_CENTRO[numero];
+  const descrizione = getCentroDescrizione(numero, profilo);
 
   if (!panel || !titolo || !testo || !descrizione) return;
 
   titolo.textContent = `${numero} - ${descrizione.titolo}`;
-  testo.textContent = descrizione[profilo];
+  testo.textContent = descrizione.testo;
   panel.hidden = false;
 }
 
@@ -782,7 +1137,8 @@ function mostraEtaECompleanno(dataNascita) {
 
   if (etaEl) {
     const eta = calcolaEta(dataNascita);
-    etaEl.textContent = `${eta} ${eta === 1 ? "anno" : "anni"}`;
+    const unità = eta === 1 ? t("anno") : t("anni");
+    etaEl.textContent = `${eta} ${unità}`;
   }
 
   if (riepilogo) {
@@ -839,7 +1195,7 @@ function celebraCompleanno(dataNascita, nome) {
 
   const saluto = document.createElement("div");
   saluto.className = "birthday-greeting";
-  saluto.innerHTML = "<p>Buon compleanno</p><strong></strong>";
+  saluto.innerHTML = `<p>${t("buon_compleanno")}</p><strong></strong>`;
   saluto.querySelector("strong").textContent = nome;
   particles.appendChild(saluto);
 
@@ -1026,7 +1382,7 @@ function initNavIndicator() {
     return;
   }
 
-  const links = Array.from(nav.querySelectorAll(".nav-link"));
+  const links = Array.from(nav.querySelectorAll(".nav-link:not(.nav-lang)"));
   if (!links.length) {
     return;
   }
@@ -1098,7 +1454,7 @@ function initNavMagneticHover() {
     return;
   }
 
-  const links = nav.querySelectorAll(".nav-link");
+  const links = nav.querySelectorAll(".nav-link:not(.nav-lang)");
 
   links.forEach((link) => {
     link.addEventListener("mousemove", (event) => {
@@ -1132,30 +1488,12 @@ function mostraMappaAnimata() {
     return;
   }
 
-  const firstReveal = !matrixPanelEl.classList.contains("is-active");
-
-  if (firstReveal) {
+  if (!matrixPanelEl.classList.contains("is-active")) {
     matrixPanelEl.classList.remove("is-locked");
   }
 
   matrixPanelEl.classList.add("is-active");
   matrixPanelEl.setAttribute("aria-hidden", "false");
-  matrixContainerEl.classList.remove("reveal-play");
-  window.requestAnimationFrame(() => {
-    matrixContainerEl.classList.add("reveal-play");
-  });
-
-  window.setTimeout(() => {
-    matrixContainerEl.classList.remove("reveal-play");
-  }, 980);
-
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-
-  if (prefersReducedMotion) {
-    return;
-  }
 }
 
 function initHomePageInteractions() {
@@ -1169,6 +1507,7 @@ function initHomePageInteractions() {
     return;
   }
 
+  let exportPngPromise = null;
   btnExport.disabled = true;
 
   btnCalcola.addEventListener("click", () => {
@@ -1181,11 +1520,13 @@ function initHomePageInteractions() {
     erroreEl.hidden = true;
 
     if (!nome || !data) {
-      erroreEl.textContent = "Inserisci nome e data di nascita.";
+      erroreEl.textContent = t("inserisci_dati");
       erroreEl.hidden = false;
       return;
     }
 
+    const preparaCondivisione = preferisciCondivisione();
+    exportPngPromise = null;
     const risultati = calcolaMatrice(nome, data);
     disegnaMatrice(risultati);
     mostraDescrizioneCentro(risultati.centro, profilo);
@@ -1195,16 +1536,38 @@ function initHomePageInteractions() {
     aggiornaApprofondimentiMappa(risultati);
     mostraApprofondimentiMappa();
     mostraMappaAnimata();
-    btnExport.disabled = false;
+
+    btnExport.disabled = preparaCondivisione;
+
+    if (preparaCondivisione) {
+      exportPngPromise = esportaPng();
+      const currentExport = exportPngPromise;
+      currentExport
+        .then(() => {
+          if (exportPngPromise === currentExport) {
+            btnExport.disabled = false;
+          }
+        })
+        .catch((error) => {
+          if (exportPngPromise === currentExport) {
+            btnExport.disabled = true;
+            erroreEl.textContent = error.message || t("errore_export");
+            erroreEl.hidden = false;
+          }
+        });
+    }
   });
 
   btnExport.addEventListener("click", async () => {
     erroreEl.hidden = true;
 
     try {
-      await esportaPng();
+      const pngBlob = exportPngPromise
+        ? await exportPngPromise
+        : await esportaPng();
+      await condividiOPng(pngBlob, creaNomeFilePng());
     } catch (error) {
-      erroreEl.textContent = error.message || "Errore durante l'export PNG.";
+      erroreEl.textContent = error.message || t("errore_export");
       erroreEl.hidden = false;
     }
   });
@@ -1239,7 +1602,7 @@ function setActiveNavLink(targetUrl) {
   const nav = document.querySelector(".main-nav");
   if (!nav) return;
 
-  const links = Array.from(nav.querySelectorAll(".nav-link"));
+  const links = Array.from(nav.querySelectorAll(".nav-link:not(.nav-lang)"));
   const targetPath =
     (targetUrl.pathname || "").split("/").pop() || "index.html";
 
@@ -1258,7 +1621,62 @@ function setActiveNavLink(targetUrl) {
     }
   });
 
+  aggiornaSelettoreLingua(targetUrl);
   updateNavIndicatorLine(matchedLink);
+}
+
+// Elenco centralizzato delle lingue disponibili: per aggiungerne una nuova
+// basta aggiungere una voce qui (folder "" = radice del sito).
+const LINGUE_SUPPORTATE = [
+  { code: "it", folder: "", label: "IT" },
+  { code: "en", folder: "en", label: "EN" },
+];
+
+const CHIAVE_PREFERENZA_LINGUA = "mappaFioritura:lingua";
+
+function salvaPreferenzaLingua(codiceLingua) {
+  try {
+    localStorage.setItem(CHIAVE_PREFERENZA_LINGUA, codiceLingua);
+  } catch (error) {
+    // Storage non disponibile (es. modalità privata): nessuna preferenza salvata.
+  }
+}
+
+function calcolaHrefLingua(currentFolder, targetFolder, filename) {
+  if (!currentFolder) {
+    return targetFolder ? `${targetFolder}/${filename}` : filename;
+  }
+  return targetFolder ? `../${targetFolder}/${filename}` : `../${filename}`;
+}
+
+// La nav non viene ricreata durante le transizioni SPA: il gruppo lingue va
+// rigenerato ad ogni navigazione in base alla pagina effettivamente mostrata.
+function aggiornaSelettoreLingua(targetUrl) {
+  const nav = document.querySelector(".main-nav");
+  const gruppo = nav?.querySelector(".nav-lang-group");
+  if (!gruppo) return;
+
+  const segments = (targetUrl.pathname || "").split("/").filter(Boolean);
+  const currentFolder = LINGUE_SUPPORTATE.some(
+    (lingua) => lingua.folder && lingua.folder === segments[0],
+  )
+    ? segments[0]
+    : "";
+  const filename = segments[segments.length - 1] || "index.html";
+
+  gruppo.innerHTML = LINGUE_SUPPORTATE.map((lingua, indice) => {
+    const separatore =
+      indice === 0
+        ? ""
+        : '<span class="nav-lang-sep" aria-hidden="true">&middot;</span>';
+
+    if (lingua.folder === currentFolder) {
+      return `${separatore}<span class="nav-lang is-current" lang="${lingua.code}" aria-current="true">${lingua.label}</span>`;
+    }
+
+    const href = calcolaHrefLingua(currentFolder, lingua.folder, filename);
+    return `${separatore}<a class="nav-lang" href="${href}" hreflang="${lingua.code}" lang="${lingua.code}">${lingua.label}</a>`;
+  }).join("");
 }
 
 async function navigatePage(destination, pushHistory = true) {
@@ -1356,7 +1774,7 @@ async function navigatePage(destination, pushHistory = true) {
 }
 
 function prefetchNavPages() {
-  const links = document.querySelectorAll(".main-nav a[href]");
+  const links = document.querySelectorAll(".main-nav a[href]:not(.nav-lang)");
   links.forEach((link) => {
     const dest = new URL(link.href, window.location.href);
     if (
@@ -1399,6 +1817,13 @@ function initPageTransitions() {
       href.startsWith("tel:") ||
       href.startsWith("javascript:")
     ) {
+      return;
+    }
+
+    // Il cambio lingua ricarica la pagina intera: la nav differisce tra IT ed EN
+    // e non viene ricostruita dalla transizione SPA (che sostituisce solo #page-content).
+    if (link.classList.contains("nav-lang")) {
+      salvaPreferenzaLingua(link.getAttribute("hreflang") || link.lang);
       return;
     }
 
@@ -1467,6 +1892,7 @@ function initCurrentPage(pageName) {
 }
 
 function initPageShell() {
+  syncLanguageStyles();
   initNavIndicator();
   initNavScrollSurface();
   initNavMagneticHover();

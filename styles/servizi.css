@@ -277,6 +277,66 @@
   background: rgba(255, 245, 239, 0.82);
 }
 
+.offer-card-unavailable {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--card-text) 28%, transparent);
+  background: rgba(255, 252, 249, 0.42);
+  opacity: 0.72;
+}
+
+.offer-card-unavailable h3,
+.offer-card-unavailable p {
+  color: color-mix(in srgb, var(--card-text) 78%, transparent);
+}
+
+.offer-card-unavailable strong {
+  color: color-mix(in srgb, var(--terracotta) 70%, transparent);
+}
+
+.offer-card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  margin: 0 0 12px;
+  color: color-mix(in srgb, var(--card-text) 70%, transparent);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.offer-card-live strong {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+.offer-card-live {
+  display: block;
+}
+
+.offer-card-live .offer-card-status {
+  position: relative;
+  top: 4px;
+  display: inline-flex;
+  margin-left: 8px;
+  margin-bottom: 12px;
+  vertical-align: middle;
+}
+
+.offer-card-live > p {
+  margin-top: 8px;
+}
+
+.italian-flag {
+  display: inline-block;
+  width: 12px;
+  height: 9px;
+  border: 1px solid color-mix(in srgb, var(--card-text) 30%, transparent);
+  background: linear-gradient(to right, #008c45 0 33.333%, #ffffff 33.333% 66.666%, #cd212a 66.666%);
+}
+
 .integrated-options {
   display: grid;
   gap: 28px;

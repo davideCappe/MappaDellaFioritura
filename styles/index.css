@@ -362,27 +362,164 @@ body {
 }
 
 .matrix-panel.is-locked .matrix-container {
-  transform: scale(0.985);
-  filter: blur(1px) saturate(0.75);
+  background: linear-gradient(145deg, rgba(255, 252, 249, 0.96), rgba(233, 239, 226, 0.86));
 }
 
-.matrix-panel.is-locked .matrix-container::after {
-  content: 'Premi Calcola per rivelare la tua mappa';
+.matrix-lock-message {
+  position: absolute;
+  inset: 14px;
+  z-index: 2;
+}
+
+.matrix-panel.is-locked .matrix-lock-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px;
+  border-radius: 16px;
+  color: #3f544d;
+  background:
+    radial-gradient(ellipse at 18% 82%, rgba(225, 180, 164, 0.35), transparent 32%),
+    radial-gradient(ellipse at 84% 18%, rgba(174, 197, 160, 0.42), transparent 34%),
+    linear-gradient(145deg, rgba(250, 244, 237, 0.98), rgba(226, 237, 219, 0.98));
+  border: 1px solid rgba(118, 137, 107, 0.3);
+  overflow: hidden;
+}
+
+.matrix-panel.is-active .matrix-lock-message {
+  visibility: hidden;
+}
+
+.matrix-panel.is-locked .matrix-container svg {
+  visibility: hidden;
+}
+
+.matrix-lock-mark {
+  position: relative;
   display: grid;
   place-items: center;
-  text-align: center;
-  padding: 20px;
-  color: #3f544d;
-  letter-spacing: 0.01em;
-  font-weight: 600;
-  font-size: 0.98rem;
-  background: linear-gradient(180deg, rgba(255, 251, 246, 0.82), rgba(245, 237, 229, 0.86));
-  border: 1px dashed rgba(118, 137, 107, 0.5);
-  opacity: 1;
+  width: 106px;
+  aspect-ratio: 1;
+  margin-bottom: 22px;
+  border: 1px solid rgba(116, 145, 104, 0.38);
+  border-radius: 50%;
+  background: rgba(255, 252, 249, 0.72);
+  box-shadow: 0 12px 26px rgba(79, 101, 75, 0.14);
 }
 
-.matrix-panel.is-active .matrix-container::after {
-  opacity: 0;
+.matrix-lock-mark::before,
+.matrix-lock-mark::after {
+  content: '';
+  position: absolute;
+  inset: -31px;
+  border: 1px solid rgba(97, 130, 90, 0.24);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.matrix-lock-mark::before {
+  border-style: dashed;
+  animation: matrix-orbit 16s linear infinite;
+}
+
+.matrix-lock-mark::after {
+  inset: -14px;
+  border-color: rgba(201, 127, 105, 0.32);
+  animation: matrix-orbit 10s linear infinite reverse;
+}
+
+.matrix-lock-mark img {
+  position: relative;
+  z-index: 1;
+  width: 70%;
+  height: auto;
+  filter: drop-shadow(0 5px 9px rgba(92, 75, 61, 0.16));
+  animation: matrix-bloom 3.8s ease-in-out infinite;
+}
+
+.matrix-lock-kicker,
+.matrix-lock-title,
+.matrix-lock-copy {
+  margin: 0;
+}
+
+.matrix-lock-kicker {
+  color: var(--sage-action-deep);
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.matrix-lock-title {
+  margin-top: 5px;
+  color: var(--sage-deep);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 3.4vw, 2.8rem);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.matrix-lock-copy {
+  max-width: 28ch;
+  margin-top: 12px;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+@keyframes matrix-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes matrix-bloom {
+  0%,
+  100% {
+    transform: scale(0.92) rotate(-3deg);
+  }
+
+  48% {
+    transform: scale(1.08) rotate(3deg);
+  }
+}
+
+#numeriLayer .numero-rivelato {
+  font-size: var(--numero-size);
+  animation: numero-entra 0.42s cubic-bezier(0.22, 1.35, 0.45, 1) var(--numero-delay) both;
+}
+
+.matrix-panel.is-locked #numeriLayer .numero-rivelato {
+  animation-play-state: paused;
+}
+
+@keyframes numero-entra {
+  0% {
+    font-size: 0;
+  }
+
+  100% {
+    font-size: var(--numero-size);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .matrix-lock-mark::before,
+  .matrix-lock-mark::after,
+  .matrix-lock-mark img,
+  #numeriLayer .numero-rivelato {
+    animation: none;
+  }
+
+  .matrix-panel.is-active .matrix-lock-message {
+    visibility: hidden;
+  }
+
 }
 
 .matrix-container.updated {
@@ -402,11 +539,6 @@ body {
 .matrix-panel.is-active .matrix-container.reveal-play {
   opacity: 1;
   transform: scale(1);
-}
-
-.matrix-panel.is-active .matrix-container.reveal-play svg {
-  clip-path: inset(0 0 0 0 round var(--radius-media));
-  filter: blur(0);
 }
 
 .comfort-panel {

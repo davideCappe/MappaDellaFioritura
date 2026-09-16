@@ -3,8 +3,30 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        // Reindirizza alla versione EN se e' la preferenza salvata, o alla prima visita
+        // se il browser e' in inglese e l'utente non ha mai scelto una lingua.
+        (function () {
+            try {
+                var pref = localStorage.getItem("mappaFioritura:lingua");
+                var browserEn = /^en/i.test(navigator.language || navigator.userLanguage || "");
+                if (pref === "en" || (!pref && browserEn)) {
+                    location.replace("en/index.html");
+                }
+            } catch (e) { }
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mappa della Fioritura</title>
+    <title>Mappa della Fioritura | Mappa personale e consapevolezza</title>
+    <meta name="description" content="Scopri la Mappa della Fioritura: uno strumento di consapevolezza basato sulla data di nascita per comprendere talenti, identità e relazioni.">
+    <link rel="canonical" href="https://mappadellafioritura.it/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Mappa della Fioritura">
+    <meta property="og:description" content="Uno strumento di consapevolezza basato sulla data di nascita per comprendere talenti, identità e relazioni.">
+    <meta property="og:url" content="https://mappadellafioritura.it/">
+    <meta property="og:image" content="https://mappadellafioritura.it/images/social-preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://mappadellafioritura.it/images/social-preview.png">
     <link rel="icon" type="image/webp" href="images/logo.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +42,9 @@
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/chi-sono.css">
     <link rel="stylesheet" href="styles/servizi.css">
+    <link rel="alternate" hreflang="it" href="https://mappadellafioritura.it/index.html">
+    <link rel="alternate" hreflang="en" href="https://mappadellafioritura.it/en/index.html">
+    <link rel="alternate" hreflang="x-default" href="https://mappadellafioritura.it/index.html">
 </head>
 
 <body class="page-loading" data-page="home">
@@ -39,6 +64,11 @@
             <a class="nav-link is-active" href="index.html" aria-current="page">Mappa</a>
             <a class="nav-link" href="chi-sono.html">Chi sono</a>
             <a class="nav-link" href="servizi.html">Servizi</a>
+            <div class="nav-lang-group" role="group" aria-label="Lingua">
+                <span class="nav-lang is-current" lang="it" aria-current="true">IT</span>
+                <span class="nav-lang-sep" aria-hidden="true">&middot;</span>
+                <a class="nav-lang" href="en/index.html" hreflang="en" lang="en">EN</a>
+            </div>
         </nav>
 
         <div id="page-content" class="page-content">
@@ -96,9 +126,18 @@
                     <!-- AREA VISUALIZZAZIONE MATRICE -->
                     <section class="matrix-panel is-locked" aria-hidden="true">
                         <div class="matrix-container">
+                            <div class="matrix-lock-message" aria-live="polite">
+                                <div class="matrix-lock-mark" aria-hidden="true">
+                                    <img src="images/logo.webp" alt="">
+                                </div>
+                                <p class="matrix-lock-kicker">La tua mappa</p>
+                                <p class="matrix-lock-title">Pronta a fiorire</p>
+                                <p class="matrix-lock-copy" data-lock-message>Premi Calcola per rivelare la tua mappa
+                                </p>
+                            </div>
                             <svg id="matrixSvg" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
                                 <!-- Immagine di sfondo della matrice -->
-                                <image href="images/matrice.webp" x="0" y="0" width="1000" height="1000" />
+                                <image href="images/ITAmatrice.webp" x="0" y="0" width="1000" height="1000" />
                                 <g id="logoOverlay" opacity="0.3" pointer-events="none">
                                     <image href="images/logo.webp" x="325" y="325" width="350" height="350"
                                         preserveAspectRatio="xMidYMid meet" />

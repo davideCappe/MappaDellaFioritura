@@ -3,8 +3,30 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        // Reindirizza alla versione EN se e' la preferenza salvata, o alla prima visita
+        // se il browser e' in inglese e l'utente non ha mai scelto una lingua.
+        (function () {
+            try {
+                var pref = localStorage.getItem("mappaFioritura:lingua");
+                var browserEn = /^en/i.test(navigator.language || navigator.userLanguage || "");
+                if (pref === "en" || (!pref && browserEn)) {
+                    location.replace("en/chi-sono.html");
+                }
+            } catch (e) { }
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi sono | Mappa della Fioritura</title>
+    <meta name="description" content="Conosci Silvia e la storia della Mappa della Fioritura, un percorso tra numeri, consapevolezza, energia e relazioni.">
+    <link rel="canonical" href="https://mappadellafioritura.it/chi-sono.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Chi sono | Mappa della Fioritura">
+    <meta property="og:description" content="Conosci Silvia e la storia della Mappa della Fioritura, un percorso tra numeri, consapevolezza, energia e relazioni.">
+    <meta property="og:url" content="https://mappadellafioritura.it/chi-sono.html">
+    <meta property="og:image" content="https://mappadellafioritura.it/images/social-preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://mappadellafioritura.it/images/social-preview.png">
     <link rel="icon" type="image/webp" href="images/logo.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +42,9 @@
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/chi-sono.css">
     <link rel="stylesheet" href="styles/servizi.css">
+    <link rel="alternate" hreflang="it" href="https://mappadellafioritura.it/chi-sono.html">
+    <link rel="alternate" hreflang="en" href="https://mappadellafioritura.it/en/chi-sono.html">
+    <link rel="alternate" hreflang="x-default" href="https://mappadellafioritura.it/chi-sono.html">
 </head>
 
 <body class="page-loading" data-page="about">
@@ -30,6 +55,11 @@
             <a class="nav-link" href="index.html">Mappa</a>
             <a class="nav-link is-active" href="chi-sono.html" aria-current="page">Chi sono</a>
             <a class="nav-link" href="servizi.html">Servizi</a>
+            <div class="nav-lang-group" role="group" aria-label="Lingua">
+                <span class="nav-lang is-current" lang="it" aria-current="true">IT</span>
+                <span class="nav-lang-sep" aria-hidden="true">&middot;</span>
+                <a class="nav-lang" href="en/chi-sono.html" hreflang="en" lang="en">EN</a>
+            </div>
         </nav>
 
         <div id="page-content" class="page-content">
@@ -137,10 +167,14 @@
 
             <div class="footer-bottom">
                 <p>&copy; <span id="annoCopyright"></span> Mappa della Fioritura. Tutti i diritti riservati.</p>
+            </div>
+        </footer>
 
-                <a class="back-to-top" href="#top" aria-label="Torna all'inizio della pagina">Torna su</a>
+    </div>
 
-                <script src="script.js"></script>
+    <a class="back-to-top" href="#top" aria-label="Torna all'inizio della pagina">Torna su</a>
+
+    <script src="script.js"></script>
 </body>
 
 </html>

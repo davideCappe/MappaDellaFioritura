@@ -3,8 +3,30 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        // Reindirizza alla versione EN se e' la preferenza salvata, o alla prima visita
+        // se il browser e' in inglese e l'utente non ha mai scelto una lingua.
+        (function () {
+            try {
+                var pref = localStorage.getItem("mappaFioritura:lingua");
+                var browserEn = /^en/i.test(navigator.language || navigator.userLanguage || "");
+                if (pref === "en" || (!pref && browserEn)) {
+                    location.replace("en/servizi.html");
+                }
+            } catch (e) { }
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servizi | Mappa della Fioritura</title>
+    <meta name="description" content="Scopri i percorsi della Mappa della Fioritura per bambini, adulti, famiglie, casa, Reiki e trasformazione personale.">
+    <link rel="canonical" href="https://mappadellafioritura.it/servizi.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Servizi | Mappa della Fioritura">
+    <meta property="og:description" content="Percorsi per bambini, adulti, famiglie, casa, Reiki e trasformazione personale.">
+    <meta property="og:url" content="https://mappadellafioritura.it/servizi.html">
+    <meta property="og:image" content="https://mappadellafioritura.it/images/social-preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://mappadellafioritura.it/images/social-preview.png">
     <link rel="icon" type="image/webp" href="images/logo.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +42,9 @@
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/chi-sono.css">
     <link rel="stylesheet" href="styles/servizi.css">
+    <link rel="alternate" hreflang="it" href="https://mappadellafioritura.it/servizi.html">
+    <link rel="alternate" hreflang="en" href="https://mappadellafioritura.it/en/servizi.html">
+    <link rel="alternate" hreflang="x-default" href="https://mappadellafioritura.it/servizi.html">
 </head>
 
 <body class="page-loading" data-page="services">
@@ -30,6 +55,11 @@
             <a class="nav-link" href="index.html">Mappa</a>
             <a class="nav-link" href="chi-sono.html">Chi sono</a>
             <a class="nav-link is-active" href="servizi.html" aria-current="page">Servizi</a>
+            <div class="nav-lang-group" role="group" aria-label="Lingua">
+                <span class="nav-lang is-current" lang="it" aria-current="true">IT</span>
+                <span class="nav-lang-sep" aria-hidden="true">&middot;</span>
+                <a class="nav-lang" href="en/servizi.html" hreflang="en" lang="en">EN</a>
+            </div>
         </nav>
 
         <div id="page-content" class="page-content">
@@ -115,8 +145,11 @@
                                     battesimo.
                                 </p>
                             </article>
-                            <article class="offer-card">
-                                <h3>Formato Sessione Live</h3><strong>120 €</strong>
+                            <article class="offer-card offer-card-live">
+                                <h3>Formato Sessione Live</h3><strong>120
+                                    €</strong>
+                                <span class="offer-card-status"><span class="italian-flag"
+                                        aria-hidden="true"></span>Disponibile solo in italiano</span>
                                 <p>Un confronto intimo e guidato a quattr'occhi. Un incontro di 90 minuti online
                                     dedicato a
                                     te. Analizzeremo insieme la mappa del tuo bambino, risponderò a tutte le tue domande
@@ -158,8 +191,10 @@
                                     momenti
                                     in cui senti il bisogno di ritrovare centratura e ispirazione.</p>
                             </article>
-                            <article class="offer-card">
+                            <article class="offer-card offer-card-live">
                                 <h3>Formato Sessione Live</h3><strong>120 €</strong>
+                                <span class="offer-card-status"><span class="italian-flag"
+                                        aria-hidden="true"></span>Disponibile solo in italiano</span>
                                 <p>Un dialogo di trasformazione dinamico e profondo. Un incontro individuale di 90
                                     minuti
                                     online completamente dedicato a te. Esploreremo insieme i punti chiave della tua
@@ -302,8 +337,10 @@
                                 <p>Pensata per chi cerca un confronto diretto a quattr'occhi unito all'integrazione
                                     energetica.</p>
                                 <div class="offer-grid offer-grid-two">
-                                    <article class="offer-card">
+                                    <article class="offer-card offer-card-live">
                                         <h3>Sessione Live + 1 Sessione Reiki</h3><strong>160€ <del>170€</del></strong>
+                                        <span class="offer-card-status"><span class="italian-flag"
+                                                aria-hidden="true"></span>Disponibile solo in italiano</span>
                                         <p>L'esperienza completa di incontro e riequilibrio. Unisce un colloquio
                                             individuale
                                             di 90 minuti sulla tua Matrice del Destino a una sessione di Reiki. Un
@@ -312,9 +349,11 @@
                                             corpo.
                                         </p>
                                     </article>
-                                    <article class="offer-card">
+                                    <article class="offer-card offer-card-live">
                                         <h3>Sessione Live + Percorso 4 Sessioni Reiki</h3><strong>270€
                                             <del>320€</del></strong>
+                                        <span class="offer-card-status"><span class="italian-flag"
+                                                aria-hidden="true"></span>Disponibile solo in italiano</span>
                                         <p>L'esperienza di trasformazione più profonda. Il percorso più completo: dopo
                                             aver
                                             esplorato la tua Matrice nella sessione dal vivo, ti accompagnerò con 4
