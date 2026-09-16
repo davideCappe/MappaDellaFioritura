@@ -1464,7 +1464,8 @@ function initHomePageInteractions() {
       return;
     }
 
-    btnExport.disabled = true;
+    const preparaCondivisione = preferisciCondivisione();
+    exportPngPromise = null;
     const risultati = calcolaMatrice(nome, data);
     disegnaMatrice(risultati);
     mostraDescrizioneCentro(risultati.centro, profilo);
@@ -1475,32 +1476,34 @@ function initHomePageInteractions() {
     mostraApprofondimentiMappa();
     mostraMappaAnimata();
 
-    exportPngPromise = esportaPng();
-    const currentExport = exportPngPromise;
-    currentExport
-      .then(() => {
-        if (exportPngPromise === currentExport) {
-          btnExport.disabled = false;
-        }
-      })
-      .catch((error) => {
-        if (exportPngPromise === currentExport) {
-          btnExport.disabled = true;
-          erroreEl.textContent = error.message || t("errore_export");
-          erroreEl.hidden = false;
-        }
-      });
+    btnExport.disabled = preparaCondivisione;
+
+    if (preparaCondivisione) {
+      exportPngPromise = esportaPng();
+      const currentExport = exportPngPromise;
+      currentExport
+        .then(() => {
+          if (exportPngPromise === currentExport) {
+            btnExport.disabled = false;
+          }
+        })
+        .catch((error) => {
+          if (exportPngPromise === currentExport) {
+            btnExport.disabled = true;
+            erroreEl.textContent = error.message || t("errore_export");
+            erroreEl.hidden = false;
+          }
+        });
+    }
   });
 
   btnExport.addEventListener("click", async () => {
     erroreEl.hidden = true;
 
     try {
-      if (!exportPngPromise) {
-        return;
-      }
-
-      const pngBlob = await exportPngPromise;
+      const pngBlob = exportPngPromise
+        ? await exportPngPromise
+        : await esportaPng();
       await condividiOPng(pngBlob, creaNomeFilePng());
     } catch (error) {
       erroreEl.textContent = error.message || t("errore_export");
