@@ -674,14 +674,87 @@ function disegnaMappaGuida() {
   });
 }
 
+let pannelloDiagnosticaExport = null;
+
+function diagnosticaExportAttiva() {
+  return new URLSearchParams(window.location.search).get("debug-export") === "1";
+}
+
+function creaPannelloDiagnosticaExport() {
+  if (pannelloDiagnosticaExport || !diagnosticaExportAttiva()) {
+    return pannelloDiagnosticaExport;
+  }
+
+  pannelloDiagnosticaExport = document.createElement("section");
+  pannelloDiagnosticaExport.setAttribute("aria-label", "Diagnostica export PNG");
+  pannelloDiagnosticaExport.style.cssText = [
+    "position:fixed",
+    "z-index:2147483647",
+    "left:8px",
+    "right:8px",
+    "bottom:8px",
+    "max-height:46vh",
+    "overflow:auto",
+    "padding:12px",
+    "border:2px solid #f0c36b",
+    "border-radius:8px",
+    "background:#17211f",
+    "color:#f6f3ed",
+    "box-shadow:0 4px 18px rgba(0,0,0,.35)",
+    "font:12px/1.4 monospace",
+  ].join(";");
+
+  const title = document.createElement("strong");
+  title.textContent = "Diagnostica export PNG";
+  title.style.display = "block";
+  title.style.marginBottom = "8px";
+
+  const output = document.createElement("pre");
+  output.dataset.exportDebugOutput = "true";
+  output.style.margin = "0";
+  output.style.whiteSpace = "pre-wrap";
+  output.style.overflowWrap = "anywhere";
+
+  pannelloDiagnosticaExport.append(title, output);
+  document.body.appendChild(pannelloDiagnosticaExport);
+  return pannelloDiagnosticaExport;
+}
+
+function registraDiagnosticaExport(fase, dettagli = {}) {
+  const evento = {
+    ora: new Date().toISOString(),
+    fase,
+    url: window.location.href,
+    userAgent: navigator.userAgent,
+    platform: navigator.platform,
+    maxTouchPoints: navigator.maxTouchPoints,
+    devicePixelRatio: window.devicePixelRatio,
+    ...dettagli,
+  };
+
+  console.error("[Mappa della Fioritura] Diagnostica export PNG", evento);
+
+  const pannello = creaPannelloDiagnosticaExport();
+  const output = pannello?.querySelector("[data-export-debug-output]");
+  if (output) {
+    output.textContent += `${JSON.stringify(evento, null, 2)}\n\n`;
+    output.scrollTop = output.scrollHeight;
+  }
+}
+
 async function toDataUrl(url) {
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(t("immagine_non_disponibile"));
+      throw new Error(`HTTP ${response.status} ${response.statusText}`);
     }
 
     const blob = await response.blob();
+    console.info("[Mappa della Fioritura] Asset export caricato", {
+      url,
+      contentType: response.headers.get("content-type"),
+      size: blob.size,
+    });
     return await new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = async () => {
@@ -697,7 +770,21 @@ async function toDataUrl(url) {
       reader.readAsDataURL(blob);
     });
   } catch (error) {
-    return await immagineComeDataUrl(url);
+    registraDiagnosticaExport("fetch/blob/data-url", {
+      assetUrl: url,
+      errorName: error.name,
+      errorMessage: error.message,
+    });
+    try {
+      return await immagineComeDataUrl(url);
+    } catch (fallbackError) {
+      registraDiagnosticaExport("fallback Image/canvas", {
+        assetUrl: url,
+        errorName: fallbackError.name,
+        errorMessage: fallbackError.message,
+      });
+      throw fallbackError;
+    }
   }
 }
 
@@ -711,14 +798,33 @@ function immagineComeDataUrl(url) {
 
       const context = canvas.getContext("2d");
       if (!context) {
+        registraDiagnosticaExport("getContext immagine", {
+          assetUrl: url,
+          naturalWidth: image.naturalWidth,
+          naturalHeight: image.naturalHeight,
+        });
         reject(new Error(t("errore_export_immagine")));
         return;
       }
 
-      context.drawImage(image, 0, 0);
-      resolve(canvas.toDataURL("image/png"));
+      try {
+        context.drawImage(image, 0, 0);
+        resolve(canvas.toDataURL("image/png"));
+      } catch (error) {
+        registraDiagnosticaExport("drawImage/toDataURL immagine", {
+          assetUrl: url,
+          naturalWidth: image.naturalWidth,
+          naturalHeight: image.naturalHeight,
+          errorName: error.name,
+          errorMessage: error.message,
+        });
+        reject(error);
+      }
     };
-    image.onerror = () => reject(new Error(t("errore_export_immagine")));
+    image.onerror = () => {
+      registraDiagnosticaExport("Image.onerror", { assetUrl: url });
+      reject(new Error(t("errore_export_immagine")));
+    };
     image.src = url;
   });
 }
@@ -825,7 +931,13 @@ async function esportaPng() {
         }
         resolve(image);
       };
-      image.onerror = () => reject(new Error(t("errore_export_immagine")));
+      image.onerror = () => {
+        registraDiagnosticaExport("Image.onerror data-url", {
+          assetUrl: absUrl,
+          dataUrlType: typeof dataUrl === "string" ? dataUrl.slice(0, 32) : typeof dataUrl,
+        });
+        reject(new Error(t("errore_export_immagine")));
+      };
       image.src = dataUrl;
     });
 
@@ -860,8 +972,12 @@ async function esportaPng() {
   const image = await new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);
-    img.onerror = () =>
+    img.onerror = () => {
+      registraDiagnosticaExport("Image.onerror SVG", {
+        svgBytes: svgBlob.size,
+      });
       reject(new Error("Errore rendering SVG per export PNG."));
+    };
     img.src = svgUrl;
   });
 
@@ -880,11 +996,21 @@ async function esportaPng() {
   canvas.height = height;
 
   if (canvas.width !== width || canvas.height !== height) {
+    registraDiagnosticaExport("dimensioni canvas inattese", {
+      expectedWidth: width,
+      expectedHeight: height,
+      actualWidth: canvas.width,
+      actualHeight: canvas.height,
+    });
     throw new Error(t("errore_canvas"));
   }
 
   const ctx = canvas.getContext("2d");
   if (!ctx) {
+    registraDiagnosticaExport("getContext canvas", {
+      width: canvas.width,
+      height: canvas.height,
+    });
     throw new Error(t("errore_canvas"));
   }
 
@@ -922,6 +1048,10 @@ async function esportaPng() {
   const pngBlob = await new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
       if (!blob) {
+        registraDiagnosticaExport("canvas.toBlob null", {
+          width: canvas.width,
+          height: canvas.height,
+        });
         reject(new Error(t("errore_png")));
         return;
       }
