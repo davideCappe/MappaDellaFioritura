@@ -1,6 +1,10 @@
 const tracks = [
     { title: 'Talenti', src: 'audio/TALENTI.ogg' },
     { title: 'Relazioni', src: 'audio/RELAZIONI.ogg' },
+    { title: 'Karma Materiale', src: 'audio/TALENTI.ogg' },
+    { title: 'Finanze', src: 'audio/RELAZIONI.ogg' },
+    { title: 'Coda Karmica', src: 'audio/TALENTI.ogg' },
+    { title: 'Talenti Materiali', src: 'audio/RELAZIONI.ogg' },
 ];
 
 const playButton = document.querySelector('[data-play]');

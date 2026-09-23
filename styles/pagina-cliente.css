@@ -46,6 +46,15 @@ button { cursor: pointer; }
 .journey-note p { margin: 0; color: var(--client-soft); font-size: .72rem; line-height: 1.55; }
 .reading-area { min-width: 0; padding: 20px 48px 50px; border: 1px solid rgba(112, 111, 91, .13); background: rgba(255, 252, 247, .67); box-shadow: var(--client-shadow); }
 .reading-meta { display: flex; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid var(--client-line); color: var(--client-soft); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+.pdf-viewer { margin-top: 28px; padding: 18px; border: 1px solid rgba(112, 111, 91, .16); background: rgba(249, 246, 239, .78); }
+.pdf-toolbar { display: flex; justify-content: space-between; align-items: flex-end; gap: 18px; padding: 2px 2px 16px; }
+.pdf-toolbar .content-kicker { margin-bottom: 6px; }
+.pdf-toolbar h2 { margin: 0; color: var(--client-green-deep); font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 600; }
+.pdf-download { flex: 0 0 auto; padding: 9px 12px; border: 1px solid rgba(89, 124, 99, .3); color: var(--client-green-deep); font-size: .7rem; font-weight: 700; text-decoration: none; }
+.pdf-download:hover { border-color: var(--client-green); background: rgba(216, 228, 211, .45); }
+.pdf-pages { display: grid; gap: 14px; padding: 12px; border: 1px solid rgba(112, 111, 91, .18); background: #e7dfd4; }
+.pdf-page { display: block; width: 100%; height: auto; background: #fff; box-shadow: 0 5px 16px rgba(78, 72, 55, .13); }
+.pdf-note { margin: 11px 2px 0; color: var(--client-soft); font-size: .68rem; }
 .reading-content { max-width: 650px; padding: 57px 0 20px; }
 .reading-content h2 { margin: 0 0 26px; color: var(--client-green-deep); font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4.25rem); font-weight: 500; letter-spacing: -.025em; line-height: .94; }
 .reading-content > p:not(.content-kicker), .reading-section p { color: #5c6c65; font-size: .94rem; line-height: 1.85; }
@@ -90,6 +99,10 @@ button { cursor: pointer; }
     .journey-note { display: none; }
     .chapter-link { padding: 12px 5px; }
     .reading-area { padding: 16px 20px 30px; }
+    .pdf-viewer { margin-top: 22px; padding: 12px; }
+    .pdf-toolbar { align-items: flex-start; flex-direction: column; gap: 12px; }
+    .pdf-toolbar h2 { font-size: 1.7rem; }
+    .pdf-pages { gap: 9px; padding: 7px; }
     .reading-content { padding-top: 38px; }
     .reading-content h2 { font-size: 3rem; }
     .quote-block { margin: 35px 0 45px; padding-left: 41px; }
