@@ -31,6 +31,14 @@
                 <div class="person-stamp"><strong>Marica</strong><span>10 / 08 / 1983</span></div>
             </section>
 
+            <div class="v2-content-layout">
+                <aside class="v2-track-sidebar" aria-label="Tracce audio">
+                    <p class="section-kicker">Il tuo percorso</p>
+                    <h2>Ascolta<br><em>con calma.</em></h2>
+                    <p class="sidebar-copy">Scegli una traccia: i numeri collegati si illumineranno nella matrice.</p>
+                    <div class="sidebar-playlist" data-track-list></div>
+                </aside>
+                <div class="v2-content-column">
             <section class="v2-section explanation-grid">
                 <div>
                     <p class="section-kicker">Prima di iniziare</p>
@@ -93,6 +101,8 @@
                 <h2>Non è un destino immutabile.<br><em>È una mappa per cambiare rotta.</em></h2>
                 <p>Hai già dentro di te le risorse per accendere la luce nei punti che chiedono attenzione e fiorire nella versione più autentica di te.</p>
             </section>
+                </div>
+            </div>
         </main>
         <footer class="v2-footer"><span>Preparato con cura per te</span><span>Mappa della Fioritura · 2026</span></footer>
     </div>
@@ -103,7 +113,6 @@
             <div class="track-controls"><div class="progress-row"><span data-current-time>0:00</span><input type="range" min="0" max="100" value="0" aria-label="Posizione nella traccia" data-progress><span data-duration>--:--</span></div><input class="progress-bar" type="range" min="0" max="100" value="0" aria-label="Avanzamento traccia" data-progress></div>
             <div class="player-actions"><button class="skip-button" type="button" aria-label="Traccia precedente" data-previous>←</button><button class="skip-button" type="button" aria-label="Traccia successiva" data-next>→</button><button class="volume-button" type="button" aria-label="Attiva o disattiva audio" data-mute>◖</button></div>
         </div>
-        <div class="playlist" data-track-list aria-label="Tracce audio"></div>
     </section>
     <audio data-audio preload="metadata"></audio>
     <script src="scripts/pagina-cliente-v2.js"></script>
