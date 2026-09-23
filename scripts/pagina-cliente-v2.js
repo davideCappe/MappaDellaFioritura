@@ -56,7 +56,7 @@ function setTrack(index, autoplay = false) {
     const track = tracks[trackIndex];
     trackTitle.textContent = track.title;
     highlightTitle.textContent = track.title;
-    highlightCopy.textContent = track.copy;
+    if (highlightCopy) highlightCopy.textContent = track.copy;
     document.querySelectorAll('[data-track-index]').forEach((item, itemIndex) => item.classList.toggle('is-active', itemIndex === trackIndex));
     pointElements.forEach((point) => point.classList.remove('is-highlighted'));
     (highlightGroups[trackIndex] || []).forEach((key) => pointElements.get(key)?.classList.add('is-highlighted'));
