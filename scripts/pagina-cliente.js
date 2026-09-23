@@ -13,9 +13,11 @@ const progressInputs = [...document.querySelectorAll('[data-progress]')];
 const currentTime = document.querySelector('[data-current-time]');
 const durationLabel = document.querySelector('[data-duration]');
 const trackTitle = document.querySelector('[data-track-title]');
-const chapterLinks = [...document.querySelectorAll('[data-chapter]')];
+const trackList = document.querySelector('[data-track-list]');
+const trackCount = document.querySelector('[data-track-count]');
 const audio = document.querySelector('[data-audio]');
 let trackIndex = 0;
+let chapterLinks = [];
 
 function formatTime(seconds) {
     return `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
@@ -24,6 +26,7 @@ function formatTime(seconds) {
 function renderTrack() {
     const track = tracks[trackIndex];
     trackTitle.textContent = track.title;
+    chapterLinks.forEach((link, index) => link.classList.toggle('is-active', index === trackIndex));
     const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
     const percentage = duration ? (audio.currentTime / duration) * 100 : 0;
     durationLabel.textContent = duration ? formatTime(duration) : '--:--';
@@ -39,6 +42,23 @@ function loadTrack(autoplay = false) {
     audio.load();
     renderTrack();
     if (autoplay) audio.play();
+}
+
+function renderTrackList() {
+    trackCount.textContent = `${tracks.length} tracce`;
+    trackList.replaceChildren(...tracks.map((track, index) => {
+        const button = document.createElement('button');
+        button.className = 'chapter-link';
+        button.type = 'button';
+        button.dataset.trackIndex = index;
+        button.innerHTML = `<span class="chapter-number">${String(index + 1).padStart(2, '0')}</span><span><strong>${track.title}</strong><small>Ascolta la traccia</small></span><span class="chapter-check">○</span>`;
+        return button;
+    }));
+    chapterLinks = [...trackList.querySelectorAll('.chapter-link')];
+    chapterLinks.forEach((link) => link.addEventListener('click', () => {
+        trackIndex = Number(link.dataset.trackIndex);
+        loadTrack(false);
+    }));
 }
 
 function nextTrack() {
@@ -78,14 +98,5 @@ audio.addEventListener('pause', () => {
 });
 audio.addEventListener('ended', nextTrack);
 
-chapterLinks.forEach((link, index) => {
-    link.addEventListener('click', () => {
-        chapterLinks.forEach((item) => item.classList.remove('is-active'));
-        link.classList.add('is-active');
-        trackIndex = index;
-        loadTrack(false);
-        document.getElementById(link.dataset.chapter)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-});
-
+renderTrackList();
 loadTrack(false);
