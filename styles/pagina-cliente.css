@@ -1,0 +1,104 @@
+:root {
+    --client-ink: #33443f;
+    --client-soft: #718078;
+    --client-green: #597c63;
+    --client-green-deep: #3e6250;
+    --client-clay: #c7795e;
+    --client-paper: #fbf7f1;
+    --client-line: rgba(92, 111, 96, 0.18);
+    --client-shadow: 0 20px 50px rgba(78, 72, 55, 0.1);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-bottom: 150px; }
+body { margin: 0; color: var(--client-ink); font-family: 'Manrope', sans-serif; background: #efe7dc; }
+body::before { content: ''; position: fixed; inset: 0; z-index: -1; opacity: .54; background: radial-gradient(circle at 12% 4%, #e1cbb8, transparent 31%), radial-gradient(circle at 92% 18%, #c9d8c4, transparent 30%), linear-gradient(125deg, #eee1d5, #f9f5ee 55%, #e8eee4); }
+button, input { font: inherit; }
+button { cursor: pointer; }
+.client-app { width: min(1120px, 100%); margin: 0 auto; padding: 22px 28px 170px; }
+.client-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 20px; border-bottom: 1px solid var(--client-line); }
+.client-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--client-green-deep); text-decoration: none; font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-style: italic; font-weight: 600; }
+.client-logo { width: 42px; height: 42px; object-fit: contain; }
+.client-status { display: flex; align-items: center; gap: 8px; color: var(--client-soft); font-size: .72rem; letter-spacing: .11em; text-transform: uppercase; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: #87a883; box-shadow: 0 0 0 4px rgba(135, 168, 131, .15); }
+.welcome { display: flex; justify-content: space-between; align-items: flex-end; min-height: 300px; padding: 58px 4px 50px; }
+.eyebrow, .content-kicker, .section-label { margin: 0 0 13px; color: var(--client-clay); font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+.welcome h1 { margin: 0; color: var(--client-green-deep); font-family: 'Cormorant Garamond', serif; font-size: clamp(3.6rem, 7.5vw, 6.7rem); font-weight: 500; letter-spacing: -.035em; line-height: .86; }
+.welcome h1 em, .reading-content h2 em { color: var(--client-clay); font-weight: 500; }
+.welcome-copy { max-width: 530px; margin: 27px 0 0; color: var(--client-soft); font-size: .98rem; line-height: 1.7; }
+.welcome-mark { display: grid; place-items: center; width: 116px; height: 116px; margin-bottom: 14px; border: 1px solid rgba(199, 121, 94, .35); border-radius: 50%; color: var(--client-clay); font-size: 2.4rem; transform: rotate(12deg); }
+.client-layout { display: grid; grid-template-columns: 255px minmax(0, 1fr); gap: 46px; align-items: start; }
+.journey-nav { position: sticky; top: 20px; padding: 22px 0; }
+.journey-heading { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 13px; color: var(--client-green-deep); font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.journey-heading strong { color: var(--client-soft); font-size: .68rem; font-weight: 500; letter-spacing: .06em; }
+.journey-progress { height: 2px; margin-bottom: 18px; overflow: hidden; background: rgba(88, 124, 99, .15); }
+.journey-progress span { display: block; width: 34%; height: 100%; background: var(--client-green); }
+.chapter-link { display: grid; grid-template-columns: 34px 1fr 18px; gap: 10px; align-items: center; width: 100%; padding: 15px 8px; border: 0; border-bottom: 1px solid var(--client-line); color: var(--client-soft); text-align: left; background: transparent; transition: color .2s ease, transform .2s ease; }
+.chapter-link:hover, .chapter-link.is-active { color: var(--client-green-deep); transform: translateX(3px); }
+.chapter-link.is-active .chapter-number { color: var(--client-clay); }
+.chapter-number { color: #a8b2aa; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; }
+.chapter-link strong, .chapter-link small { display: block; }
+.chapter-link strong { font-size: .84rem; font-weight: 700; }
+.chapter-link small { margin-top: 3px; font-size: .7rem; }
+.chapter-check { color: #a4b3a5; text-align: center; }
+.journey-note { display: flex; gap: 10px; margin-top: 32px; padding: 13px; border-left: 2px solid rgba(199, 121, 94, .5); background: rgba(255, 252, 246, .42); }
+.note-icon { color: var(--client-clay); font-size: 1.35rem; }
+.journey-note p { margin: 0; color: var(--client-soft); font-size: .72rem; line-height: 1.55; }
+.reading-area { min-width: 0; padding: 20px 48px 50px; border: 1px solid rgba(112, 111, 91, .13); background: rgba(255, 252, 247, .67); box-shadow: var(--client-shadow); }
+.reading-meta { display: flex; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid var(--client-line); color: var(--client-soft); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+.reading-content { max-width: 650px; padding: 57px 0 20px; }
+.reading-content h2 { margin: 0 0 26px; color: var(--client-green-deep); font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4.25rem); font-weight: 500; letter-spacing: -.025em; line-height: .94; }
+.reading-content > p:not(.content-kicker), .reading-section p { color: #5c6c65; font-size: .94rem; line-height: 1.85; }
+.quote-block { position: relative; margin: 44px 0 58px; padding: 28px 30px 25px 52px; border-top: 1px solid rgba(199, 121, 94, .35); border-bottom: 1px solid rgba(199, 121, 94, .35); }
+.quote-mark { position: absolute; top: 15px; left: 9px; color: var(--client-clay); font-family: Georgia, serif; font-size: 4rem; line-height: 1; }
+.quote-block p { margin: 0; color: var(--client-green-deep); font-family: 'Cormorant Garamond', serif; font-size: 1.65rem; font-style: italic; line-height: 1.18; }
+.reading-section { margin-top: 58px; padding-top: 25px; border-top: 1px solid var(--client-line); }
+.reading-section h3 { margin: 0 0 12px; color: var(--client-green-deep); font-family: 'Cormorant Garamond', serif; font-size: 2.1rem; font-weight: 600; }
+.reflection-prompt { margin-top: 26px; padding: 20px; background: rgba(216, 228, 211, .46); }
+.reflection-prompt span { display: block; margin-bottom: 9px; color: var(--client-green); font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.reflection-prompt strong { color: var(--client-green-deep); font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-style: italic; font-weight: 600; }
+.client-footer { display: flex; justify-content: space-between; margin-top: 50px; padding: 18px 4px; border-top: 1px solid var(--client-line); color: var(--client-soft); font-size: .68rem; letter-spacing: .05em; }
+.audio-player { position: fixed; right: 0; bottom: 0; left: 0; z-index: 10; padding: 12px 20px 10px; border-top: 1px solid rgba(92, 111, 96, .23); background: rgba(250, 247, 240, .94); box-shadow: 0 -10px 32px rgba(78, 72, 55, .1); backdrop-filter: blur(16px); }
+.player-inner { display: grid; grid-template-columns: 1.2fr 1.7fr .75fr; gap: 30px; align-items: center; width: min(1080px, 100%); margin: 0 auto; }
+.now-playing { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.play-button { display: grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; border: 0; border-radius: 50%; color: #fffaf3; background: var(--client-green-deep); box-shadow: 0 6px 16px rgba(62, 98, 80, .23); }
+.play-icon { margin-left: 2px; font-size: .75rem; }
+.track-copy { min-width: 0; }
+.track-label { display: block; margin-bottom: 3px; color: var(--client-clay); font-size: .63rem; letter-spacing: .12em; text-transform: uppercase; }
+.track-copy strong { display: block; overflow: hidden; color: var(--client-green-deep); font-size: .78rem; text-overflow: ellipsis; white-space: nowrap; }
+.progress-row { display: flex; justify-content: space-between; margin-bottom: 3px; color: var(--client-soft); font-size: .62rem; }
+.progress-bar, .progress-row input { appearance: none; width: 100%; height: 4px; margin: 0; border-radius: 9px; background: linear-gradient(to right, var(--client-green) 0%, var(--client-green) var(--progress, 0%), rgba(89, 124, 99, .18) var(--progress, 0%)); }
+.progress-row input { display: none; }
+.progress-bar::-webkit-slider-thumb { appearance: none; width: 12px; height: 12px; border: 2px solid var(--client-paper); border-radius: 50%; background: var(--client-green-deep); box-shadow: 0 1px 4px rgba(46, 72, 57, .35); }
+.player-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.skip-button, .volume-button { width: 31px; height: 31px; padding: 0; border: 1px solid var(--client-line); border-radius: 50%; color: var(--client-green-deep); background: transparent; }
+.volume-button { margin-left: 7px; border: 0; color: var(--client-clay); font-size: 1.15rem; }
+.player-hint { margin: 8px auto 0; color: var(--client-soft); font-size: .66rem; text-align: center; }
+.player-hint span { color: var(--client-clay); }
+@media (max-width: 760px) {
+    .client-app { padding: 16px 16px 190px; }
+    .client-header { padding-bottom: 13px; }
+    .client-brand { font-size: 1.1rem; }
+    .client-logo { width: 34px; height: 34px; }
+    .client-status { font-size: .6rem; }
+    .welcome { min-height: auto; padding: 52px 0 42px; }
+    .welcome h1 { font-size: clamp(3.4rem, 17vw, 5.5rem); }
+    .welcome-copy { margin-top: 21px; font-size: .87rem; }
+    .welcome-mark { width: 66px; height: 66px; margin-bottom: 0; font-size: 1.3rem; }
+    .client-layout { display: block; }
+    .journey-nav { position: static; padding: 0 0 31px; }
+    .journey-note { display: none; }
+    .chapter-link { padding: 12px 5px; }
+    .reading-area { padding: 16px 20px 30px; }
+    .reading-content { padding-top: 38px; }
+    .reading-content h2 { font-size: 3rem; }
+    .quote-block { margin: 35px 0 45px; padding-left: 41px; }
+    .quote-block p { font-size: 1.4rem; }
+    .client-footer { display: block; line-height: 1.9; }
+    .player-inner { grid-template-columns: 1fr auto; gap: 9px 14px; }
+    .track-controls { grid-column: 1 / -1; grid-row: 2; }
+    .player-actions { gap: 2px; }
+    .volume-button { display: none; }
+    .player-hint { font-size: .59rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }

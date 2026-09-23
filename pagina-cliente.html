@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il tuo percorso | Mappa della Fioritura</title>
+    <meta name="description" content="Il tuo percorso personale di ascolto e consapevolezza.">
+    <link rel="icon" type="image/webp" href="images/logo.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/pagina-cliente.css">
+</head>
+
+<body>
+    <div class="client-app">
+        <header class="client-header">
+            <a class="client-brand" href="index.html" aria-label="Mappa della Fioritura, pagina principale">
+                <img src="images/logo.webp" alt="" class="client-logo">
+                <span>Mappa della Fioritura</span>
+            </a>
+            <div class="client-status"><span class="status-dot"></span> Area personale</div>
+        </header>
+
+        <main>
+            <section class="welcome reveal">
+                <div>
+                    <p class="eyebrow">Un tempo tutto per te</p>
+                    <h1>Il tuo percorso<br><em>di fioritura</em></h1>
+                    <p class="welcome-copy">Ciao Silvia, qui trovi la tua lettura personale e le tracce audio da ascoltare con calma, seguendo il tuo ritmo.</p>
+                </div>
+                <div class="welcome-mark" aria-hidden="true">✦</div>
+            </section>
+
+            <div class="client-layout">
+                <aside class="journey-nav" aria-label="Indice del percorso">
+                    <div class="journey-heading">
+                        <span>Il percorso</span>
+                        <strong>3 tappe</strong>
+                    </div>
+                    <div class="journey-progress"><span></span></div>
+                    <button class="chapter-link is-active" type="button" data-chapter="intro">
+                        <span class="chapter-number">01</span>
+                        <span><strong>Benvenuta</strong><small>Inizia da qui</small></span>
+                        <span class="chapter-check">✓</span>
+                    </button>
+                    <button class="chapter-link" type="button" data-chapter="centro">
+                        <span class="chapter-number">02</span>
+                        <span><strong>Il tuo centro</strong><small>La tua energia</small></span>
+                        <span class="chapter-check">○</span>
+                    </button>
+                    <button class="chapter-link" type="button" data-chapter="integrazione">
+                        <span class="chapter-number">03</span>
+                        <span><strong>Integrazione</strong><small>Porta con te</small></span>
+                        <span class="chapter-check">○</span>
+                    </button>
+                    <div class="journey-note">
+                        <span class="note-icon">⌁</span>
+                        <p>Puoi interrompere e riprendere quando vuoi. Il tuo percorso resta qui.</p>
+                    </div>
+                </aside>
+
+                <article class="reading-area" aria-label="Contenuto del percorso">
+                    <div class="reading-meta"><span>01 / 03</span><span>Tempo di lettura · 5 min</span></div>
+                    <div class="reading-content">
+                        <p class="content-kicker">Benvenuta nel tuo spazio</p>
+                        <h2>Ascolta. Respira.<br><em>Lascia emergere.</em></h2>
+                        <p>Questo è il tuo spazio per fermarti e incontrare ciò che già sa parlare dentro di te. Non c'è nulla da fare nel modo giusto: puoi leggere, ascoltare, tornare indietro.</p>
+
+                        <div class="quote-block">
+                            <span class="quote-mark">“</span>
+                            <p>La fioritura non è diventare qualcun altro. È avere il coraggio di diventare più te stessa.</p>
+                        </div>
+
+                        <div class="reading-section">
+                            <p class="section-label">Prima di iniziare</p>
+                            <h3>Trova il tuo ritmo</h3>
+                            <p>Indossa le cuffie, se ti fa piacere. Puoi lasciare che la voce ti accompagni mentre scorri queste pagine, oppure chiudere gli occhi e restare semplicemente in ascolto.</p>
+                        </div>
+
+                        <div class="reading-section" id="centro">
+                            <p class="section-label">La tua prima tappa</p>
+                            <h3>Un incontro con il tuo centro</h3>
+                            <p>Ogni intuizione ha bisogno di un po' di spazio per farsi sentire. Prenditi questo tempo senza fretta: il prossimo passo sarà più chiaro quando smetterai di inseguirlo.</p>
+                            <div class="reflection-prompt"><span>Una domanda per te</span><strong>Di cosa hai bisogno per sentirti davvero presente, oggi?</strong></div>
+                        </div>
+
+                        <div class="reading-section" id="integrazione">
+                            <p class="section-label">Per portare con te</p>
+                            <h3>Una piccola intenzione</h3>
+                            <p>Scegli una parola, un gesto o un'immagine da tenere con te nei prossimi giorni. Anche un cambiamento piccolo può aprire uno spazio nuovo.</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </main>
+
+        <footer class="client-footer"><span>Preparato con cura per te</span><span>Mappa della Fioritura · 2026</span></footer>
+    </div>
+
+    <section class="audio-player" aria-label="Player audio">
+        <div class="player-inner">
+            <div class="now-playing">
+                <button class="play-button" type="button" aria-label="Riproduci traccia" data-play><span class="play-icon">▶</span></button>
+                <div class="track-copy"><span class="track-label">In ascolto</span><strong data-track-title>Benvenuta nel tuo spazio</strong></div>
+            </div>
+            <div class="track-controls">
+                <div class="progress-row"><span data-current-time>0:00</span><input type="range" min="0" max="100" value="0" aria-label="Posizione nella traccia" data-progress><span data-duration>4:32</span></div>
+                <input class="progress-bar" type="range" min="0" max="100" value="0" aria-label="Avanzamento traccia" data-progress>
+            </div>
+            <div class="player-actions"><button class="skip-button" type="button" aria-label="Traccia precedente" data-previous>←</button><button class="skip-button" type="button" aria-label="Traccia successiva" data-next>→</button><button class="volume-button" type="button" aria-label="Attiva o disattiva audio" data-mute>◖</button></div>
+        </div>
+        <p class="player-hint"><span>♪</span> L'audio continua mentre esplori il tuo percorso</p>
+    </section>
+
+    <script src="scripts/pagina-cliente.js"></script>
+</body>
+
+</html>
