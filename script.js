@@ -1664,6 +1664,14 @@ function aggiornaSelettoreLingua(targetUrl) {
     : "";
   const filename = segments[segments.length - 1] || "index.html";
 
+  if (filename === "raccontami.html" && !currentFolder) {
+    gruppo.innerHTML = '<span class="nav-lang is-current" lang="it" aria-current="true">IT</span>';
+    gruppo.style.display = "none";
+    return;
+  }
+
+  gruppo.style.display = "";
+
   gruppo.innerHTML = LINGUE_SUPPORTATE.map((lingua, indice) => {
     const separatore =
       indice === 0
@@ -1876,8 +1884,62 @@ function initMobileServicesAccordion() {
   mobileQuery.addEventListener("change", syncSections);
 }
 
+function initRaccontamiPage() {
+  const form = document.getElementById("story-form");
+  const message = document.getElementById("story-message");
+  const count = document.getElementById("story-count");
+  const submit = document.getElementById("story-submit");
+  const clear = document.getElementById("story-clear");
+  const status = document.getElementById("story-status");
+  if (!form || !message || !count || !submit || !clear || !status) return;
+
+  const updateWritingState = () => {
+    const length = message.value.length;
+    count.textContent = `${new Intl.NumberFormat("it-IT").format(length)} / 2.400`;
+    submit.disabled = !message.value.trim();
+  };
+
+  message.addEventListener("input", updateWritingState);
+
+  document.querySelectorAll("[data-writing-prompt]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const prompt = button.dataset.writingPrompt;
+      const currentText = message.value.trimEnd();
+      message.value = currentText ? `${currentText}\n\n${prompt} ` : `${prompt} `;
+      message.focus();
+      message.setSelectionRange(message.value.length, message.value.length);
+      updateWritingState();
+    });
+  });
+
+  clear.addEventListener("click", () => {
+    if (!message.value || !window.confirm("Vuoi svuotare il testo che hai scritto?")) return;
+    message.value = "";
+    status.textContent = "";
+    updateWritingState();
+    message.focus();
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const content = message.value.trim();
+    if (!content) {
+      message.reportValidity();
+      return;
+    }
+
+    const subject = encodeURIComponent("Un messaggio da Raccontami");
+    const body = encodeURIComponent(content);
+    status.textContent = "Si aprirà il tuo programma di posta: potrai rileggere il testo e scegliere se inviarlo.";
+    window.location.href = `mailto:silvia@mappadellafioritura.it?subject=${subject}&body=${body}`;
+  });
+
+  updateWritingState();
+}
+
 function initCurrentPage(pageName) {
   const currentPage = pageName || document.body.dataset.page || "home";
+  document.body.classList.toggle("story-page", currentPage === "story");
 
   if (currentPage === "home") {
     inizializzaPosizioniPrognosi();
@@ -1885,6 +1947,8 @@ function initCurrentPage(pageName) {
     initHomePageInteractions();
   } else if (currentPage === "services") {
     initMobileServicesAccordion();
+  } else if (currentPage === "story") {
+    initRaccontamiPage();
   }
 
   initUiMotion();
