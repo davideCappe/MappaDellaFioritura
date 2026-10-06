@@ -1339,63 +1339,6 @@ function initUiMotion() {
   revealItems.forEach((item) => observer.observe(item));
 }
 
-function initNavScrollSurface() {
-  const nav = document.querySelector(".main-nav");
-  if (!nav) {
-    return;
-  }
-
-  const updateSurface = () => {
-    nav.classList.toggle("is-scrolled", window.scrollY > 48);
-  };
-
-  updateSurface();
-  window.addEventListener("scroll", updateSurface, { passive: true });
-}
-
-function initNavMagneticHover() {
-  const nav = document.querySelector(".main-nav");
-  if (!nav) {
-    return;
-  }
-
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-  const isTouchLike = window.matchMedia(
-    "(hover: none), (pointer: coarse)",
-  ).matches;
-
-  if (prefersReducedMotion || isTouchLike) {
-    return;
-  }
-
-  const links = nav.querySelectorAll(".nav-link:not(.nav-lang)");
-
-  links.forEach((link) => {
-    link.addEventListener("mousemove", (event) => {
-      const rect = link.getBoundingClientRect();
-      const localX = event.clientX - rect.left;
-      const localY = event.clientY - rect.top;
-
-      const strength = 3.2;
-      const moveX = ((localX / rect.width) * 2 - 1) * strength;
-      const moveY = ((localY / rect.height) * 2 - 1) * (strength * 0.7) - 1;
-
-      link.style.setProperty("--mx", `${moveX.toFixed(2)}px`);
-      link.style.setProperty("--my", `${moveY.toFixed(2)}px`);
-    });
-
-    const reset = () => {
-      link.style.setProperty("--mx", "0px");
-      link.style.setProperty("--my", "0px");
-    };
-
-    link.addEventListener("mouseleave", reset);
-    link.addEventListener("blur", reset);
-  });
-}
-
 function mostraMappaAnimata() {
   const matrixPanelEl = document.querySelector(".matrix-panel");
   const matrixContainerEl = document.querySelector(".matrix-container");
@@ -1876,8 +1819,6 @@ export function initializeIndexPage() {
   document.body.dataset.page = "home";
 
   syncLanguageStyles();
-  initNavScrollSurface();
-  initNavMagneticHover();
   mostraPaginaDopoCaricamentoFont();
   initCurrentPage("home");
 }
