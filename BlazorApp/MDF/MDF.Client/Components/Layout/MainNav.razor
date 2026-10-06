@@ -1,0 +1,52 @@
+<nav class="main-nav reveal" aria-label="Menu principale">
+    @if (IsActive("Mappa"))
+    {
+        <a class="nav-link is-active" href="/" aria-current="page">Mappa</a>
+    }
+    else
+    {
+        <a class="nav-link" href="/">Mappa</a>
+    }
+
+    @if (IsActive("ChiSono"))
+    {
+        <a class="nav-link is-active" href="/chi-sono" aria-current="page">Chi sono</a>
+    }
+    else
+    {
+        <a class="nav-link" href="/chi-sono">Chi sono</a>
+    }
+
+    @if (IsActive("Servizi"))
+    {
+        <a class="nav-link is-active" href="/servizi" aria-current="page">Servizi</a>
+    }
+    else
+    {
+        <a class="nav-link" href="/servizi">Servizi</a>
+    }
+
+    @if (IsActive("Raccontami"))
+    {
+        <a class="nav-link is-active" href="/raccontami" aria-current="page">Raccontami</a>
+    }
+    else
+    {
+        <a class="nav-link" href="/raccontami">Raccontami</a>
+    }
+
+    <div class="nav-lang-group" role="group" aria-label="Lingua">
+        <span class="nav-lang is-current" lang="it" aria-current="true">IT</span>
+        <span class="nav-lang-sep" aria-hidden="true">&middot;</span>
+        <a class="nav-lang" href="@EnglishHref" hreflang="en" lang="en">EN</a>
+    </div>
+</nav>
+
+@code {
+    [Parameter] public string ActivePage { get; set; } = "Mappa";
+
+    [Parameter] public string EnglishHref { get; set; } = "en/index.html";
+
+    private bool IsActive(string page)
+        => string.Equals(ActivePage, page, StringComparison.OrdinalIgnoreCase);
+}
