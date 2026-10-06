@@ -1339,43 +1339,6 @@ function initUiMotion() {
   revealItems.forEach((item) => observer.observe(item));
 }
 
-function initBackToTop() {
-  const backToTop = document.querySelector(".back-to-top");
-  if (!backToTop) {
-    return;
-  }
-
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-
-  const updateProgress = () => {
-    const scrollTop = window.scrollY;
-    const scrollMax =
-      document.documentElement.scrollHeight - window.innerHeight;
-    const progress = scrollMax > 0 ? (scrollTop / scrollMax) * 100 : 0;
-    const normalized = Math.min(100, Math.max(0, progress));
-
-    backToTop.style.setProperty("--scroll-progress", `${normalized}%`);
-  };
-
-  if (prefersReducedMotion) {
-    backToTop.classList.add("is-visible");
-    updateProgress();
-    return;
-  }
-
-  const onScroll = () => {
-    const shouldShow = window.scrollY > 260;
-    backToTop.classList.toggle("is-visible", shouldShow);
-    updateProgress();
-  };
-
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll);
-}
-
 function initNavScrollSurface() {
   const nav = document.querySelector(".main-nav");
   if (!nav) {
@@ -1915,7 +1878,6 @@ export function initializeIndexPage() {
   syncLanguageStyles();
   initNavScrollSurface();
   initNavMagneticHover();
-  initBackToTop();
   mostraPaginaDopoCaricamentoFont();
   initCurrentPage("home");
 }
