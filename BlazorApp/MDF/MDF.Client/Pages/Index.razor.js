@@ -1376,53 +1376,6 @@ function initBackToTop() {
   window.addEventListener("resize", onScroll);
 }
 
-function initNavIndicator() {
-  const nav = document.querySelector(".main-nav");
-  if (!nav) {
-    return;
-  }
-
-  const links = Array.from(nav.querySelectorAll(".nav-link:not(.nav-lang)"));
-  if (!links.length) {
-    return;
-  }
-
-  const getActiveLink = () =>
-    nav.querySelector('.nav-link[aria-current="page"]') ||
-    nav.querySelector(".nav-link.is-active") ||
-    links[0];
-
-  const placeLine = (link) => {
-    const target = link || getActiveLink();
-    if (!target) return;
-
-    const navRect = nav.getBoundingClientRect();
-    const linkRect = target.getBoundingClientRect();
-    const left = linkRect.left - navRect.left;
-
-    nav.style.setProperty("--nav-line-left", `${left}px`);
-    nav.style.setProperty("--nav-line-width", `${linkRect.width}px`);
-  };
-
-  window.updateNavLine = placeLine;
-
-  placeLine(getActiveLink());
-
-  links.forEach((link) => {
-    link.addEventListener("mouseenter", () => placeLine(link));
-    link.addEventListener("focus", () => placeLine(link));
-  });
-
-  nav.addEventListener("mouseleave", () => placeLine(getActiveLink()));
-  nav.addEventListener("focusout", (event) => {
-    if (!nav.contains(event.relatedTarget)) {
-      placeLine(getActiveLink());
-    }
-  });
-
-  window.addEventListener("resize", () => placeLine(getActiveLink()));
-}
-
 function initNavScrollSurface() {
   const nav = document.querySelector(".main-nav");
   if (!nav) {
@@ -1960,7 +1913,6 @@ export function initializeIndexPage() {
   document.body.dataset.page = "home";
 
   syncLanguageStyles();
-  initNavIndicator();
   initNavScrollSurface();
   initNavMagneticHover();
   initBackToTop();
