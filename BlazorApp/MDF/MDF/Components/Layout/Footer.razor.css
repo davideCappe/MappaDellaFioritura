@@ -1,5 +1,10 @@
+.footer-shell {
+  width: min(1080px, 100%);
+  margin: 20px auto 0;
+  padding: 0 20px 72px;
+}
+
 .site-footer {
-  margin-top: 20px;
   border-radius: var(--radius-shell);
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--terracotta) 30%, transparent);
@@ -107,6 +112,10 @@
 }
 
 @media (max-width: 720px) {
+  .footer-shell {
+    padding: 0 14px 68px;
+  }
+
   .footer-wrap {
     grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
     gap: 12px 18px;
