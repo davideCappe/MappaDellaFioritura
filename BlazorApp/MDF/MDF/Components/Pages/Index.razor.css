@@ -76,14 +76,6 @@ body {
   background-size: 3px 3px;
 }
 
-.app {
-  position: relative;
-  z-index: 1;
-  width: min(1080px, 100%);
-  margin: 0 auto;
-  padding: var(--space-3) 20px 64px;
-}
-
 /* =========================================================
    LAYOUT SHARED / HEADER / NAV
    ========================================================= */
