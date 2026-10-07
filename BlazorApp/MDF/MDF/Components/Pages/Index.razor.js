@@ -1820,8 +1820,14 @@ export function initializeIndexPage() {
 
   syncLanguageStyles();
   mostraPaginaDopoCaricamentoFont();
-  initCurrentPage("home");
+    initCurrentPage("home");
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.querySelector('[data-page="index"]')) {
+        initializeIndexPage();
+    }
+});
 
 export function disposeIndexPage() {
 }

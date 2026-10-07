@@ -1,7 +1,4 @@
 @page "/"
-@rendermode InteractiveAuto
-@implements IAsyncDisposable
-@inject IJSRuntime JS
 
 <PageTitle>Mappa della Fioritura | Mappa personale e consapevolezza</PageTitle>
 
@@ -251,34 +248,3 @@
     </div>
 </div>
 
-@code {
-    private IJSObjectReference? module;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (!firstRender)
-        {
-            return;
-        }
-
-        module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/Index.razor.js");
-        await module.InvokeVoidAsync("initializeIndexPage");
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (module is null)
-        {
-            return;
-        }
-
-        try
-        {
-            await module.InvokeVoidAsync("disposeIndexPage");
-            await module.DisposeAsync();
-        }
-        catch (JSDisconnectedException)
-        {
-        }
-    }
-}
