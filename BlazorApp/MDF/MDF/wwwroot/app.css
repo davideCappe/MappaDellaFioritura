@@ -279,3 +279,47 @@ h1:focus {
 .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+.numero-punto {
+  font-size: 42px;
+  font-weight: 700;
+  fill: #42574d;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.numero-prognosi {
+  font-size: 13px;
+  font-weight: 700;
+  fill: #3d4e49;
+  paint-order: stroke;
+  stroke: rgba(255, 252, 249, 0.96);
+  stroke-width: 2.2px;
+  stroke-linejoin: round;
+}
+
+#numeriLayer .numero-rivelato {
+  font-size: var(--numero-size);
+  animation: numero-entra 0.42s cubic-bezier(0.22, 1.35, 0.45, 1) var(--numero-delay) both;
+}
+
+.matrix-panel.is-locked #numeriLayer .numero-rivelato {
+  animation-play-state: paused;
+}
+
+@keyframes numero-entra {
+  0% {
+    font-size: 0;
+  }
+
+  100% {
+    font-size: var(--numero-size);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #numeriLayer .numero-rivelato {
+    animation: none;
+  }
+}
