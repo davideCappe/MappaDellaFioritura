@@ -42,7 +42,7 @@
 
     <AuthorizeView>
         <Authorized>
-            <a class="nav-link nav-link-auth @(IsInAccountArea ? "is-active" : null)" href="/Account/Manage" aria-current="@(IsInAccountArea ? "page" : null)">@AdminAreaText</a>
+            <a class="nav-link nav-link-auth @(IsInAccountArea ? "is-active" : null)" href="/admin/dashboard" aria-current="@(IsInAccountArea ? "page" : null)">@AdminAreaText</a>
         </Authorized>
         <NotAuthorized>
             <a class="nav-link nav-link-auth @(IsInAccountArea ? "is-active" : null)" href="/Account/Login" aria-current="@(IsInAccountArea ? "page" : null)">@LoginText</a>
@@ -90,7 +90,8 @@
         get
         {
             var path = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-            return path.StartsWith("Account", StringComparison.OrdinalIgnoreCase);
+            return path.StartsWith("Account", StringComparison.OrdinalIgnoreCase)
+                || path.StartsWith("admin", StringComparison.OrdinalIgnoreCase);
         }
     }
 

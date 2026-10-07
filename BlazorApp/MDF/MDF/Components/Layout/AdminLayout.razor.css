@@ -1,0 +1,12 @@
+.admin-app {
+  padding-bottom: 28px;
+}
+
+.admin-main {
+  min-height: calc(100vh - 130px);
+}
+
+.admin-content {
+  display: grid;
+  gap: 16px;
+}
