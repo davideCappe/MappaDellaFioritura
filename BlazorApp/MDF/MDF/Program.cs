@@ -1,9 +1,12 @@
+using MDF;
+using MDF.BusinessLayer.Data;
+using MDF.BusinessLayer.Settings;
 using MDF.Components;
 using MDF.Components.Account;
-using MDF.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TinyHelpers.AspNetCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents()
     .AddAuthenticationStateSerialization();
+
+// Settings section
+var superAdminSettings = builder.Services.ConfigureAndGet<SuperAdminSettings>(builder.Configuration, nameof(SuperAdminSettings)) ?? new();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityRedirectManager>();
@@ -26,7 +32,14 @@ builder.Services.AddAuthentication(options =>
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString, sqlOptions =>
+    {
+        // Abilita la resilienza automatica per errori SQL transienti
+        sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(3),
+            errorNumbersToAdd: null);
+    }));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
@@ -34,6 +47,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
         options.SignIn.RequireConfirmedAccount = true;
         options.Stores.SchemaVersion = IdentitySchemaVersions.Version3;
     })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
@@ -57,10 +71,14 @@ else
     app.UseHsts();
 }
 
+// Initialize the database
+await DatabaseInitializer.InitializeAsync(app.Services);
+
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
+// Inseriti inizialmente per consentire l'accesso a file statici come immagini, CSS e JavaScript. 
+//app.UseDefaultFiles();
+//app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapStaticAssets();

@@ -1,8 +1,8 @@
 using System.Security.Claims;
 using System.Text.Json;
+using MDF.BusinessLayer.Data;
 using MDF.Components.Account.Pages;
 using MDF.Components.Account.Pages.Manage;
-using MDF.Data;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
