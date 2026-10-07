@@ -188,7 +188,7 @@ input:focus-visible {
 
 @media (max-width: 720px) {
   .app {
-    padding: 18px 14px 50px;
+    padding: 18px 14px 0px;
   }
 
   .back-to-top {
