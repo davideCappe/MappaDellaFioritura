@@ -102,8 +102,6 @@ function initNavMagneticHover() {
 }
 
 export function initializeMainNav() {
-  disposeMainNav();
-
   navElement = document.querySelector(".main-nav");
   if (!navElement) {
     return;
@@ -182,26 +180,3 @@ export function disposeMainNav() {
   focusOutHandler = undefined;
   navScrollHandler = undefined;
 }
-
-function bootMainNav() {
-  const nav = document.querySelector(".main-nav");
-  if (!nav) {
-    disposeMainNav();
-    return;
-  }
-
-  if (nav === navElement && cleanupLinkHandlers.length) {
-    placeLine(getActiveLink());
-    return;
-  }
-
-  initializeMainNav();
-}
-
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", bootMainNav);
-} else {
-  bootMainNav();
-}
-
-window.Blazor?.addEventListener("enhancedload", bootMainNav);
