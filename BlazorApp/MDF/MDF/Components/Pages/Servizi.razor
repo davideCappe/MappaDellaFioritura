@@ -1,4 +1,5 @@
 ﻿@page "/servizi"
+@inject NavigationManager Nav
 
 <PageTitle>Servizi | Mappa della Fioritura</PageTitle>
 
@@ -35,10 +36,10 @@
             </section>
 
             <nav class="services-index reveal" aria-label="Indice dei servizi">
-                <a href="#bambini"><span>01</span>Figli &amp; Famiglia</a>
-                <a href="#adulti"><span>02</span>Adulti Consapevoli</a>
-                <a href="#reiki"><span>03</span>Reiki</a>
-                <a href="#integrati"><span>04</span>Percorsi Integrati</a>
+                <a href="@Nav.ToBaseRelativePath(Nav.Uri).Split('#')[0]#bambini"><span>01</span>Figli &amp; Famiglia</a>
+                <a href="@Nav.ToBaseRelativePath(Nav.Uri).Split('#')[0]#adulti"><span>02</span>Adulti Consapevoli</a>
+                <a href="@Nav.ToBaseRelativePath(Nav.Uri).Split('#')[0]#reiki"><span>03</span>Reiki</a>
+                <a href="@Nav.ToBaseRelativePath(Nav.Uri).Split('#')[0]#integrati"><span>04</span>Percorsi Integrati</a>
             </nav>
 
             <div class="services-catalogue">
