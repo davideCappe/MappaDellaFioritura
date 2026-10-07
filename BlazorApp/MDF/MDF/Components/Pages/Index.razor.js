@@ -1366,6 +1366,13 @@ function initHomePageInteractions() {
     return;
   }
 
+  if (btnCalcola.dataset.bound === "true") {
+    return;
+  }
+
+  btnCalcola.dataset.bound = "true";
+  btnExport.dataset.bound = "true";
+
   let exportPngPromise = null;
   btnExport.disabled = true;
 
@@ -1823,11 +1830,27 @@ export function initializeIndexPage() {
     initCurrentPage("home");
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.querySelector('[data-page="index"]')) {
-        initializeIndexPage();
-    }
-});
+function bootIndexPage() {
+  const btnCalcola = document.getElementById("btnCalcola");
+  if (!btnCalcola) {
+    return;
+  }
+
+  if (btnCalcola.dataset.init === "1") {
+    return;
+  }
+
+  btnCalcola.dataset.init = "1";
+  initializeIndexPage();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bootIndexPage);
+} else {
+  bootIndexPage();
+}
+
+window.Blazor?.addEventListener("enhancedload", bootIndexPage);
 
 export function disposeIndexPage() {
 }
