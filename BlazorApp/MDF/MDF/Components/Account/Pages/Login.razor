@@ -4,69 +4,60 @@
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 
-@inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
 @inject ILogger<Login> Logger
-@inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Log in</PageTitle>
+<PageTitle>Accesso area riservata</PageTitle>
 
-<h1>Log in</h1>
-<div class="row">
-    <div class="col-lg-6">
-        <section>
-            <StatusMessage Message="@errorMessage" />
-            <EditForm EditContext="editContext" method="post" OnSubmit="LoginUser" FormName="login">
-                <DataAnnotationsValidator />
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <ValidationSummary class="text-danger" role="alert" />
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="username webauthn" aria-required="true" placeholder="name@example.com" />
-                    <label for="Input.Email" class="form-label">Email</label>
-                    <ValidationMessage For="() => Input.Email" class="text-danger" />
-                </div>
-                <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label for="Input.Password" class="form-label">Password</label>
-                    <ValidationMessage For="() => Input.Password" class="text-danger" />
-                </div>
-                <div class="checkbox mb-3">
-                    <label class="form-label">
-                        <InputCheckbox @bind-Value="Input.RememberMe" class="darker-border-checkbox form-check-input" />
-                        Remember me
+<div class="ambient" aria-hidden="true">
+    <span class="blob blob-a"></span>
+    <span class="blob blob-b"></span>
+    <span class="blob blob-c"></span>
+    <span class="grain"></span>
+</div>
+
+<div class="app login-page">
+    <MainNav ActivePage="Account" EnglishHref="/en/index.html" ShowTellMe="false" />
+
+    <div class="page-content">
+        <main class="login-shell reveal" id="contenuto">
+            <section class="login-card" aria-labelledby="login-title">
+                <header class="login-header">
+                    <img src="/images/logo.webp" alt="Mappa della Fioritura" class="login-logo">
+                    <h1 id="login-title">Area riservata</h1>
+                </header>
+
+                <StatusMessage Message="@errorMessage" />
+
+                <EditForm EditContext="editContext" method="post" OnSubmit="LoginUser" FormName="login" class="login-form">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="validation-summary" role="alert" />
+
+                    <div class="field">
+                        <label for="input-email">Email</label>
+                        <InputText @bind-Value="Input.Email" id="input-email" class="field-input" autocomplete="username webauthn" aria-required="true" placeholder="nome@dominio.it" />
+                        <ValidationMessage For="() => Input.Email" class="field-error" />
+                    </div>
+
+                    <div class="field">
+                        <label for="input-password">Password</label>
+                        <InputText type="password" @bind-Value="Input.Password" id="input-password" class="field-input" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                        <ValidationMessage For="() => Input.Password" class="field-error" />
+                    </div>
+
+                    <label class="remember-row" for="input-rememberme">
+                        <InputCheckbox @bind-Value="Input.RememberMe" id="input-rememberme" class="remember-input" />
+                        <span>Ricordami</span>
                     </label>
-                </div>
-                <div>
-                    <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <hr />
-                <div class="d-flex flex-column">
-                    <span class="text-secondary mx-auto mt-2">OR</span>
-                    <PasskeySubmit Operation="PasskeyOperation.Request" Name="Input.Passkey" EmailName="Input.Email" class="btn btn-link mx-auto">Log in with a passkey</PasskeySubmit>
-                </div>
-                <hr />
-                <div>
-                    <p>
-                        <a href="Account/ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a href="Account/ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
-            </EditForm>
-        </section>
-    </div>
-    <div class="col-lg-4 col-lg-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            <ExternalLoginPicker />
-        </section>
+
+                    <div class="login-actions">
+                        <button type="submit" class="login-submit">Accedi</button>
+                        <PasskeySubmit Operation="PasskeyOperation.Request" Name="Input.Passkey" EmailName="Input.Email" class="passkey-button">Accedi con passkey</PasskeySubmit>
+                    </div>
+                </EditForm>
+            </section>
+        </main>
     </div>
 </div>
 

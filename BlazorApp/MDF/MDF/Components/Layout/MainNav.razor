@@ -1,3 +1,5 @@
+@inject NavigationManager NavigationManager
+
 <nav class="main-nav reveal" aria-label="@NavAriaLabel">
     @if (IsActive("Mappa"))
     {
@@ -38,6 +40,15 @@
         }
     }
 
+    <AuthorizeView>
+        <Authorized>
+            <a class="nav-link nav-link-auth @(IsInAccountArea ? "is-active" : null)" href="/Account/Manage" aria-current="@(IsInAccountArea ? "page" : null)">@AdminAreaText</a>
+        </Authorized>
+        <NotAuthorized>
+            <a class="nav-link nav-link-auth @(IsInAccountArea ? "is-active" : null)" href="/Account/Login" aria-current="@(IsInAccountArea ? "page" : null)">@LoginText</a>
+        </NotAuthorized>
+    </AuthorizeView>
+
     <div class="nav-lang-group" role="group" aria-label="@LanguageAriaLabel">
         @if (IsEnglish)
         {
@@ -70,6 +81,18 @@
     [Parameter] public bool ShowTellMe { get; set; } = true;
     [Parameter] public string TellMeHref { get; set; } = "/raccontami";
     [Parameter] public string TellMeText { get; set; } = "Raccontami";
+
+    private string LoginText => IsEnglish ? "Login" : "Accedi";
+    private string AdminAreaText => IsEnglish ? "Admin area" : "Area admin";
+
+    private bool IsInAccountArea
+    {
+        get
+        {
+            var path = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+            return path.StartsWith("Account", StringComparison.OrdinalIgnoreCase);
+        }
+    }
 
     private bool IsActive(string page)
         => string.Equals(ActivePage, page, StringComparison.OrdinalIgnoreCase);

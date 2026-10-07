@@ -78,6 +78,24 @@
   font-weight: 700;
 }
 
+.nav-link-auth {
+  min-height: 34px;
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in srgb, var(--sage-deep) 28%, transparent);
+  background: color-mix(in srgb, var(--paper-soft) 82%, transparent);
+  box-shadow: var(--shadow-control);
+}
+
+.nav-link-auth:hover {
+  border-color: color-mix(in srgb, var(--sage-deep) 42%, transparent);
+}
+
+.nav-link-auth.is-active {
+  border-color: color-mix(in srgb, var(--sage-action-deep) 56%, transparent);
+  background: color-mix(in srgb, var(--sage) 20%, var(--paper-soft));
+}
+
 .nav-lang-group {
   display: inline-flex;
   align-items: center;
