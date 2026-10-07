@@ -1,6 +1,3 @@
-@implements IAsyncDisposable
-@inject IJSRuntime JS
-
 <nav class="main-nav reveal" aria-label="Menu principale">
     @if (IsActive("Mappa"))
     {
@@ -46,39 +43,9 @@
 </nav>
 
 @code {
-    private IJSObjectReference? module;
-
     [Parameter] public string ActivePage { get; set; } = "Mappa";
 
     [Parameter] public string EnglishHref { get; set; } = "en/index.html";
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (!firstRender)
-        {
-            return;
-        }
-
-        module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/Layout/MainNav.razor.js");
-        await module.InvokeVoidAsync("initializeMainNav");
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        if (module is null)
-        {
-            return;
-        }
-
-        try
-        {
-            await module.InvokeVoidAsync("disposeMainNav");
-            await module.DisposeAsync();
-        }
-        catch (JSDisconnectedException)
-        {
-        }
-    }
 
     private bool IsActive(string page)
         => string.Equals(ActivePage, page, StringComparison.OrdinalIgnoreCase);
