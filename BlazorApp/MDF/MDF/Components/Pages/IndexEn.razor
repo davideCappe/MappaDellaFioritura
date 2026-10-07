@@ -1,19 +1,19 @@
-@page "/"
-@page "/index.html"
+@page "/en"
+@page "/en/index.html"
 
-<PageTitle>Mappa della Fioritura | Mappa personale e consapevolezza</PageTitle>
+<PageTitle>Mappa della Fioritura | Personal map and awareness</PageTitle>
 
 <HeadContent>
-    <meta name="description" content="Scopri la Mappa della Fioritura: uno strumento di consapevolezza basato sulla data di nascita per comprendere talenti, identità e relazioni.">
-    <link rel="canonical" href="https://mappadellafioritura.it/">
+    <meta name="description" content="Discover Mappa della Fioritura: an awareness tool based on your date of birth to understand talents, identity and relationships.">
+    <link rel="canonical" href="https://mappadellafioritura.it/en/index.html">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Mappa della Fioritura">
-    <meta property="og:description" content="Uno strumento di consapevolezza basato sulla data di nascita per comprendere talenti, identità e relazioni.">
-    <meta property="og:url" content="https://mappadellafioritura.it/">
+    <meta property="og:description" content="An awareness tool based on your date of birth to understand talents, identity and relationships.">
+    <meta property="og:url" content="https://mappadellafioritura.it/en/index.html">
     <meta property="og:image" content="https://mappadellafioritura.it/images/social-preview.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://mappadellafioritura.it/images/social-preview.png">
-    <link rel="icon" type="image/webp" href="images/logo.webp">
+    <link rel="icon" type="image/webp" href="/images/logo.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
     <link rel="alternate" hreflang="x-default" href="https://mappadellafioritura.it/index.html">
 </HeadContent>
 
-<a class="skip-link" href="#contenuto">Salta al contenuto</a>
+<a class="skip-link" href="#content">Skip to content</a>
 
 <div class="ambient" aria-hidden="true">
     <span class="blob blob-a"></span>
@@ -32,53 +32,64 @@
 </div>
 
 <div class="app">
-    <MainNav ActivePage="Mappa" EnglishHref="/en/index.html" />
+    <MainNav ActivePage="Mappa"
+             IsEnglish="true"
+             ItalianHref="/index.html"
+             NavAriaLabel="Main navigation"
+             LanguageAriaLabel="Language"
+             MapHref="/en/index.html"
+             MapText="Map"
+             AboutHref="/en/chi-sono.html"
+             AboutText="About"
+             ServicesHref="/en/servizi.html"
+             ServicesText="Services"
+             ShowTellMe="false" />
 
     <div id="page-content" class="page-content">
         <header class="app-header reveal" id="top">
             <div class="brand-mark" aria-hidden="true">
-                <img src="images/logo.webp" alt="" class="brand-logo">
+                <img src="/images/logo.webp" alt="" class="brand-logo">
             </div>
-            <h1>Mappa della Fioritura </h1>
-            <a class="hero-cta" href="#calcolo">Calcola la tua mappa</a>
+            <h1>Mappa della Fioritura</h1>
+            <a class="hero-cta" href="#calculation">Calculate your map</a>
         </header>
 
-        <main class="experience" id="contenuto">
-            <section class="tool-shell reveal" id="calcolo">
+        <main class="experience" id="content">
+            <section class="tool-shell reveal" id="calculation">
                 <section class="input-panel">
-                    <h2>Calcolo personale</h2>
-                    <p class="panel-intro">Inserisci i dati principali e genera la tua mappa in pochi secondi.</p>
+                    <h2>Personal calculation</h2>
+                    <p class="panel-intro">Enter the main details and generate your map in a few seconds.</p>
                     <fieldset class="field profile-choice">
-                        <legend class="visually-hidden">Descrizione per</legend>
+                        <legend class="visually-hidden">Description for</legend>
                         <div class="choice-options">
                             <label class="choice-option">
                                 <input type="radio" name="profilo" value="adulto" checked>
-                                <span>Adulto</span>
+                                <span>Adult</span>
                             </label>
                             <label class="choice-option">
                                 <input type="radio" name="profilo" value="bambino">
-                                <span>Bambino</span>
+                                <span>Child</span>
                             </label>
                         </div>
                     </fieldset>
 
                     <div class="field">
-                        <label for="nome">Nome</label>
-                        <input type="text" id="nome" placeholder="Nome" autocomplete="name" required>
+                        <label for="nome">Name</label>
+                        <input type="text" id="nome" placeholder="Name" autocomplete="name" required>
                     </div>
 
                     <div class="field">
-                        <label for="dataNascita">Data di nascita</label>
+                        <label for="dataNascita">Date of birth</label>
                         <input type="date" id="dataNascita" required>
                     </div>
 
                     <div class="actions-row">
-                        <button id="btnCalcola" type="button">Calcola</button>
+                        <button id="btnCalcola" type="button">Calculate</button>
                         <button id="btnExport" type="button" class="btn-secondary">Export PNG</button>
                     </div>
 
                     <div class="input-summary" id="riepilogoPersona" aria-live="polite" hidden>
-                        <p class="age-display">Età: <strong id="etaPersona"></strong></p>
+                        <p class="age-display">Age: <strong id="etaPersona"></strong></p>
                     </div>
 
                     <p id="errore" class="errore" role="alert" aria-live="assertive" hidden></p>
@@ -88,16 +99,16 @@
                     <div class="matrix-container">
                         <div class="matrix-lock-message" aria-live="polite">
                             <div class="matrix-lock-mark" aria-hidden="true">
-                                <img src="images/logo.webp" alt="">
+                                <img src="/images/logo.webp" alt="">
                             </div>
-                            <p class="matrix-lock-kicker">La tua mappa</p>
-                            <p class="matrix-lock-title">Pronta a fiorire</p>
-                            <p class="matrix-lock-copy" data-lock-message>Premi Calcola per rivelare la tua mappa</p>
+                            <p class="matrix-lock-kicker">Your map</p>
+                            <p class="matrix-lock-title">Ready to bloom</p>
+                            <p class="matrix-lock-copy" data-lock-message>Click Calculate to reveal your map</p>
                         </div>
                         <svg id="matrixSvg" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
-                            <image href="images/ITAmatrice.webp" x="0" y="0" width="1000" height="1000" />
+                            <image href="/images/ENGmatrice.webp" x="0" y="0" width="1000" height="1000" />
                             <g id="logoOverlay" opacity="0.3" pointer-events="none">
-                                <image href="images/logo.webp" x="325" y="325" width="350" height="350" preserveAspectRatio="xMidYMid meet" />
+                                <image href="/images/logo.webp" x="325" y="325" width="350" height="350" preserveAspectRatio="xMidYMid meet" />
                             </g>
                             <g id="numeriLayer"></g>
                         </svg>
@@ -106,25 +117,25 @@
             </section>
 
             <section class="comfort-panel reveal" id="descrizioneCentro" aria-live="polite" hidden>
-                <p class="comfort-kicker">Il tuo centro</p>
+                <p class="comfort-kicker">Your center</p>
                 <h2 id="comfortTitolo"></h2>
                 <p id="comfortTesto"></p>
             </section>
 
             <section class="insights-panel reveal" id="approfondimentiMappa" aria-live="polite" hidden>
-                <section class="health-card" aria-labelledby="tesseraTitolo">
+                <section class="health-card" aria-labelledby="healthCardTitle">
                     <div class="section-heading">
-                        <p class="comfort-kicker">Lettura personale</p>
-                        <h2 id="tesseraTitolo">Tessera Sanitaria</h2>
+                        <p class="comfort-kicker">Personal reading</p>
+                        <h2 id="healthCardTitle">Health Card</h2>
                     </div>
                     <div class="health-table-wrap">
                         <table class="health-table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Nome dei Chakra</th>
-                                    <th scope="col">Fisica</th>
-                                    <th scope="col">Energia</th>
-                                    <th scope="col">Emozioni</th>
+                                    <th scope="col">Chakra name</th>
+                                    <th scope="col">Physical</th>
+                                    <th scope="col">Energy</th>
+                                    <th scope="col">Emotions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -135,43 +146,43 @@
                                     <td data-health-row="1">-</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">6.Ajna</th>
+                                    <th scope="row">6. Ajna</th>
                                     <td data-health-row="2">-</td>
                                     <td data-health-row="2">-</td>
                                     <td data-health-row="2">-</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">5.Vishuddha</th>
+                                    <th scope="row">5. Vishuddha</th>
                                     <td data-health-row="3">-</td>
                                     <td data-health-row="3">-</td>
                                     <td data-health-row="3">-</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">4.Anahata</th>
+                                    <th scope="row">4. Anahata</th>
                                     <td data-health-row="4">-</td>
                                     <td data-health-row="4">-</td>
                                     <td data-health-row="4">-</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">3.Manipura</th>
+                                    <th scope="row">3. Manipura</th>
                                     <td data-health-row="5">-</td>
                                     <td data-health-row="5">-</td>
                                     <td data-health-row="5">-</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">2.Svadhisthana</th>
+                                    <th scope="row">2. Svadhisthana</th>
                                     <td data-health-row="6">-</td>
                                     <td data-health-row="6">-</td>
                                     <td data-health-row="6">-</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">1.Muladhara</th>
+                                    <th scope="row">1. Muladhara</th>
                                     <td data-health-row="7">-</td>
                                     <td data-health-row="7">-</td>
                                     <td data-health-row="7">-</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">TOTALE</th>
+                                    <th scope="row">TOTAL</th>
                                     <td data-health-row="8">-</td>
                                     <td data-health-row="8">-</td>
                                     <td data-health-row="8">-</td>
@@ -182,30 +193,30 @@
                 </section>
 
                 <div class="insight-grid">
-                    <section class="insight-card" aria-labelledby="ricercaTitolo">
-                        <h2 id="ricercaTitolo">Scopo personale</h2>
-                        <p>Unione del maschile e femminile.</p>
-                        <p>Abilità, capacità, conoscenze.</p>
+                    <section class="insight-card" aria-labelledby="personalPurposeTitle">
+                        <h2 id="personalPurposeTitle">Personal purpose</h2>
+                        <p>Union of the masculine and feminine.</p>
+                        <p>Skills, abilities, knowledge.</p>
                         <dl class="value-list">
                             <div>
-                                <dt>Cielo</dt>
+                                <dt>Sky</dt>
                                 <dd id="valoreCielo">-</dd>
                             </div>
                             <div>
-                                <dt>Terra</dt>
+                                <dt>Earth</dt>
                                 <dd id="valoreTerra">-</dd>
                             </div>
                             <div class="value-total">
-                                <dt class="visually-hidden">Totale calcolato</dt>
+                                <dt class="visually-hidden">Calculated total</dt>
                                 <dd id="valoreRicercaTotale">-</dd>
                             </div>
                         </dl>
                     </section>
 
-                    <section class="insight-card" aria-labelledby="socializzazioneTitolo">
-                        <h2 id="socializzazioneTitolo">Scopo sociale</h2>
-                        <p>Sistemi sociali e del clan familiare.</p>
-                        <p>Risultati e riconoscimento nella società.</p>
+                    <section class="insight-card" aria-labelledby="socialPurposeTitle">
+                        <h2 id="socialPurposeTitle">Social purpose</h2>
+                        <p>Social systems and the family clan.</p>
+                        <p>Achievements and recognition in society.</p>
                         <dl class="value-list">
                             <div>
                                 <dt>M</dt>
@@ -216,29 +227,29 @@
                                 <dd id="valoreSocialeF">-</dd>
                             </div>
                             <div class="value-total">
-                                <dt class="visually-hidden">Totale calcolato</dt>
+                                <dt class="visually-hidden">Calculated total</dt>
                                 <dd id="valoreSocialeTotale">-</dd>
                             </div>
                         </dl>
                     </section>
 
-                    <section class="insight-card insight-card-compact" aria-labelledby="spiritualeTitolo">
-                        <h2 id="spiritualeTitolo">Scopo generale</h2>
-                        <p>Chi sono io per Dio? Dov'è il divino in me?</p>
+                    <section class="insight-card insight-card-compact" aria-labelledby="generalPurposeTitle">
+                        <h2 id="generalPurposeTitle">General purpose</h2>
+                        <p>Who am I for God? Where is the divine in me?</p>
                         <dl class="value-list">
                             <div>
-                                <dt>Energia</dt>
+                                <dt>Energy</dt>
                                 <dd id="valoreSpirituale">-</dd>
                             </div>
                         </dl>
                     </section>
 
-                    <section class="insight-card insight-card-compact" aria-labelledby="planetarioTitolo">
-                        <h2 id="planetarioTitolo">Scopo universale</h2>
-                        <p>Scopo planetario, cosa dare al mondo, stile di vita.</p>
+                    <section class="insight-card insight-card-compact" aria-labelledby="universalPurposeTitle">
+                        <h2 id="universalPurposeTitle">Universal purpose</h2>
+                        <p>Planetary purpose, what to give to the world, lifestyle.</p>
                         <dl class="value-list">
                             <div>
-                                <dt>Energia</dt>
+                                <dt>Energy</dt>
                                 <dd id="valorePlanetario">-</dd>
                             </div>
                         </dl>
@@ -248,4 +259,3 @@
         </main>
     </div>
 </div>
-

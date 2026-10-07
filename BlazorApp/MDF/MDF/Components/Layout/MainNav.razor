@@ -1,51 +1,108 @@
-<nav class="main-nav reveal" aria-label="Menu principale">
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<nav class="main-nav reveal" aria-label="@NavAriaLabel">
     @if (IsActive("Mappa"))
     {
-        <a class="nav-link is-active" href="/" aria-current="page">Mappa</a>
+        <a class="nav-link is-active" href="@MapHref" aria-current="page">@MapText</a>
     }
     else
     {
-        <a class="nav-link" href="/">Mappa</a>
+        <a class="nav-link" href="@MapHref">@MapText</a>
     }
 
     @if (IsActive("ChiSono"))
     {
-        <a class="nav-link is-active" href="/chi-sono" aria-current="page">Chi sono</a>
+        <a class="nav-link is-active" href="@AboutHref" aria-current="page">@AboutText</a>
     }
     else
     {
-        <a class="nav-link" href="/chi-sono">Chi sono</a>
+        <a class="nav-link" href="@AboutHref">@AboutText</a>
     }
 
     @if (IsActive("Servizi"))
     {
-        <a class="nav-link is-active" href="/servizi" aria-current="page">Servizi</a>
+        <a class="nav-link is-active" href="@ServicesHref" aria-current="page">@ServicesText</a>
     }
     else
     {
-        <a class="nav-link" href="/servizi">Servizi</a>
+        <a class="nav-link" href="@ServicesHref">@ServicesText</a>
     }
 
-    @if (IsActive("Raccontami"))
+    @if (ShowTellMe)
     {
-        <a class="nav-link is-active" href="/raccontami" aria-current="page">Raccontami</a>
-    }
-    else
-    {
-        <a class="nav-link" href="/raccontami">Raccontami</a>
+        @if (IsActive("Raccontami"))
+        {
+            <a class="nav-link is-active" href="@TellMeHref" aria-current="page">@TellMeText</a>
+        }
+        else
+        {
+            <a class="nav-link" href="@TellMeHref">@TellMeText</a>
+        }
     }
 
-    <div class="nav-lang-group" role="group" aria-label="Lingua">
-        <span class="nav-lang is-current" lang="it" aria-current="true">IT</span>
-        <span class="nav-lang-sep" aria-hidden="true">&middot;</span>
-        <a class="nav-lang" href="@EnglishHref" hreflang="en" lang="en">EN</a>
+    <div class="nav-lang-group" role="group" aria-label="@LanguageAriaLabel">
+        @if (IsEnglish)
+        {
+            <a class="nav-lang" href="@ItalianHref" hreflang="it" lang="it">IT</a>
+            <span class="nav-lang-sep" aria-hidden="true">&middot;</span>
+            <span class="nav-lang is-current" lang="en" aria-current="true">EN</span>
+        }
+        else
+        {
+            <span class="nav-lang is-current" lang="it" aria-current="true">IT</span>
+            <span class="nav-lang-sep" aria-hidden="true">&middot;</span>
+            <a class="nav-lang" href="@EnglishHref" hreflang="en" lang="en">EN</a>
+        }
     </div>
 </nav>
 
 @code {
-    [Parameter] public string ActivePage { get; set; } = "Mappa";
+    private IJSObjectReference? module;
 
+    [Parameter] public string ActivePage { get; set; } = "Mappa";
     [Parameter] public string EnglishHref { get; set; } = "en/index.html";
+    [Parameter] public string ItalianHref { get; set; } = "/";
+    [Parameter] public bool IsEnglish { get; set; }
+    [Parameter] public string NavAriaLabel { get; set; } = "Menu principale";
+    [Parameter] public string LanguageAriaLabel { get; set; } = "Lingua";
+    [Parameter] public string MapHref { get; set; } = "/";
+    [Parameter] public string MapText { get; set; } = "Mappa";
+    [Parameter] public string AboutHref { get; set; } = "/chi-sono";
+    [Parameter] public string AboutText { get; set; } = "Chi sono";
+    [Parameter] public string ServicesHref { get; set; } = "/servizi";
+    [Parameter] public string ServicesText { get; set; } = "Servizi";
+    [Parameter] public bool ShowTellMe { get; set; } = true;
+    [Parameter] public string TellMeHref { get; set; } = "/raccontami";
+    [Parameter] public string TellMeText { get; set; } = "Raccontami";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/Layout/MainNav.razor.js");
+        await module.InvokeVoidAsync("initializeMainNav");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (module is null)
+        {
+            return;
+        }
+
+        try
+        {
+            await module.InvokeVoidAsync("disposeMainNav");
+            await module.DisposeAsync();
+        }
+        catch (JSDisconnectedException)
+        {
+        }
+    }
 
     private bool IsActive(string page)
         => string.Equals(ActivePage, page, StringComparison.OrdinalIgnoreCase);
