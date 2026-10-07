@@ -1446,16 +1446,6 @@ function aggiornaAnnoCopyright() {
   }
 }
 
-function mostraPaginaDopoCaricamentoFont() {
-  const pageReady = () => document.body.classList.remove("page-loading");
-  const fontReady = document.fonts?.ready || Promise.resolve();
-
-  Promise.race([
-    fontReady,
-    new Promise((resolve) => window.setTimeout(resolve, 900)),
-  ]).then(pageReady);
-}
-
 const pageHtmlCache = new Map();
 
 function updateNavIndicatorLine(targetLink) {
@@ -1822,12 +1812,11 @@ function initCurrentPage(pageName) {
 }
 
 export function initializeIndexPage() {
-  document.body.classList.add("page-loading");
+  document.body.classList.remove("page-loading");
   document.body.dataset.page = "home";
 
   syncLanguageStyles();
-  mostraPaginaDopoCaricamentoFont();
-    initCurrentPage("home");
+  initCurrentPage("home");
 }
 
 function bootIndexPage() {
