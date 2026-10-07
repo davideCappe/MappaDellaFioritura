@@ -29,6 +29,8 @@ function updateVisibility() {
 }
 
 export function initializeBackToTop(element) {
+  disposeBackToTop();
+
   backToTop = element;
   if (!backToTop) {
     return;
@@ -69,3 +71,26 @@ export function disposeBackToTop() {
   resizeHandler = undefined;
   clickHandler = undefined;
 }
+
+function bootBackToTop() {
+  const element = document.querySelector(".back-to-top");
+  if (!element) {
+    disposeBackToTop();
+    return;
+  }
+
+  if (element === backToTop && clickHandler) {
+    updateVisibility();
+    return;
+  }
+
+  initializeBackToTop(element);
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", bootBackToTop);
+} else {
+  bootBackToTop();
+}
+
+window.Blazor?.addEventListener("enhancedload", bootBackToTop);
