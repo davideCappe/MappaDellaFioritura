@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un Respiro che Fiorisce | Mappa della Fioritura</title>
+    <meta name="description" content="Uno spazio d'ascolto gratuito dove depositare ciò che pesa e ritrovare il tuo ritmo.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Un Respiro che Fiorisce | Mappa della Fioritura">
+    <meta property="og:description" content="Uno spazio d'ascolto gratuito dove depositare ciò che pesa e ritrovare il tuo ritmo.">
+    <meta property="og:url" content="https://mappadellafioritura.it/raccontamiv3.html">
+    <meta property="og:image" content="https://mappadellafioritura.it/images/social-preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://mappadellafioritura.it/images/social-preview.png">
+    <link rel="icon" type="image/webp" href="images/logo.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap"
+        rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap"
+            rel="stylesheet">
+    </noscript>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/raccontamiv3.css">
+</head>
+
+<body class="page-loading story-page" data-page="story">
+    <a class="skip-link" href="#contenuto">Salta al contenuto</a>
+
+    <div class="app" id="top">
+        <nav class="main-nav reveal" aria-label="Menu principale">
+            <a class="nav-link" href="index.html">Mappa</a>
+            <a class="nav-link" href="chi-sono.html">Chi sono</a>
+            <a class="nav-link" href="servizi.html">Servizi</a>
+            <a class="nav-link" href="raccontami.html">Raccontami</a>
+            <div class="nav-lang-group" role="group" aria-label="Lingua">
+                <span class="nav-lang is-current" lang="it" aria-current="true">IT</span>
+            </div>
+        </nav>
+
+        <div id="page-content" class="page-content">
+            <main id="contenuto" class="room-main">
+                <header class="room-header reveal">
+                    <img class="room-logo" src="images/logo.webp" alt="Mappa della Fioritura" width="96" height="96">
+                    <h1 id="story-title">Un Respiro che Fiorisce</h1>
+                    <p class="room-subtitle">Uno spazio d'ascolto gratuito dove depositare ciò che pesa e ritrovare il tuo ritmo.</p>
+                </header>
+
+                <section class="room-breath reveal" aria-label="Invito a respirare">
+                    <p>Pensati seduto, tranquillo, in un luogo per te sicuro e <strong>respira</strong>.</p>
+                    <p>Respira profondamente fino a quando i battiti del tuo cuore non rallentano. E ora scrivi. Scrivi di getto.</p>
+                </section>
+
+                <section class="room-desk reveal" id="scrivimi" aria-labelledby="desk-title">
+                    <h2 id="desk-title" class="visually-hidden">Scrivi la tua storia</h2>
+                    <form id="story-form" action="mailto:silvia@mappadellafioritura.it?subject=Un%20messaggio%20da%20Un%20Respiro%20che%20Fiorisce" method="post" enctype="text/plain">
+                        <div class="room-paper">
+                            <div class="room-greeting">
+                                <label for="story-name">Come vuoi che ti chiami?</label>
+                                <input id="story-name" name="Nome" type="text" autocomplete="name" maxlength="100" required placeholder="Il tuo nome">
+                            </div>
+
+                            <label class="visually-hidden" for="story-message">Fai un respiro profondo e scrivi qui la tua storia...</label>
+                            <textarea id="story-message" name="Messaggio" maxlength="2400" rows="12" required
+                                placeholder="Fai un respiro profondo e scrivi qui la tua storia..."
+                                aria-describedby="story-privacy story-count"></textarea>
+
+                            <div class="writing-meta">
+                                <span id="story-count" aria-live="polite">0 / 2.400</span>
+                                <button class="writing-clear" type="button" id="story-clear">Svuota il testo</button>
+                            </div>
+                        </div>
+
+                        <div class="room-reply">
+                            <label for="story-email">La tua e-mail <span>(dove inviarti la risposta)</span></label>
+                            <input id="story-email" name="Email" type="email" autocomplete="email" maxlength="254" required placeholder="nome@esempio.it">
+                        </div>
+
+                        <div class="writing-submit-row">
+                            <button class="writing-submit" type="submit" id="story-submit" disabled>Affida la tua storia</button>
+                            <p id="story-status" class="story-status" role="status" aria-live="polite"></p>
+                        </div>
+                        <p class="story-privacy" id="story-privacy">Il testo non viene salvato su questo sito. Si aprirà il tuo programma di posta con il messaggio: potrai rileggerlo e scegliere tu se inviarlo a Silvia.</p>
+                    </form>
+                </section>
+
+                <section class="room-after reveal" aria-labelledby="after-title">
+                    <h2 id="after-title">Cosa accade dopo</h2>
+                    <p class="room-after-intro">Un Respiro che Fiorisce nasce come spazio sacro per permetterti di tornare a respirare e di rifiorire dopo aver vissuto troppo a lungo in apnea.</p>
+                    <ol class="room-timeline">
+                        <li>
+                            <span class="room-dot" aria-hidden="true">1</span>
+                            <div>
+                                <h3>Il tuo momento di sfogo</h3>
+                                <p>Scrivimi la tua storia, un pensiero che non ti dà pace o semplicemente ciò che ti senti di far uscire oggi. Non pensare alla forma o alla punteggiatura: lascia scorrere le parole.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="room-dot" aria-hidden="true">2</span>
+                            <div>
+                                <h3>L'ascolto sacro</h3>
+                                <p>Accoglierò ciò che mi affidi con totale rispetto e presenza. Leggerò la tua storia prendendomi il tempo per riordinare i fili e guardarla attraverso la luce dell'empatia.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="room-dot" aria-hidden="true">3</span>
+                            <div>
+                                <h3>La tua lettera di restituzione</h3>
+                                <p>Riceverai direttamente nella tua e-mail una risposta pensata solo per te: uno specchio di parole dolce e sincero da rileggere ogni volta che ne avrai bisogno.</p>
+                            </div>
+                        </li>
+                    </ol>
+                </section>
+
+                <aside class="room-notes reveal" aria-labelledby="notes-title">
+                    <h2 id="notes-title">Piccole note per il tuo cuore</h2>
+                    <ul>
+                        <li><strong>Del tutto gratuito</strong><span>Questo progetto è un dono, un canale d'ascolto puro per chiunque senta il bisogno di essere accolto.</span></li>
+                        <li><strong>Custodia e riservatezza</strong><span>Tutto ciò che scriverai rimarrà protetto e strettamente privato tra me e te.</span></li>
+                        <li><strong>Un ascolto d'anima</strong><span>Questo spazio offre rispecchiamento emotivo e scrittura intuitiva; non sostituisce percorsi medici o psicoterapeutici.</span></li>
+                    </ul>
+                </aside>
+            </main>
+        </div>
+
+        <footer class="site-footer reveal" aria-label="Footer sito">
+            <div class="footer-wrap">
+                <div class="footer-brand">
+                    <img src="images/logo.webp" alt="Mappa della Fioritura" class="footer-logo">
+                    <p class="footer-title">Mappa della Fioritura</p>
+                </div>
+                <div class="footer-contact">
+                    <p class="footer-heading">Contatti</p>
+                    <a href="mailto:silvia@mappadellafioritura.it">silvia@mappadellafioritura.it</a>
+                    <p class="footer-city">Italia</p>
+                </div>
+                <div class="footer-social">
+                    <p class="footer-heading">Seguimi</p>
+                    <a href="https://www.instagram.com/silvia.mappadellafioritura/" class="social-link" aria-label="Instagram">
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://www.facebook.com/share/1BoEdAN7Y4/?mibextid=wwXIfr" class="social-link" aria-label="Facebook">
+                        <span>Facebook</span>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="annoCopyright"></span> Mappa della Fioritura. Tutti i diritti riservati.</p>
+            </div>
+        </footer>
+    </div>
+
+    <a class="back-to-top" href="#top" aria-label="Torna all'inizio della pagina">Torna su</a>
+    <script src="script.js"></script>
+</body>
+
+</html>
