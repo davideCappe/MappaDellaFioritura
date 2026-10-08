@@ -1886,12 +1886,14 @@ function initMobileServicesAccordion() {
 
 function initRaccontamiPage() {
   const form = document.getElementById("story-form");
+  const name = document.getElementById("story-name");
+  const email = document.getElementById("story-email");
   const message = document.getElementById("story-message");
   const count = document.getElementById("story-count");
   const submit = document.getElementById("story-submit");
   const clear = document.getElementById("story-clear");
   const status = document.getElementById("story-status");
-  if (!form || !message || !count || !submit || !clear || !status) return;
+  if (!form || !name || !email || !message || !count || !submit || !clear || !status) return;
 
   const updateWritingState = () => {
     const length = message.value.length;
@@ -1928,8 +1930,8 @@ function initRaccontamiPage() {
       return;
     }
 
-    const subject = encodeURIComponent("Un messaggio da Raccontami");
-    const body = encodeURIComponent(content);
+    const subject = encodeURIComponent("Un messaggio da Un Respiro che Fiorisce");
+    const body = encodeURIComponent(`Nome: ${name.value.trim()}\nE-mail: ${email.value.trim()}\n\n${content}`);
     status.textContent = "Si aprirà il tuo programma di posta: potrai rileggere il testo e scegliere se inviarlo.";
     window.location.href = `mailto:silvia@mappadellafioritura.it?subject=${subject}&body=${body}`;
   });
