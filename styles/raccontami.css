@@ -460,10 +460,6 @@
   line-height: 1.7;
 }
 
-.story-page .main-nav {
-  gap: 14px;
-}
-
 .story-page .footer-contact a {
   overflow-wrap: anywhere;
 }
@@ -556,22 +552,9 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;
   }
-
-  .story-page .main-nav {
-    flex-wrap: wrap;
-    gap: 8px 12px;
-  }
 }
 
 @media (max-width: 380px) {
-  .story-page .main-nav {
-    gap: 6px 9px;
-  }
-
-  .story-page .nav-link {
-    font-size: 0.88rem;
-  }
-
   .story-hero-copy {
     padding-right: 22px;
     padding-left: 22px;

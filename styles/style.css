@@ -429,9 +429,23 @@ input:focus-visible {
 
   .main-nav {
     justify-content: center;
-    gap: 18px;
+    flex-wrap: wrap;
+    gap: 8px 12px;
     margin: 0 0 12px;
     padding: 6px 0 8px;
+  }
+
+  .main-nav::after {
+    top: 46px;
+    bottom: auto;
+  }
+
+  .nav-lang-group {
+    flex: 0 0 100%;
+    justify-content: center;
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
   }
 
   .main-nav.is-scrolled::before {
@@ -471,6 +485,16 @@ input:focus-visible {
   .back-to-top {
     right: 12px;
     bottom: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .main-nav {
+    gap: 6px 9px;
+  }
+
+  .nav-link {
+    font-size: 0.88rem;
   }
 }
 
