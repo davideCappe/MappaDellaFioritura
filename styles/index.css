@@ -1397,10 +1397,6 @@ input:focus-visible {
     line-height: 1;
   }
 
-  .main-nav.is-scrolled::before {
-    height: 48px;
-  }
-
   .nav-link {
     width: auto;
   }

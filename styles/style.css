@@ -449,7 +449,7 @@ input:focus-visible {
   }
 
   .main-nav.is-scrolled::before {
-    height: 48px;
+    height: 70px;
   }
 
   .footer-wrap {
