@@ -1885,6 +1885,7 @@ function initMobileServicesAccordion() {
 }
 
 function initRaccontamiPage() {
+  const isEnglish = document.documentElement.lang === "en";
   const form = document.getElementById("story-form");
   const name = document.getElementById("story-name");
   const email = document.getElementById("story-email");
@@ -1897,7 +1898,7 @@ function initRaccontamiPage() {
 
   const updateWritingState = () => {
     const length = message.value.length;
-    count.textContent = `${new Intl.NumberFormat("it-IT").format(length)} / 2.400`;
+    count.textContent = `${new Intl.NumberFormat(isEnglish ? "en-US" : "it-IT").format(length)} / ${isEnglish ? "2,400" : "2.400"}`;
     submit.disabled = !message.value.trim();
   };
 
@@ -1915,7 +1916,10 @@ function initRaccontamiPage() {
   });
 
   clear.addEventListener("click", () => {
-    if (!message.value || !window.confirm("Vuoi svuotare il testo che hai scritto?")) return;
+    const confirmMessage = isEnglish
+      ? "Do you want to clear the text you have written?"
+      : "Vuoi svuotare il testo che hai scritto?";
+    if (!message.value || !window.confirm(confirmMessage)) return;
     message.value = "";
     status.textContent = "";
     updateWritingState();
@@ -1930,9 +1934,11 @@ function initRaccontamiPage() {
       return;
     }
 
-    const subject = encodeURIComponent("Un messaggio da Un Respiro che Fiorisce");
-    const body = encodeURIComponent(`Nome: ${name.value.trim()}\nE-mail: ${email.value.trim()}\n\n${content}`);
-    status.textContent = "Si aprirà il tuo programma di posta: potrai rileggere il testo e scegliere se inviarlo.";
+    const subject = encodeURIComponent(isEnglish ? "A message from A Breath in Bloom" : "Un messaggio da Un Respiro che Fiorisce");
+    const body = encodeURIComponent(`${isEnglish ? "Name" : "Nome"}: ${name.value.trim()}\n${isEnglish ? "Email" : "E-mail"}: ${email.value.trim()}\n\n${content}`);
+    status.textContent = isEnglish
+      ? "Your email program will open: you can review the text and choose whether to send it."
+      : "Si aprirà il tuo programma di posta: potrai rileggere il testo e scegliere se inviarlo.";
     window.location.href = `mailto:silvia@mappadellafioritura.it?subject=${subject}&body=${body}`;
   });
 
