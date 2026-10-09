@@ -1598,6 +1598,53 @@ function updateNavIndicatorLine(targetLink) {
   }
 }
 
+async function syncPageStyles(doc, targetUrl) {
+  const targetStyles = Array.from(
+    doc.head.querySelectorAll('link[rel="stylesheet"][href]'),
+  )
+    .map((template) => ({
+      template,
+      href: new URL(template.getAttribute("href"), targetUrl).href,
+    }))
+    .filter(({ href }) => new URL(href).origin === window.location.origin);
+  const targetHrefs = new Set(targetStyles.map(({ href }) => href));
+  const currentStyles = Array.from(
+    document.head.querySelectorAll('link[rel="stylesheet"][href]'),
+  ).filter((link) => new URL(link.href).origin === window.location.origin);
+  const currentByHref = new Map(currentStyles.map((link) => [link.href, link]));
+  const pendingLoads = [];
+
+  const resolvedStyles = targetStyles.map(({ template, href }) => {
+    const existing = currentByHref.get(href);
+    if (existing) return existing;
+
+    const link = template.cloneNode(false);
+    link.href = href;
+    pendingLoads.push(
+      new Promise((resolve, reject) => {
+        link.addEventListener("load", resolve, { once: true });
+        link.addEventListener(
+          "error",
+          () =>
+            reject(
+              new Error(`Impossibile caricare il foglio di stile: ${href}`),
+            ),
+          { once: true },
+        );
+        document.head.append(link);
+      }),
+    );
+    return link;
+  });
+
+  await Promise.all(pendingLoads);
+
+  resolvedStyles.forEach((link) => document.head.append(link));
+  currentStyles
+    .filter((link) => !targetHrefs.has(link.href))
+    .forEach((link) => link.remove());
+}
+
 function setActiveNavLink(targetUrl) {
   const nav = document.querySelector(".main-nav");
   if (!nav) return;
@@ -1733,11 +1780,14 @@ async function navigatePage(destination, pushHistory = true) {
       return;
     }
 
+    await syncPageStyles(doc, targetUrl);
+
     if (!prefersReducedMotion) {
       await new Promise((resolve) => window.setTimeout(resolve, 140));
     }
 
     document.title = doc.title;
+    document.documentElement.lang = doc.documentElement.lang;
     const newPageType = doc.body.dataset.page || "home";
     document.body.dataset.page = newPageType;
 
