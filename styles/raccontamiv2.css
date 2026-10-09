@@ -56,6 +56,18 @@
   transform: scale(1.07);
 }
 
+.story-hero--lake {
+  background: linear-gradient(115deg, #e3e8df 0%, #e3e8df 48%, #c7d4c4 100%);
+}
+
+.story-hero--lake .story-landscape {
+  object-position: center 66%;
+}
+
+.story-hero.story-hero--lake::after {
+  background: linear-gradient(90deg, #e3e8df 0%, #e3e8df 39%, rgba(227, 232, 223, 0.94) 51%, rgba(227, 232, 223, 0.12) 74%, rgba(227, 232, 223, 0.02) 100%);
+}
+
 .story-hero::after {
   position: absolute;
   z-index: -1;
