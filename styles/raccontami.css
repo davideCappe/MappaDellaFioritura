@@ -470,27 +470,39 @@
 
 @media (max-width: 760px) {
   .story-hero {
-    min-height: 460px;
-    align-items: flex-start;
+    min-height: 0;
     border-radius: var(--radius-panel);
-    background: #e8eee4;
+    background: #e3e8df;
   }
 
   .story-landscape {
+    position: absolute;
     top: auto;
+    right: auto;
     bottom: 0;
+    z-index: -1;
     width: 100%;
-    height: 56%;
-    object-position: center center;
+    height: clamp(280px, 78vw, 420px);
+    object-position: center 66%;
+    object-fit: cover;
+    transform: none;
+  }
+
+  .story-hero:hover .story-landscape {
+    transform: none;
   }
 
   .story-hero::after {
-    background: linear-gradient(180deg, #e8eee4 0%, #e8eee4 39%, rgba(232, 238, 228, 0.88) 52%, rgba(232, 238, 228, 0) 78%);
+    background: linear-gradient(180deg, #e8eee4 0%, #e8eee4 24%, rgba(232, 238, 228, 0.94) 40%, rgba(232, 238, 228, 0.7) 56%, rgba(232, 238, 228, 0.16) 78%, rgba(232, 238, 228, 0) 100%);
+  }
+
+  .story-hero.story-hero--lake::after {
+    background: linear-gradient(180deg, #e3e8df 0%, #e3e8df 24%, rgba(227, 232, 223, 0.94) 40%, rgba(227, 232, 223, 0.7) 56%, rgba(227, 232, 223, 0.16) 78%, rgba(227, 232, 223, 0) 100%);
   }
 
   .story-hero-copy {
     width: 100%;
-    padding: 36px 28px 0;
+    padding: 36px 28px 250px;
   }
 
   .story-hero h1 {
