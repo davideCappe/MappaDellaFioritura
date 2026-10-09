@@ -1664,12 +1664,6 @@ function aggiornaSelettoreLingua(targetUrl) {
     : "";
   const filename = segments[segments.length - 1] || "index.html";
 
-  if (filename === "raccontami.html" && !currentFolder) {
-    gruppo.innerHTML = '<span class="nav-lang is-current" lang="it" aria-current="true">IT</span>';
-    gruppo.style.display = "none";
-    return;
-  }
-
   gruppo.style.display = "";
 
   gruppo.innerHTML = LINGUE_SUPPORTATE.map((lingua, indice) => {
