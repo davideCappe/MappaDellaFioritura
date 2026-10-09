@@ -65,7 +65,13 @@
 }
 
 .option--ritual .story-landscape {
-  object-position: center 58%;
+  object-fit: cover;
+  object-position: center bottom;
+  transform: scale(1.16);
+}
+
+.option--ritual .story-hero:hover .story-landscape {
+  transform: scale(1.2);
 }
 
 .option--ritual .story-hero {
@@ -73,7 +79,7 @@
 }
 
 .option--ritual .story-hero::after {
-  background: linear-gradient(90deg, #ede7df 0%, #ede7df 39%, rgba(237, 231, 223, 0.94) 51%, rgba(237, 231, 223, 0.12) 74%, rgba(237, 231, 223, 0.02) 100%);
+  background: linear-gradient(90deg, #ede7df 0%, #ede7df 35%, rgba(237, 231, 223, 0.92) 45%, rgba(237, 231, 223, 0.18) 59%, rgba(237, 231, 223, 0.02) 70%);
 }
 
 .option--sunrise .story-landscape {
@@ -149,5 +155,15 @@
   .option--moon .story-hero::after,
   .option--forest .story-hero::after {
     background: linear-gradient(180deg, rgba(232, 238, 228, 0.98) 0%, rgba(232, 238, 228, 0.98) 39%, rgba(232, 238, 228, 0.86) 52%, rgba(232, 238, 228, 0) 78%);
+  }
+
+  .option--ritual .story-landscape {
+    object-fit: cover;
+    object-position: center bottom;
+    transform: scale(1.1);
+  }
+
+  .option--ritual .story-hero:hover .story-landscape {
+    transform: scale(1.1);
   }
 }
