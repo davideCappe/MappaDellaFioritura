@@ -22,7 +22,11 @@
 }
 
 .story-main {
-  padding: 20px 0 8px;
+  padding: 0 0 8px;
+}
+
+.story-page .story-main > .services-brand-mark {
+  margin-bottom: 24px;
 }
 
 .story-hero {
@@ -465,10 +469,6 @@
 }
 
 @media (max-width: 760px) {
-  .story-main {
-    padding-top: 8px;
-  }
-
   .story-hero {
     min-height: 460px;
     align-items: flex-start;
