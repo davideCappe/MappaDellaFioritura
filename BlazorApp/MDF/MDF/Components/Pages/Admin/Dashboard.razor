@@ -1,0 +1,21 @@
+@page "/admin"
+@page "/admin/dashboard"
+@layout AdminLayout
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+
+<PageTitle>Back Office | Dashboard</PageTitle>
+
+<section class="admin-panel">
+    <p class="admin-kicker">Area amministrazione</p>
+    <h1 class="admin-page-title">Dashboard</h1>
+    <p class="admin-lead">Da qui puoi gestire clienti e contenuti personalizzati.</p>
+</section>
+
+<section class="admin-panel">
+    <h2 class="admin-section-title">Prossimi step</h2>
+    <ul class="admin-list">
+        <li>Gestione anagrafica clienti con PublicId GUID</li>
+        <li>Upload audio/PDF associati al cliente</li>
+        <li>Pubblicazione pagina cliente su route <strong>/cliente/{publicId}</strong></li>
+    </ul>
+</section>

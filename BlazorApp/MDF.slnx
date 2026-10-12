@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Elementi di soluzione/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+  </Folder>
+  <Project Path="MDF/MDF.BusinessLayer/MDF.BusinessLayer.csproj" Id="74e8e697-3be7-425f-9aaf-40d161d20eee" />
+  <Project Path="MDF/MDF.Client/MDF.Client.csproj" />
+  <Project Path="MDF/MDF.Shared/MDF.Shared.csproj" Id="827d81c1-a0f4-43cb-863f-37ec8c607e6c" />
+  <Project Path="MDF/MDF/MDF.csproj" />
+</Solution>

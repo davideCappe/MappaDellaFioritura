@@ -51,7 +51,7 @@
 
 .services-index {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   max-width: 920px;
   margin: 0 auto 34px;
   border-top: 1px solid var(--about-rule);
@@ -555,12 +555,6 @@
     margin-right: 8px;
     margin-left: 8px;
     margin-bottom: 26px;
-  }
-
-  .services-index a:last-child {
-    grid-column: 1 / -1;
-    border-top: 1px solid var(--about-rule);
-    border-right: 1px solid var(--about-rule);
   }
 
   .services-index a:nth-child(even) {

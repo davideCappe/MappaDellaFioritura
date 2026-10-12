@@ -1,0 +1,23 @@
+<nav class="admin-nav" aria-label="Navigazione back office">
+    <div class="admin-nav-brand">
+        <a href="/admin/dashboard" class="admin-brand-link">
+            <img src="/images/logo.webp" alt="Mappa della Fioritura" class="admin-brand-logo">
+            <span>Back Office</span>
+        </a>
+    </div>
+
+    <div class="admin-nav-links" role="group" aria-label="Sezioni amministrazione">
+        <NavLink href="/admin/dashboard" Match="NavLinkMatch.All" class="admin-nav-link">Dashboard</NavLink>
+        <NavLink href="/admin/clienti" class="admin-nav-link">Clienti</NavLink>
+        <NavLink href="/admin/contenuti" class="admin-nav-link">Contenuti</NavLink>
+    </div>
+
+    <div class="admin-nav-actions">
+        <a href="/" class="admin-ghost-link">Sito pubblico</a>
+        <form method="post" action="/Account/Logout" class="admin-logout-form">
+            <AntiforgeryToken />
+            <input type="hidden" name="returnUrl" value="" />
+            <button type="submit" class="admin-logout-button">Esci</button>
+        </form>
+    </div>
+</nav>

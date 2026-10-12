@@ -1,0 +1,154 @@
+﻿@page "/Account/Login"
+
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject ILogger<Login> Logger
+@inject IdentityRedirectManager RedirectManager
+
+<PageTitle>Accesso area riservata</PageTitle>
+
+<div class="ambient" aria-hidden="true">
+    <span class="blob blob-a"></span>
+    <span class="blob blob-b"></span>
+    <span class="blob blob-c"></span>
+    <span class="grain"></span>
+</div>
+
+<div class="app login-page">
+    <MainNav ActivePage="Account" EnglishHref="/en/index.html" ShowTellMe="false" />
+
+    <div class="page-content">
+        <main class="login-shell reveal" id="contenuto">
+            <section class="login-card" aria-labelledby="login-title">
+                <header class="login-header">
+                    <img src="/images/logo.webp" alt="Mappa della Fioritura" class="login-logo">
+                    <h1 id="login-title">Area riservata</h1>
+                </header>
+
+                <StatusMessage Message="@errorMessage" />
+
+                <EditForm EditContext="editContext" method="post" OnSubmit="LoginUser" FormName="login" class="login-form">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="validation-summary" role="alert" />
+
+                    <div class="field">
+                        <label for="input-email">Email</label>
+                        <InputText @bind-Value="Input.Email" id="input-email" class="field-input" autocomplete="username webauthn" aria-required="true" placeholder="nome@dominio.it" />
+                        <ValidationMessage For="() => Input.Email" class="field-error" />
+                    </div>
+
+                    <div class="field">
+                        <label for="input-password">Password</label>
+                        <InputText type="password" @bind-Value="Input.Password" id="input-password" class="field-input" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                        <ValidationMessage For="() => Input.Password" class="field-error" />
+                    </div>
+
+                    <label class="remember-row" for="input-rememberme">
+                        <InputCheckbox @bind-Value="Input.RememberMe" id="input-rememberme" class="remember-input" />
+                        <span>Ricordami</span>
+                    </label>
+
+                    <div class="login-actions">
+                        <button type="submit" class="login-submit">Accedi</button>
+                        <PasskeySubmit Operation="PasskeyOperation.Request" Name="Input.Passkey" EmailName="Input.Email" class="passkey-button">Accedi con passkey</PasskeySubmit>
+                    </div>
+                </EditForm>
+            </section>
+        </main>
+    </div>
+</div>
+
+@code {
+    private string? errorMessage;
+    private EditContext editContext = default!;
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = default!;
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Input ??= new();
+
+        editContext = new EditContext(Input);
+
+        if (HttpMethods.IsGet(HttpContext.Request.Method))
+        {
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+        }
+    }
+
+    public async Task LoginUser()
+    {
+        if (!string.IsNullOrEmpty(Input.Passkey?.Error))
+        {
+            errorMessage = $"Error: {Input.Passkey.Error}";
+            return;
+        }
+
+        SignInResult result;
+        if (!string.IsNullOrEmpty(Input.Passkey?.CredentialJson))
+        {
+            // When performing passkey sign-in, don't perform form validation.
+            result = await SignInManager.PasskeySignInAsync(Input.Passkey.CredentialJson);
+        }
+        else
+        {
+            // If doing a password sign-in, validate the form.
+            if (!editContext.Validate())
+            {
+                return;
+            }
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+            result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+        }
+
+        if (result.Succeeded)
+        {
+            Logger.LogInformation("User logged in.");
+            RedirectManager.RedirectTo(ReturnUrl);
+        }
+        else if (result.RequiresTwoFactor)
+        {
+            RedirectManager.RedirectTo(
+                "Account/LoginWith2fa",
+                new() { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
+        }
+        else if (result.IsLockedOut)
+        {
+            Logger.LogWarning("User account locked out.");
+            RedirectManager.RedirectTo("Account/Lockout");
+        }
+        else
+        {
+            errorMessage = "Error: Invalid login attempt.";
+        }
+    }
+
+    private sealed class InputModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = "";
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = "";
+
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
+
+        public PasskeyInputModel? Passkey { get; set; }
+    }
+}

@@ -1,0 +1,100 @@
+@inject NavigationManager NavigationManager
+
+<nav class="main-nav reveal" aria-label="@NavAriaLabel">
+    @if (IsActive("Mappa"))
+    {
+        <a class="nav-link is-active" href="@MapHref" aria-current="page">@MapText</a>
+    }
+    else
+    {
+        <a class="nav-link" href="@MapHref">@MapText</a>
+    }
+
+    @if (IsActive("ChiSono"))
+    {
+        <a class="nav-link is-active" href="@AboutHref" aria-current="page">@AboutText</a>
+    }
+    else
+    {
+        <a class="nav-link" href="@AboutHref">@AboutText</a>
+    }
+
+    @if (IsActive("Servizi"))
+    {
+        <a class="nav-link is-active" href="@ServicesHref" aria-current="page">@ServicesText</a>
+    }
+    else
+    {
+        <a class="nav-link" href="@ServicesHref">@ServicesText</a>
+    }
+
+    @if (ShowTellMe)
+    {
+        @if (IsActive("Raccontami"))
+        {
+            <a class="nav-link is-active" href="@TellMeHref" aria-current="page">@TellMeText</a>
+        }
+        else
+        {
+            <a class="nav-link" href="@TellMeHref">@TellMeText</a>
+        }
+    }
+
+    <AuthorizeView>
+        <Authorized>
+            <a class="nav-link nav-link-auth @(IsInAccountArea ? "is-active" : null)" href="/admin/dashboard" aria-current="@(IsInAccountArea ? "page" : null)">@AdminAreaText</a>
+        </Authorized>
+        <NotAuthorized>
+            <a class="nav-link nav-link-auth @(IsInAccountArea ? "is-active" : null)" href="/Account/Login" aria-current="@(IsInAccountArea ? "page" : null)">@LoginText</a>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <div class="nav-lang-group" role="group" aria-label="@LanguageAriaLabel">
+        @if (IsEnglish)
+        {
+            <a class="nav-lang" href="@ItalianHref" hreflang="it" lang="it">IT</a>
+            <span class="nav-lang-sep" aria-hidden="true">&middot;</span>
+            <span class="nav-lang is-current" lang="en" aria-current="true">EN</span>
+        }
+        else
+        {
+            <span class="nav-lang is-current" lang="it" aria-current="true">IT</span>
+            <span class="nav-lang-sep" aria-hidden="true">&middot;</span>
+            <a class="nav-lang" href="@EnglishHref" hreflang="en" lang="en">EN</a>
+        }
+    </div>
+</nav>
+
+@code {
+    [Parameter] public string ActivePage { get; set; } = "Mappa";
+    [Parameter] public string EnglishHref { get; set; } = "en/index.html";
+    [Parameter] public string ItalianHref { get; set; } = "/";
+    [Parameter] public bool IsEnglish { get; set; }
+    [Parameter] public string NavAriaLabel { get; set; } = "Menu principale";
+    [Parameter] public string LanguageAriaLabel { get; set; } = "Lingua";
+    [Parameter] public string MapHref { get; set; } = "/";
+    [Parameter] public string MapText { get; set; } = "Mappa";
+    [Parameter] public string AboutHref { get; set; } = "/chi-sono";
+    [Parameter] public string AboutText { get; set; } = "Chi sono";
+    [Parameter] public string ServicesHref { get; set; } = "/servizi";
+    [Parameter] public string ServicesText { get; set; } = "Servizi";
+    [Parameter] public bool ShowTellMe { get; set; } = true;
+    [Parameter] public string TellMeHref { get; set; } = "/raccontami";
+    [Parameter] public string TellMeText { get; set; } = "Raccontami";
+
+    private string LoginText => IsEnglish ? "Login" : "Accedi";
+    private string AdminAreaText => IsEnglish ? "Admin area" : "Area admin";
+
+    private bool IsInAccountArea
+    {
+        get
+        {
+            var path = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+            return path.StartsWith("Account", StringComparison.OrdinalIgnoreCase)
+                || path.StartsWith("admin", StringComparison.OrdinalIgnoreCase);
+        }
+    }
+
+    private bool IsActive(string page)
+        => string.Equals(ActivePage, page, StringComparison.OrdinalIgnoreCase);
+}
