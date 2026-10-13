@@ -1,5 +1,6 @@
 ﻿@page "/raccontami"
 @page "/raccontami.html"
+@inject NavigationManager Nav
 
 <PageTitle>Un Respiro che Fiorisce | Mappa della Fioritura</PageTitle>
 
@@ -41,7 +42,7 @@
                         <p class="story-kicker">Uno spazio d'ascolto gratuito</p>
                         <h1 id="story-title">Un Respiro<br>che Fiorisce</h1>
                         <p class="story-lead">Uno spazio d'ascolto gratuito dove depositare ciò che pesa e ritrovare il tuo ritmo.</p>
-                        <a class="story-hero-link" href="#scrivimi">Fai spazio alle tue parole <span aria-hidden="true">↓</span></a>
+                        <a class="story-hero-link" href="@Nav.ToBaseRelativePath(Nav.Uri).Split('#')[0]#scrivimi">Fai spazio alle tue parole <span aria-hidden="true">↓</span></a>
                     </div>
                     <div class="story-hero-badge" aria-hidden="true">
                         <span class="story-hero-badge-mark">✦</span>
