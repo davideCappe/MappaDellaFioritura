@@ -1,21 +1,21 @@
-﻿@page "/raccontami"
-@page "/raccontami.html"
+﻿@page "/en/raccontami"
+@page "/en/raccontami.html"
 @inject NavigationManager Nav
 
-<PageTitle>Un Respiro che Fiorisce | Mappa della Fioritura</PageTitle>
+<PageTitle>A Breath in Bloom | Mappa della Fioritura</PageTitle>
 
 <HeadContent>
-    <meta name="description" content="Uno spazio d'ascolto gratuito dove depositare ciò che pesa e ritrovare il tuo ritmo.">
-    <link rel="canonical" href="https://mappadellafioritura.it/raccontami.html">
+    <meta name="description" content="A free listening space where you can set down what weighs on you and reconnect with your own rhythm.">
+    <link rel="canonical" href="https://mappadellafioritura.it/en/raccontami.html">
     <meta name="robots" content="noindex, nofollow">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Un Respiro che Fiorisce | Mappa della Fioritura">
-    <meta property="og:description" content="Uno spazio d'ascolto gratuito dove depositare ciò che pesa e ritrovare il tuo ritmo.">
-    <meta property="og:url" content="https://mappadellafioritura.it/raccontami.html">
+    <meta property="og:title" content="A Breath in Bloom | Mappa della Fioritura">
+    <meta property="og:description" content="A free listening space where you can set down what weighs on you and reconnect with your own rhythm.">
+    <meta property="og:url" content="https://mappadellafioritura.it/en/raccontami.html">
     <meta property="og:image" content="https://mappadellafioritura.it/images/social-preview.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://mappadellafioritura.it/images/social-preview.png">
-    <link rel="icon" type="image/webp" href="images/logo.webp">
+    <link rel="icon" type="image/webp" href="/images/logo.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -25,107 +25,119 @@
 </HeadContent>
 
 <div class="story-page" id="top">
-    <a class="skip-link" href="#page-content">Salta al contenuto</a>
+    <a class="skip-link" href="#page-content">Skip to content</a>
 
     <div class="app">
-        <MainNav ActivePage="Raccontami" EnglishHref="/en/raccontami.html" />
+        <MainNav ActivePage="Raccontami"
+                 IsEnglish="true"
+                 ItalianHref="/raccontami.html"
+                 NavAriaLabel="Main navigation"
+                 LanguageAriaLabel="Language"
+                 MapHref="/en/index.html"
+                 MapText="Map"
+                 AboutHref="/en/chi-sono.html"
+                 AboutText="About"
+                 ServicesHref="/en/servizi.html"
+                 ServicesText="Services"
+                 TellMeHref="/en/raccontami.html"
+                 TellMeText="Tell me" />
 
         <div id="page-content" class="page-content">
             <main id="contenuto" class="story-main">
                 <div class="about-brand-mark services-brand-mark" aria-hidden="true">
-                    <img src="images/logo.webp" alt="" class="about-brand-logo">
+                    <img src="/images/logo.webp" alt="" class="about-brand-logo">
                 </div>
 
                 <section class="story-hero story-hero--lake reveal" aria-labelledby="story-title">
-                    <img class="story-landscape" src="images/raccontami-mare.jpeg" alt="" aria-hidden="true">
+                    <img class="story-landscape" src="/images/raccontami-mare.jpeg" alt="" aria-hidden="true">
                     <div class="story-hero-copy">
-                        <p class="story-kicker">Uno spazio d'ascolto gratuito</p>
-                        <h1 id="story-title">Un Respiro<br>che Fiorisce</h1>
-                        <p class="story-lead">Uno spazio d'ascolto gratuito dove depositare ciò che pesa e ritrovare il tuo ritmo.</p>
-                        <a class="story-hero-link" href="@Nav.ToBaseRelativePath(Nav.Uri).Split('#')[0]#scrivimi">Fai spazio alle tue parole <span aria-hidden="true">↓</span></a>
+                        <p class="story-kicker">A free listening space</p>
+                        <h1 id="story-title">A Breath<br>in Bloom</h1>
+                        <p class="story-lead">A free listening space where you can set down what weighs on you and reconnect with your own rhythm.</p>
+                        <a class="story-hero-link" href="@Nav.ToBaseRelativePath(Nav.Uri).Split('#')[0]#scrivimi">Make room for your words <span aria-hidden="true">↓</span></a>
                     </div>
                     <div class="story-hero-badge" aria-hidden="true">
                         <span class="story-hero-badge-mark">✦</span>
-                        <span>Un luogo<br>per te</span>
+                        <span>A place<br>for you</span>
                     </div>
                 </section>
 
                 <section class="story-welcome reveal" aria-labelledby="welcome-title">
-                    <p class="story-kicker">Prima di cominciare</p>
-                    <h2 id="welcome-title">Qui puoi prenderti il tuo tempo</h2>
-                    <p>Pensati seduto, tranquillo, in un luogo per te sicuro e respira. Respira profondamente fino a quando i battiti del tuo cuore non rallentano. E ora scrivi. Scrivi di getto.</p>
-                    <p>Lascia andare tutto ciò che ti sta impedendo di respirare a pieni polmoni.</p>
-                    <p class="story-welcome-emphasis">Un Respiro che Fiorisce nasce come spazio sacro per permetterti di tornare a respirare, per permetterti di rifiorire dopo aver per troppo tempo vissuto in apnea.</p>
+                    <p class="story-kicker">Before you begin</p>
+                    <h2 id="welcome-title">Here, you can take your time</h2>
+                    <p>Imagine yourself sitting quietly in a place where you feel safe, and breathe. Breathe deeply until your heartbeat slows down. Then write. Write freely.</p>
+                    <p>Let go of everything that is keeping you from breathing fully.</p>
+                    <p class="story-welcome-emphasis">A Breath in Bloom was created as a sacred space to help you breathe again, to help you bloom after living for too long in a state of holding your breath.</p>
                 </section>
 
                 <section class="story-steps-section reveal" aria-labelledby="steps-title">
                     <div class="story-section-heading">
-                        <p class="story-kicker">Senza fretta, un passo alla volta</p>
-                        <h2 id="steps-title">Come accade la magia</h2>
-                        <p>Tre semplici passi per affidarmi ciò che senti.</p>
+                        <p class="story-kicker">Without rushing, one step at a time</p>
+                        <h2 id="steps-title">How the magic happens</h2>
+                        <p>Three simple steps to entrust me with what you feel.</p>
                     </div>
                     <ol class="story-steps">
                         <li class="story-step">
                             <span class="story-step-number" aria-hidden="true">01</span>
-                            <h3>Il tuo momento di sfogo</h3>
-                            <p>Usa il modulo qui sotto per scrivermi la tua storia, un pensiero che non ti dà pace o semplicemente ciò che ti senti di far uscire oggi. Non pensare alla forma o alla punteggiatura: lascia scorrere le parole.</p>
+                            <h3>Your moment to let it out</h3>
+                            <p>Use the form below to write me your story, a thought that will not leave you in peace, or simply whatever you feel ready to release today. Do not worry about form or punctuation: let the words flow.</p>
                         </li>
                         <li class="story-step">
                             <span class="story-step-number" aria-hidden="true">02</span>
-                            <h3>L'ascolto sacro</h3>
-                            <p>Accoglierò ciò che mi affidi con totale rispetto e presenza. Leggerò la tua storia prendendomi il tempo per riordinare i fili e guardarla attraverso la luce dell'empatia.</p>
+                            <h3>Sacred listening</h3>
+                            <p>I will receive what you share with complete respect and presence. I will read your story, taking the time to untangle its threads and see it through the light of empathy.</p>
                         </li>
                         <li class="story-step">
                             <span class="story-step-number" aria-hidden="true">03</span>
-                            <h3>La tua lettera di restituzione</h3>
-                            <p>Riceverai direttamente nella tua e-mail una risposta pensata solo per te: uno specchio di parole dolce e sincero da rileggere ogni volta che ne avrai bisogno.</p>
+                            <h3>Your reply letter</h3>
+                            <p>You will receive an answer made just for you in your inbox: a gentle, sincere mirror in words, to revisit whenever you need it.</p>
                         </li>
                     </ol>
                 </section>
 
                 <aside class="story-notes reveal" aria-labelledby="notes-title">
                     <div class="story-section-heading">
-                        <p class="story-kicker">Piccole note per il tuo cuore</p>
-                        <h2 id="notes-title">Un luogo gentile e custodito</h2>
+                        <p class="story-kicker">Small notes for your heart</p>
+                        <h2 id="notes-title">A gentle, held space</h2>
                     </div>
                     <ul class="story-notes-list">
-                        <li><strong>Uno spazio del tutto gratuito.</strong> Questo progetto è un dono, un canale d'ascolto puro per chiunque senta il bisogno di essere accolto.</li>
-                        <li><strong>Custodia e riservatezza.</strong> Tutto ciò che scriverai rimarrà protetto e strettamente privato tra me e te.</li>
-                        <li><strong>Un ascolto d'anima.</strong> Questo spazio offre rispecchiamento emotivo e scrittura intuitiva; non sostituisce percorsi medici o psicoterapeutici.</li>
+                        <li><strong>A completely free space.</strong> This project is a gift: a channel for pure listening for anyone who feels the need to be received.</li>
+                        <li><strong>Care and confidentiality.</strong> Everything you write will remain protected and strictly private between you and me.</li>
+                        <li><strong>Soulful listening.</strong> This space offers emotional reflection and intuitive writing; it does not replace medical or psychotherapeutic care.</li>
                     </ul>
                 </aside>
 
                 <section class="story-contact reveal" id="scrivimi" aria-labelledby="contact-title">
                     <div class="story-section-heading">
-                        <p class="story-kicker">Il tuo spazio è pronto</p>
-                        <h2 id="contact-title">Fai un respiro profondo</h2>
-                        <p>Scrivi qui la tua storia. Puoi lasciare andare le parole così come arrivano.</p>
+                        <p class="story-kicker">Your space is ready</p>
+                        <h2 id="contact-title">Take a deep breath</h2>
+                        <p>Write your story here. You can let the words come exactly as they are.</p>
                     </div>
 
-                    <form id="story-form" action="mailto:silvia@mappadellafioritura.it?subject=Un%20messaggio%20da%20Un%20Respiro%20che%20Fiorisce" method="post" enctype="text/plain">
+                    <form id="story-form" action="mailto:silvia@mappadellafioritura.it?subject=A%20message%20from%20A%20Breath%20in%20Bloom" method="post" enctype="text/plain">
                         <div class="story-fields">
                             <div class="story-field">
-                                <label for="story-name">Come vuoi che ti chiami?</label>
-                                <input id="story-name" name="Nome" type="text" autocomplete="name" maxlength="100" required>
+                                <label for="story-name">What would you like me to call you?</label>
+                                <input id="story-name" name="Name" type="text" autocomplete="name" maxlength="100" required>
                             </div>
                             <div class="story-field">
-                                <label for="story-email">La tua e-mail <span>(dove inviarti la risposta)</span></label>
+                                <label for="story-email">Your email <span>(where I can send your reply)</span></label>
                                 <input id="story-email" name="Email" type="email" autocomplete="email" maxlength="254" required>
                             </div>
                         </div>
                         <div class="story-field story-message-field">
-                            <label for="story-message">Fai un respiro profondo e scrivi qui la tua storia...</label>
-                            <textarea id="story-message" name="Messaggio" maxlength="2400" rows="9" required placeholder="Non pensare alla forma o alla punteggiatura. Lascia scorrere le parole..." aria-describedby="story-privacy story-count"></textarea>
+                            <label for="story-message">Take a deep breath and write your story here...</label>
+                            <textarea id="story-message" name="Message" maxlength="2400" rows="9" required placeholder="Don't worry about form or punctuation. Let the words flow..." aria-describedby="story-privacy story-count"></textarea>
                             <div class="writing-meta">
-                                <span id="story-count" aria-live="polite">0 / 2.400</span>
-                                <button class="writing-clear" type="button" id="story-clear">Svuota il testo</button>
+                                <span id="story-count" aria-live="polite">0 / 2,400</span>
+                                <button class="writing-clear" type="button" id="story-clear">Clear text</button>
                             </div>
                         </div>
                         <div class="writing-submit-row">
-                            <button class="writing-submit" type="submit" id="story-submit" disabled>Prepara il tuo messaggio</button>
+                            <button class="writing-submit" type="submit" id="story-submit" disabled>Prepare your message</button>
                             <p id="story-status" class="story-status" role="status" aria-live="polite"></p>
                         </div>
-                        <p class="story-privacy" id="story-privacy">Il testo non viene salvato su questo sito. Si aprirà il tuo programma di posta con il messaggio: potrai rileggerlo e scegliere tu se inviarlo a Silvia.</p>
+                        <p class="story-privacy" id="story-privacy">Your text is not saved on this website. Your email program will open with your message: you can review it and choose whether to send it to Silvia.</p>
                     </form>
                 </section>
             </main>
