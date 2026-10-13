@@ -28,18 +28,15 @@
         <a class="nav-link" href="@ServicesHref">@ServicesText</a>
     }
 
-    @if (ShowTellMe)
+    @if (IsActive("Raccontami"))
     {
-        @if (IsActive("Raccontami"))
-        {
-            <a class="nav-link is-active" href="@TellMeHref" aria-current="page">@TellMeText</a>
-        }
-        else
-        {
-            <a class="nav-link" href="@TellMeHref">@TellMeText</a>
-        }
+        <a class="nav-link is-active" href="@TellMeHref" aria-current="page">@TellMeText</a>
     }
-
+    else
+    {
+        <a class="nav-link" href="@TellMeHref">@TellMeText</a>
+    }
+    
     <AuthorizeView>
         <Authorized>
             <a class="nav-link nav-link-auth @(IsInAccountArea ? "is-active" : null)" href="/admin/dashboard" aria-current="@(IsInAccountArea ? "page" : null)">@AdminAreaText</a>
@@ -77,8 +74,7 @@
     [Parameter] public string AboutHref { get; set; } = "/chi-sono";
     [Parameter] public string AboutText { get; set; } = "Chi sono";
     [Parameter] public string ServicesHref { get; set; } = "/servizi";
-    [Parameter] public string ServicesText { get; set; } = "Servizi";
-    [Parameter] public bool ShowTellMe { get; set; } = true;
+    [Parameter] public string ServicesText { get; set; } = "Servizi";    
     [Parameter] public string TellMeHref { get; set; } = "/raccontami";
     [Parameter] public string TellMeText { get; set; } = "Raccontami";
 
