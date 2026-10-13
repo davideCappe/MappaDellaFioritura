@@ -1,11 +1,297 @@
 @page "/admin/contenuti"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.EntityFrameworkCore
+@using MDF.Services
+@using MDF.Shared.Constants
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
+@inject ClienteStorageService StorageService
+@inject NavigationManager NavigationManager
 @layout AdminLayout
-@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@attribute [Authorize(Roles = Roles.Admin + "," + Roles.SuperAdmin)]
 
 <PageTitle>Back Office | Contenuti</PageTitle>
 
 <section class="admin-panel">
     <p class="admin-kicker">Back Office</p>
     <h1 class="admin-page-title">Contenuti</h1>
-    <p class="admin-lead">Qui gestirai upload e ordinamento di audio e PDF per cliente.</p>
+    <p class="admin-lead">
+        Upload ed eliminazione di immagini, audio e PDF per singolo cliente.
+    </p>
 </section>
+
+@if (!string.IsNullOrWhiteSpace(feedbackMessage))
+{
+    <section class="@FeedbackCssClass" role="alert">
+        @feedbackMessage
+    </section>
+}
+
+<section class="admin-grid">
+    <article class="admin-panel">
+        <h2 class="admin-section-title">Selezione cliente</h2>
+
+        @if (clienti.Count == 0)
+        {
+            <div class="admin-empty">
+                Nessun cliente disponibile. Crea prima un cliente nella sezione <a href="/admin/clienti">Clienti</a>.
+            </div>
+        }
+        else
+        {
+            <div class="admin-field">
+                <label for="cliente-select">Cliente</label>
+                <select id="cliente-select" class="admin-select" value="@SelectedClienteIdValue" @onchange="OnClienteChanged">
+                    @foreach (var cliente in clienti)
+                    {
+                        <option value="@cliente.Id">@cliente.Nome</option>
+                    }
+                </select>
+            </div>
+
+            @if (selectedCliente is not null)
+            {
+                <div class="admin-stack">
+                    <div class="admin-field">
+                        <label>PublicId</label>
+                        <div class="admin-input admin-code">@selectedCliente.PublicId</div>
+                    </div>
+
+                    <div class="admin-field">
+                        <label>Route pubblica prevista</label>
+                        <div class="admin-input admin-code">@StorageService.GetPublicRoute(selectedCliente.PublicId)</div>
+                    </div>
+
+                    <div class="admin-field">
+                        <label>Cartella fisica</label>
+                        <div class="admin-input admin-code">@StorageService.GetClienteFolder(selectedCliente.PublicId)</div>
+                    </div>
+                </div>
+            }
+        }
+    </article>
+
+    <article class="admin-panel">
+        <h2 class="admin-section-title">Upload file</h2>
+
+        @if (selectedCliente is null)
+        {
+            <div class="admin-empty">Seleziona un cliente per procedere.</div>
+        }
+        else
+        {
+            <div class="admin-upload-box">
+                <InputFile OnChange="OnFilesSelected" multiple accept=".jpg,.jpeg,.png,.webp,.gif,.svg,.pdf,.mp3,.wav,.ogg,.m4a" class="admin-input" />
+
+                <p class="admin-helper">
+                    Formati consentiti: immagini, PDF, MP3/WAV/OGG/M4A. Dimensione massima per file: 50 MB.
+                </p>
+
+                @if (selectedFiles.Count > 0)
+                {
+                    <ul class="admin-file-list">
+                        @foreach (var file in selectedFiles)
+                        {
+                            <li class="admin-file-row">
+                                <div>
+                                    <strong>@file.Name</strong>
+                                    <div class="admin-file-meta">@FormatBytes(file.Size)</div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+
+                <div class="admin-actions">
+                    <button type="button" class="admin-button" disabled="@(selectedFiles.Count == 0)" @onclick="UploadAsync">
+                        Carica file
+                    </button>
+                </div>
+            </div>
+        }
+    </article>
+</section>
+
+<section class="admin-panel">
+    <h2 class="admin-section-title">File del cliente</h2>
+
+    @if (selectedCliente is null)
+    {
+        <div class="admin-empty">Nessun cliente selezionato.</div>
+    }
+    else if (storedFiles.Count == 0)
+    {
+        <div class="admin-empty">Nessun file presente per questo cliente.</div>
+    }
+    else
+    {
+        <ul class="admin-file-list">
+            @foreach (var file in storedFiles)
+            {
+                <li class="admin-file-row">
+                    <div>
+                        <strong>@file.Name</strong>
+                        <div class="admin-file-meta">
+                            @FormatBytes(file.Size) · aggiornato il @file.LastWriteUtc.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                        </div>
+                    </div>
+
+                    <button type="button"
+                            class="admin-button admin-button-danger"
+                            @onclick="async () => await DeleteFileAsync(file.Name)">
+                        Elimina
+                    </button>
+                </li>
+            }
+        </ul>
+    }
+</section>
+
+@code {
+    private const long MaxAllowedFileSize = 50 * 1024 * 1024;
+
+    [SupplyParameterFromQuery(Name = "clienteId")]
+    public int? ClienteId { get; set; }
+
+    private List<Cliente> clienti = [];
+    private Cliente? selectedCliente;
+    private IReadOnlyList<IBrowserFile> selectedFiles = [];
+    private IReadOnlyList<ClienteStoredFile> storedFiles = [];
+    private string? feedbackMessage;
+    private bool isError;
+
+    private string FeedbackCssClass => isError
+        ? "admin-alert admin-alert-error"
+        : "admin-alert admin-alert-success";
+
+    private string SelectedClienteIdValue => ClienteId?.ToString() ?? string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadClientiAsync();
+        ResolveSelectedCliente();
+        LoadStoredFiles();
+    }
+
+    private async Task LoadClientiAsync()
+    {
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        clienti = await dbContext.Clienti
+            .OrderBy(x => x.Nome)
+            .ToListAsync();
+    }
+
+    private void ResolveSelectedCliente()
+    {
+        if (clienti.Count == 0)
+        {
+            selectedCliente = null;
+            ClienteId = null;
+            return;
+        }
+
+        selectedCliente = clienti.FirstOrDefault(x => x.Id == ClienteId) ?? clienti[0];
+        ClienteId = selectedCliente.Id;
+    }
+
+    private void LoadStoredFiles()
+    {
+        storedFiles = selectedCliente is null
+            ? []
+            : StorageService.GetFiles(selectedCliente.PublicId);
+    }
+
+    private void OnFilesSelected(InputFileChangeEventArgs args)
+    {
+        selectedFiles = args.GetMultipleFiles(20);
+        feedbackMessage = null;
+        isError = false;
+    }
+
+    private Task OnClienteChanged(ChangeEventArgs args)
+    {
+        if (!int.TryParse(args.Value?.ToString(), out var clienteId))
+        {
+            return Task.CompletedTask;
+        }
+
+        NavigationManager.NavigateTo($"/admin/contenuti?clienteId={clienteId}", replace: true);
+        return Task.CompletedTask;
+    }
+
+    private async Task UploadAsync()
+    {
+        if (selectedCliente is null || selectedFiles.Count == 0)
+        {
+            SetError("Error: selezionare prima un cliente e almeno un file.");
+            return;
+        }
+
+        try
+        {
+            foreach (var file in selectedFiles)
+            {
+                await using var stream = file.OpenReadStream(MaxAllowedFileSize);
+                await StorageService.SaveFileAsync(selectedCliente.PublicId, file.Name, stream);
+            }
+
+            selectedFiles = [];
+            LoadStoredFiles();
+            SetSuccess("File caricati correttamente.");
+        }
+        catch (Exception ex)
+        {
+            SetError($"Error: {ex.Message}");
+        }
+    }
+
+    private Task DeleteFileAsync(string fileName)
+    {
+        if (selectedCliente is null)
+        {
+            SetError("Error: cliente non selezionato.");
+            return Task.CompletedTask;
+        }
+
+        try
+        {
+            StorageService.DeleteFile(selectedCliente.PublicId, fileName);
+            LoadStoredFiles();
+            SetSuccess("File eliminato correttamente.");
+        }
+        catch (Exception ex)
+        {
+            SetError($"Error: {ex.Message}");
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private static string FormatBytes(long bytes)
+    {
+        string[] sizes = ["B", "KB", "MB", "GB"];
+        double len = bytes;
+        var order = 0;
+
+        while (len >= 1024 && order < sizes.Length - 1)
+        {
+            order++;
+            len /= 1024;
+        }
+
+        return $"{len:0.##} {sizes[order]}";
+    }
+
+    private void SetSuccess(string message)
+    {
+        feedbackMessage = message;
+        isError = false;
+    }
+
+    private void SetError(string message)
+    {
+        feedbackMessage = message;
+        isError = true;
+    }
+}

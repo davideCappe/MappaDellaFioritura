@@ -1,21 +1,44 @@
 @page "/admin"
 @page "/admin/dashboard"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@using MDF.Shared.Constants
 @layout AdminLayout
-@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@attribute [Authorize(Roles = Roles.Admin + "," + Roles.SuperAdmin)]
 
 <PageTitle>Back Office | Dashboard</PageTitle>
 
 <section class="admin-panel">
     <p class="admin-kicker">Area amministrazione</p>
     <h1 class="admin-page-title">Dashboard</h1>
-    <p class="admin-lead">Da qui puoi gestire clienti e contenuti personalizzati.</p>
+    <p class="admin-lead">
+        Da qui puoi gestire clienti, identificativi pubblici e contenuti statici associati.
+    </p>
+
+    <div class="admin-actions admin-actions-spaced">
+        <a href="/admin/clienti" class="admin-button">Gestisci clienti</a>
+        <a href="/admin/contenuti" class="admin-button admin-button-secondary">Gestisci contenuti</a>
+    </div>
 </section>
 
-<section class="admin-panel">
-    <h2 class="admin-section-title">Prossimi step</h2>
-    <ul class="admin-list">
-        <li>Gestione anagrafica clienti con PublicId GUID</li>
-        <li>Upload audio/PDF associati al cliente</li>
-        <li>Pubblicazione pagina cliente su route <strong>/cliente/{publicId}</strong></li>
-    </ul>
+<section class="admin-link-grid">
+    <article class="admin-panel">
+        <h2 class="admin-section-title">Clienti</h2>
+        <p class="admin-helper">
+            Crea e modifica i clienti salvando il mapping tra nome cliente e <strong>PublicId GUID</strong>.
+        </p>
+        <p class="admin-helper">
+            La futura pagina pubblica risponderà su <strong>/cliente/{publicId}</strong>.
+        </p>
+    </article>
+
+    <article class="admin-panel">
+        <h2 class="admin-section-title">Contenuti statici</h2>
+        <p class="admin-helper">
+            Ogni cliente avrà una sottocartella dedicata chiamata come il suo <strong>PublicId</strong>.
+        </p>
+        <p class="admin-helper">
+            In questa fase il back office prepara upload, elenco ed eliminazione di audio, immagini e PDF.
+        </p>
+    </article>
 </section>

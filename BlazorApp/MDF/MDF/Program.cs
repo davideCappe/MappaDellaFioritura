@@ -3,6 +3,7 @@ using MDF.BusinessLayer.Data;
 using MDF.BusinessLayer.Settings;
 using MDF.Components;
 using MDF.Components.Account;
+using MDF.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,7 @@ builder.Services.AddAuthentication(options =>
     .AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+void configureDb(DbContextOptionsBuilder options) =>
     options.UseSqlServer(connectionString, sqlOptions =>
     {
         // Abilita la resilienza automatica per errori SQL transienti
@@ -39,7 +40,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
             maxRetryCount: 5,
             maxRetryDelay: TimeSpan.FromSeconds(3),
             errorNumbersToAdd: null);
-    }));
+    });
+
+builder.Services.AddDbContextFactory<ApplicationDbContext>(configureDb);
+builder.Services.AddScoped(sp =>
+    sp.GetRequiredService<IDbContextFactory<ApplicationDbContext>>().CreateDbContext());
+builder.Services.AddScoped<ClienteStorageService>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options =>

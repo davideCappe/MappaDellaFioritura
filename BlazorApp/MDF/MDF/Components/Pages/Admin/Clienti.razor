@@ -1,11 +1,295 @@
 @page "/admin/clienti"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@using MDF.Services
+@using MDF.Shared.Constants
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
+@inject ClienteStorageService StorageService
+@inject NavigationManager NavigationManager
 @layout AdminLayout
-@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@attribute [Authorize(Roles = Roles.Admin + "," + Roles.SuperAdmin)]
 
 <PageTitle>Back Office | Clienti</PageTitle>
 
 <section class="admin-panel">
     <p class="admin-kicker">Back Office</p>
     <h1 class="admin-page-title">Clienti</h1>
-    <p class="admin-lead">Qui inserirai gestione cliente, stato e link pubblico.</p>
+    <p class="admin-lead">
+        Gestione anagrafica cliente e mapping con il relativo <strong>PublicId</strong>.
+    </p>
 </section>
+
+@if (!string.IsNullOrWhiteSpace(feedbackMessage))
+{
+    <section class="@FeedbackCssClass" role="alert">
+        @feedbackMessage
+    </section>
+}
+
+<section class="admin-grid">
+    <article class="admin-panel">
+        <h2 class="admin-section-title">@(isEditing ? "Modifica cliente" : "Nuovo cliente")</h2>
+
+        <EditForm Model="model" OnValidSubmit="SaveAsync" FormName="cliente-form" class="admin-form">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="admin-field">
+                <label for="cliente-nome">Nome cliente</label>
+                <InputText id="cliente-nome" @bind-Value="model.Nome" class="admin-input" />
+                <ValidationMessage For="() => model.Nome" />
+            </div>
+
+            <div class="admin-field">
+                <label for="cliente-publicid">PublicId</label>
+                <InputText id="cliente-publicid" @bind-Value="model.PublicId" class="admin-input admin-code" />
+                <p class="admin-helper">Questo GUID verrà usato per la route pubblica e per la cartella dei file.</p>
+            </div>
+
+            <div class="admin-actions">
+                <button type="button" class="admin-button admin-button-secondary" @onclick="GenerateNewPublicId">
+                    Genera nuovo GUID
+                </button>
+            </div>
+
+            <label class="admin-checkbox" for="cliente-attivo">
+                <InputCheckbox id="cliente-attivo" @bind-Value="model.IsAttivo" />
+                <span>Cliente attivo</span>
+            </label>
+
+            <div class="admin-field">
+                <label>URL pubblico previsto</label>
+                <div class="admin-input admin-code">@PublicUrlPreview</div>
+            </div>
+
+            <div class="admin-actions">
+                <button type="submit" class="admin-button">Salva</button>
+                <button type="button" class="admin-button admin-button-secondary" @onclick="ResetForm">
+                    Annulla
+                </button>
+            </div>
+        </EditForm>
+    </article>
+
+    <article class="admin-panel">
+        <h2 class="admin-section-title">Elenco clienti</h2>
+
+        @if (clienti.Count == 0)
+        {
+            <div class="admin-empty">Nessun cliente presente.</div>
+        }
+        else
+        {
+            <div class="admin-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>PublicId</th>
+                            <th>Stato</th>
+                            <th>Route</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cliente in clienti)
+                        {
+                            <tr>
+                                <td>@cliente.Nome</td>
+                                <td class="admin-code">@cliente.PublicId</td>
+                                <td>
+                                    <span class="admin-pill @(cliente.IsAttivo ? string.Empty : "admin-pill-muted")">
+                                        @(cliente.IsAttivo ? "Attivo" : "Disattivo")
+                                    </span>
+                                </td>
+                                <td class="admin-code">@StorageService.GetPublicRoute(cliente.PublicId)</td>
+                                <td>
+                                    <div class="admin-inline-actions">
+                                        <button type="button" class="admin-button admin-button-secondary" @onclick="() => Edit(cliente)">
+                                            Modifica
+                                        </button>
+                                        <button type="button" class="admin-button admin-button-secondary" @onclick="() => GoToContenuti(cliente.Id)">
+                                            Contenuti
+                                        </button>
+                                        <button type="button" class="admin-button admin-button-danger" @onclick="async () => await DeleteAsync(cliente.Id)">
+                                            Elimina
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </article>
+</section>
+
+@code {
+    private readonly ClienteFormModel model = new();
+    private List<Cliente> clienti = [];
+    private bool isEditing;
+    private int? editingId;
+    private string? feedbackMessage;
+    private bool isError;
+
+    private string FeedbackCssClass => isError
+        ? "admin-alert admin-alert-error"
+        : "admin-alert admin-alert-success";
+
+    private string PublicUrlPreview
+        => Guid.TryParse(model.PublicId, out var publicId)
+            ? StorageService.GetPublicRoute(publicId)
+            : "/cliente/{publicId}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        ResetForm();
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        clienti = await dbContext.Clienti
+            .OrderBy(x => x.Nome)
+            .ToListAsync();
+    }
+
+    private async Task SaveAsync()
+    {
+        feedbackMessage = null;
+
+        if (!Guid.TryParse(model.PublicId, out var publicId))
+        {
+            SetError("Error: il PublicId non è un GUID valido.");
+            return;
+        }
+
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+
+        var publicIdExists = await dbContext.Clienti
+            .AnyAsync(x => x.PublicId == publicId && x.Id != editingId);
+
+        if (publicIdExists)
+        {
+            SetError("Error: esiste già un cliente con questo PublicId.");
+            return;
+        }
+
+        if (isEditing && editingId.HasValue)
+        {
+            var cliente = await dbContext.Clienti.FirstOrDefaultAsync(x => x.Id == editingId.Value);
+
+            if (cliente is null)
+            {
+                SetError("Error: cliente non trovato.");
+                return;
+            }
+
+            cliente.Nome = model.Nome.Trim();
+            cliente.PublicId = publicId;
+            cliente.IsAttivo = model.IsAttivo;
+            cliente.UpdatedUtc = DateTime.UtcNow;
+        }
+        else
+        {
+            dbContext.Clienti.Add(new Cliente
+            {
+                Nome = model.Nome.Trim(),
+                PublicId = publicId,
+                IsAttivo = model.IsAttivo,
+                CreatedUtc = DateTime.UtcNow
+            });
+        }
+
+        await dbContext.SaveChangesAsync();
+        await LoadAsync();
+
+        ResetForm();
+        SetSuccess("Cliente salvato correttamente.");
+    }
+
+    private void Edit(Cliente cliente)
+    {
+        isEditing = true;
+        editingId = cliente.Id;
+        model.Nome = cliente.Nome;
+        model.PublicId = cliente.PublicId.ToString("D");
+        model.IsAttivo = cliente.IsAttivo;
+        feedbackMessage = null;
+    }
+
+    private async Task DeleteAsync(int clienteId)
+    {
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+
+        var cliente = await dbContext.Clienti.FirstOrDefaultAsync(x => x.Id == clienteId);
+
+        if (cliente is null)
+        {
+            SetError("Error: cliente non trovato.");
+            return;
+        }
+
+        dbContext.Clienti.Remove(cliente);
+        await dbContext.SaveChangesAsync();
+
+        StorageService.DeleteClienteFolder(cliente.PublicId);
+
+        if (editingId == clienteId)
+        {
+            ResetForm();
+        }
+
+        await LoadAsync();
+        SetSuccess("Cliente eliminato correttamente.");
+    }
+
+    private void GoToContenuti(int clienteId)
+    {
+        NavigationManager.NavigateTo($"/admin/contenuti?clienteId={clienteId}");
+    }
+
+    private void GenerateNewPublicId()
+    {
+        model.PublicId = Guid.NewGuid().ToString("D");
+    }
+
+    private void ResetForm()
+    {
+        isEditing = false;
+        editingId = null;
+        model.Nome = string.Empty;
+        model.PublicId = Guid.NewGuid().ToString("D");
+        model.IsAttivo = true;
+        feedbackMessage = null;
+        isError = false;
+    }
+
+    private void SetSuccess(string message)
+    {
+        feedbackMessage = message;
+        isError = false;
+    }
+
+    private void SetError(string message)
+    {
+        feedbackMessage = message;
+        isError = true;
+    }
+
+    private sealed class ClienteFormModel
+    {
+        [Required(ErrorMessage = "Il nome cliente è obbligatorio.")]
+        [StringLength(160, ErrorMessage = "Il nome cliente può contenere al massimo 160 caratteri.")]
+        public string Nome { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Il PublicId è obbligatorio.")]
+        public string PublicId { get; set; } = Guid.NewGuid().ToString("D");
+
+        public bool IsAttivo { get; set; } = true;
+    }
+}
