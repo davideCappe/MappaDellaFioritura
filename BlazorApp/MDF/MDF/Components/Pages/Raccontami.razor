@@ -1,7 +1,5 @@
 ﻿@page "/raccontami"
 @page "/raccontami.html"
-@inject NavigationManager Nav
-@using System.Globalization
 
 <PageTitle>Un Respiro che Fiorisce | Mappa della Fioritura</PageTitle>
 
@@ -103,28 +101,28 @@
                         <p>Scrivi qui la tua storia. Puoi lasciare andare le parole così come arrivano.</p>
                     </div>
 
-                    <form @onsubmit="PrepareMessage" @onsubmit:preventDefault>
+                    <form id="story-form" action="mailto:silvia@mappadellafioritura.it?subject=Un%20messaggio%20da%20Un%20Respiro%20che%20Fiorisce" method="post" enctype="text/plain">
                         <div class="story-fields">
                             <div class="story-field">
                                 <label for="story-name">Come vuoi che ti chiami?</label>
-                                <input id="story-name" name="Nome" type="text" autocomplete="name" maxlength="100" @bind="Name" @bind:event="oninput" required>
+                                <input id="story-name" name="Nome" type="text" autocomplete="name" maxlength="100" required>
                             </div>
                             <div class="story-field">
                                 <label for="story-email">La tua e-mail <span>(dove inviarti la risposta)</span></label>
-                                <input id="story-email" name="Email" type="email" autocomplete="email" maxlength="254" @bind="Email" @bind:event="oninput" required>
+                                <input id="story-email" name="Email" type="email" autocomplete="email" maxlength="254" required>
                             </div>
                         </div>
                         <div class="story-field story-message-field">
                             <label for="story-message">Fai un respiro profondo e scrivi qui la tua storia...</label>
-                            <textarea id="story-message" name="Messaggio" maxlength="2400" rows="9" @bind="Message" @bind:event="oninput" required placeholder="Non pensare alla forma o alla punteggiatura. Lascia scorrere le parole..." aria-describedby="story-privacy story-count"></textarea>
+                            <textarea id="story-message" name="Messaggio" maxlength="2400" rows="9" required placeholder="Non pensare alla forma o alla punteggiatura. Lascia scorrere le parole..." aria-describedby="story-privacy story-count"></textarea>
                             <div class="writing-meta">
-                                <span id="story-count" aria-live="polite">@CharacterCounter</span>
-                                <button class="writing-clear" type="button" @onclick="ClearMessage">Svuota il testo</button>
+                                <span id="story-count" aria-live="polite">0 / 2.400</span>
+                                <button class="writing-clear" type="button" id="story-clear">Svuota il testo</button>
                             </div>
                         </div>
                         <div class="writing-submit-row">
-                            <button class="writing-submit" type="submit" disabled="@(!CanPrepareMessage)">Prepara il tuo messaggio</button>
-                            <p id="story-status" class="story-status" role="status" aria-live="polite">@StatusMessage</p>
+                            <button class="writing-submit" type="submit" id="story-submit" disabled>Prepara il tuo messaggio</button>
+                            <p id="story-status" class="story-status" role="status" aria-live="polite"></p>
                         </div>
                         <p class="story-privacy" id="story-privacy">Il testo non viene salvato su questo sito. Si aprirà il tuo programma di posta con il messaggio: potrai rileggerlo e scegliere tu se inviarlo a Silvia.</p>
                     </form>
@@ -133,44 +131,3 @@
         </div>
     </div>
 </div>
-
-@code {
-    private const int MessageMaxLength = 2400;
-    private static readonly CultureInfo ItCulture = CultureInfo.GetCultureInfo("it-IT");
-
-    private string Name { get; set; } = string.Empty;
-    private string Email { get; set; } = string.Empty;
-    private string Message { get; set; } = string.Empty;
-    private string StatusMessage { get; set; } = string.Empty;
-
-    private string CharacterCounter => $"{Message.Length.ToString("N0", ItCulture)} / {MessageMaxLength.ToString("N0", ItCulture)}";
-
-    private bool CanPrepareMessage =>
-        !string.IsNullOrWhiteSpace(Name)
-        && !string.IsNullOrWhiteSpace(Email)
-        && !string.IsNullOrWhiteSpace(Message)
-        && Message.Length <= MessageMaxLength;
-
-    private void ClearMessage()
-    {
-        Message = string.Empty;
-        StatusMessage = string.Empty;
-    }
-
-    private void PrepareMessage()
-    {
-        if (!CanPrepareMessage)
-        {
-            StatusMessage = "Compila tutti i campi prima di preparare il messaggio.";
-            return;
-        }
-
-        StatusMessage = "Apro il tuo programma di posta...";
-
-        var body = $"Nome: {Name}\nEmail: {Email}\n\nMessaggio:\n{Message}";
-        var subject = Uri.EscapeDataString("Un messaggio da Un Respiro che Fiorisce");
-        var encodedBody = Uri.EscapeDataString(body);
-
-        Nav.NavigateTo($"mailto:silvia@mappadellafioritura.it?subject={subject}&body={encodedBody}", forceLoad: true);
-    }
-}
