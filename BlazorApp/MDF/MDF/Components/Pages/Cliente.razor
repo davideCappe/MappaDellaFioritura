@@ -1,5 +1,4 @@
 @page "/cliente/{PublicId:guid}"
-@rendermode InteractiveServer
 @using Microsoft.EntityFrameworkCore
 @using MDF.Services
 @inject IDbContextFactory<ApplicationDbContext> DbContextFactory
@@ -68,7 +67,10 @@ else
                             {
                                 <button class="chapter-link @(item.index == currentTrackIndex ? "is-active" : null)"
                                         type="button"
-                                        @onclick="() => SelectTrack(item.index)">
+                                        data-track-button
+                                        data-track-index="@item.index"
+                                        data-track-url="@StorageService.GetPublicFileRoute(PublicId, item.track.FileName)"
+                                        data-track-title="@item.track.Titolo">
                                     <span class="chapter-number">@((item.index + 1).ToString("00"))</span>
                                     <span>
                                         <strong>@item.track.Titolo</strong>
@@ -143,27 +145,29 @@ else
 
     @if (CurrentTrack is not null)
     {
-        <section class="audio-player" aria-label="Player audio">
+        <section class="audio-player" aria-label="Player audio" data-client-player>
             <div class="player-inner">
                 <div class="now-playing">
-                    <button class="play-button play-button-secondary" type="button" aria-label="Traccia precedente" @onclick="PreviousTrack">←</button>
+                    <button class="play-button play-button-secondary" type="button" aria-label="Traccia precedente" data-track-prev>←</button>
                     <div class="track-copy">
                         <span class="track-label">In ascolto</span>
-                        <strong>@CurrentTrack.Titolo</strong>
+                        <strong data-current-track-title>@CurrentTrack.Titolo</strong>
                     </div>
                 </div>
 
                 <div class="track-controls">
-                    <audio @key="CurrentTrackUrl" class="client-audio-element" controls preload="metadata" src="@CurrentTrackUrl"></audio>
+                    <audio class="client-audio-element" controls preload="metadata" src="@CurrentTrackUrl" data-client-audio></audio>
                 </div>
 
                 <div class="player-actions">
-                    <button class="play-button" type="button" aria-label="Traccia successiva" @onclick="NextTrack">→</button>
+                    <button class="play-button" type="button" aria-label="Traccia successiva" data-track-next>→</button>
                 </div>
             </div>
             <p class="player-hint"><span>♪</span> Seleziona una traccia dalla colonna di sinistra o usa i controlli del player.</p>
         </section>
     }
+
+    <script type="module" src="/Components/Pages/Cliente.razor.js"></script>
 }
 
 @code {
@@ -223,46 +227,8 @@ else
             })
             .FirstOrDefaultAsync();
 
-        if (cliente is null || cliente.AudioTracks.Count == 0)
-        {
-            currentTrackIndex = 0;
-        }
-        else if (currentTrackIndex >= cliente.AudioTracks.Count)
-        {
-            currentTrackIndex = 0;
-        }
-
+        currentTrackIndex = 0;
         isLoading = false;
-    }
-
-    private void SelectTrack(int index)
-    {
-        if (cliente is null || index < 0 || index >= cliente.AudioTracks.Count)
-        {
-            return;
-        }
-
-        currentTrackIndex = index;
-    }
-
-    private void PreviousTrack()
-    {
-        if (cliente is null || cliente.AudioTracks.Count == 0)
-        {
-            return;
-        }
-
-        currentTrackIndex = (currentTrackIndex - 1 + cliente.AudioTracks.Count) % cliente.AudioTracks.Count;
-    }
-
-    private void NextTrack()
-    {
-        if (cliente is null || cliente.AudioTracks.Count == 0)
-        {
-            return;
-        }
-
-        currentTrackIndex = (currentTrackIndex + 1) % cliente.AudioTracks.Count;
     }
 
     private sealed class ClientePublicViewModel
