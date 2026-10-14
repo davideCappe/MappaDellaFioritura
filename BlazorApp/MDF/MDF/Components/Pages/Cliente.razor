@@ -44,15 +44,7 @@ else
                 <div>
                     <p class="eyebrow">Un tempo tutto per te</p>
                     <h1>La tua Mappa<br><em>della fioritura</em></h1>
-                    <p class="welcome-copy">Ciao @cliente.Nome, qui trovi il tuo documento personale e le tracce audio da ascoltare con calma, seguendo il tuo ritmo.</p>
-                    <div class="welcome-actions" aria-label="Accessi rapidi">
-                        <a class="welcome-chip" href="#pdf-title">Vai al PDF</a>
-                        <a class="welcome-chip" href="#mappa-title">Vai alla mappa</a>
-                        @if (CurrentTrack is not null)
-                        {
-                            <a class="welcome-chip" href="#player-audio">Vai al player</a>
-                        }
-                    </div>
+                    <p class="welcome-copy">Ciao <strong class="welcome-name">@cliente.Nome</strong>, qui trovi il tuo documento personale e le tracce audio da ascoltare con calma, seguendo il tuo ritmo.</p>
                 </div>
                 <div class="welcome-mark" aria-hidden="true">✦</div>
             </section>

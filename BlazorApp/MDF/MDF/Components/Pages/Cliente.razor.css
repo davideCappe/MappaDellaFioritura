@@ -103,40 +103,17 @@
 
 .welcome-copy {
   max-width: 530px;
-  margin: 27px 0 0;
+  margin: 16px 0 0;
   color: #718078;
   font-size: 0.98rem;
   line-height: 1.7;
 }
 
-.welcome-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 22px;
-}
-
-.welcome-chip {
-  display: inline-flex;
-  align-items: center;
-  min-height: 38px;
-  padding: 8px 14px;
-  border: 1px solid rgba(89, 124, 99, 0.35);
-  border-radius: 999px;
+.welcome-name {
   color: #3e6250;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  background: rgba(255, 255, 255, 0.65);
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  font-weight: 800;
 }
 
-.welcome-chip:hover {
-  transform: translateY(-1px);
-  border-color: #597c63;
-  background: rgba(216, 228, 211, 0.45);
-}
 
 .welcome-mark {
   display: grid;
@@ -721,20 +698,11 @@ audio:focus-visible {
   }
 
   .welcome-copy {
-    margin-top: 16px;
+    margin-top: 12px;
     font-size: 0.92rem;
     line-height: 1.6;
   }
 
-  .welcome-actions {
-    width: 100%;
-    gap: 8px;
-  }
-
-  .welcome-chip {
-    flex: 1 1 auto;
-    justify-content: center;
-  }
 
   .welcome-mark {
     width: 60px;
