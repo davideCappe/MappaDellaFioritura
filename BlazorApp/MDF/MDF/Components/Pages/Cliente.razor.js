@@ -1,8 +1,8 @@
-import "/Components/Pages/Index.razor.js";
-
 function initClientPlayer(root) {
-  const player = root.querySelector("[data-client-player]");
-  if (!player) {
+  // Il player è renderizzato fuori dal contenitore data-client-page in Cliente.razor,
+  // quindi non va cercato dentro root.
+  const player = document.querySelector("[data-client-player]");
+  if (!player || player.dataset.init === "1") {
     return;
   }
 
@@ -57,6 +57,8 @@ function initClientPlayer(root) {
   player
     .querySelector("[data-track-next]")
     ?.addEventListener("click", () => setTrack(currentIndex + 1));
+
+  player.dataset.init = "1";
 }
 
 function initClientPage() {
@@ -73,3 +75,8 @@ if (document.readyState === "loading") {
 } else {
   initClientPage();
 }
+
+// In SSR statico con enhanced navigation, DOMContentLoaded non viene rieseguito.
+// L'evento enhancedload va ascoltato sul document, non su window.Blazor.
+// In questo modo l'inizializzazione del player avviene anche dopo navigazioni interne.
+document.addEventListener("enhancedload", initClientPage);
