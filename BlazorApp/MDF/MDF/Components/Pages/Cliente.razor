@@ -45,6 +45,14 @@ else
                     <p class="eyebrow">Un tempo tutto per te</p>
                     <h1>La tua Mappa<br><em>della fioritura</em></h1>
                     <p class="welcome-copy">Ciao @cliente.Nome, qui trovi il tuo documento personale e le tracce audio da ascoltare con calma, seguendo il tuo ritmo.</p>
+                    <div class="welcome-actions" aria-label="Accessi rapidi">
+                        <a class="welcome-chip" href="#pdf-title">Vai al PDF</a>
+                        <a class="welcome-chip" href="#mappa-title">Vai alla mappa</a>
+                        @if (CurrentTrack is not null)
+                        {
+                            <a class="welcome-chip" href="#player-audio">Vai al player</a>
+                        }
+                    </div>
                 </div>
                 <div class="welcome-mark" aria-hidden="true">✦</div>
             </section>
@@ -67,6 +75,7 @@ else
                             {
                                 <button class="chapter-link @(item.index == currentTrackIndex ? "is-active" : null)"
                                         type="button"
+                                        aria-pressed="@(item.index == currentTrackIndex ? "true" : "false")"
                                         data-track-button
                                         data-track-index="@item.index"
                                         data-track-url="@StorageService.GetPublicFileRoute(PublicId, item.track.FileName)"
@@ -138,8 +147,8 @@ else
 
                         <section class="insights-panel client-insights-panel" aria-label="Approfondimenti mappa">
                             <div class="insight-grid">
-                                <section class="insight-card" aria-labelledby="clienteRicercaTitolo">
-                                    <h2 id="clienteRicercaTitolo">Scopo personale</h2>
+                                <section class="insight-card" aria-labelledby="ricercaTitolo">
+                                    <h2 id="ricercaTitolo">Scopo personale</h2>
                                     <p>Unione del maschile e femminile.</p>
                                     <p>Abilità, capacità, conoscenze.</p>
                                     <dl class="value-list">
@@ -152,14 +161,13 @@ else
                                             <dd id="valoreTerra">-</dd>
                                         </div>
                                         <div class="value-total">
-                                            <dt class="visually-hidden">Totale calcolato</dt>
                                             <dd id="valoreRicercaTotale">-</dd>
                                         </div>
                                     </dl>
                                 </section>
 
-                                <section class="insight-card" aria-labelledby="clienteSocializzazioneTitolo">
-                                    <h2 id="clienteSocializzazioneTitolo">Scopo sociale</h2>
+                                <section class="insight-card" aria-labelledby="socializzazioneTitolo">
+                                    <h2 id="socializzazioneTitolo">Scopo sociale</h2>
                                     <p>Sistemi sociali e del clan familiare.</p>
                                     <p>Risultati e riconoscimento nella società.</p>
                                     <dl class="value-list">
@@ -172,14 +180,13 @@ else
                                             <dd id="valoreSocialeF">-</dd>
                                         </div>
                                         <div class="value-total">
-                                            <dt class="visually-hidden">Totale calcolato</dt>
                                             <dd id="valoreSocialeTotale">-</dd>
                                         </div>
                                     </dl>
                                 </section>
 
-                                <section class="insight-card insight-card-compact" aria-labelledby="clienteSpiritualeTitolo">
-                                    <h2 id="clienteSpiritualeTitolo">Scopo generale</h2>
+                                <section class="insight-card insight-card-compact" aria-labelledby="spiritualeTitolo">
+                                    <h2 id="spiritualeTitolo">Scopo generale</h2>
                                     <p>Chi sono io per Dio? Dov'è il divino in me?</p>
                                     <dl class="value-list">
                                         <div>
@@ -189,8 +196,8 @@ else
                                     </dl>
                                 </section>
 
-                                <section class="insight-card insight-card-compact" aria-labelledby="clientePlanetarioTitolo">
-                                    <h2 id="clientePlanetarioTitolo">Scopo universale</h2>
+                                <section class="insight-card insight-card-compact" aria-labelledby="planetarioTitolo">
+                                    <h2 id="planetarioTitolo">Scopo universale</h2>
                                     <p>Scopo planetario, cosa dare al mondo, stile di vita.</p>
                                     <dl class="value-list">
                                         <div>
@@ -211,7 +218,7 @@ else
 
     @if (CurrentTrack is not null)
     {
-        <section class="audio-player" aria-label="Player audio" data-client-player>
+        <section class="audio-player" id="player-audio" aria-label="Player audio" data-client-player>
             <div class="player-inner">
                 <div class="now-playing">
                     <button class="play-button play-button-secondary" type="button" aria-label="Traccia precedente" data-track-prev>←</button>

@@ -34,6 +34,7 @@ function initClientPlayer(root) {
     trackButtons.forEach((button, index) => {
       const isActive = index === currentIndex;
       button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
 
       const checkElement = button.querySelector(".chapter-check");
       if (checkElement) {
