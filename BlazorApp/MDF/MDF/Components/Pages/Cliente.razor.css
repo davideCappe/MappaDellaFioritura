@@ -138,15 +138,15 @@
 .journey-nav {
   position: sticky;
   top: 18px;
-  padding: 16px;
-  border: 1px solid rgba(112, 111, 91, 0.14);
-  border-radius: 18px;
-  background: rgba(255, 253, 250, 0.9);
+  padding: 14px;
+  border: 1px solid rgba(149, 136, 112, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 252, 249, 0.7);
 }
 
 .track-list {
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .journey-heading {
@@ -174,39 +174,38 @@
   gap: 10px;
   align-items: center;
   width: 100%;
-  padding: 12px 10px;
-  border: 1px solid rgba(92, 111, 96, 0.16);
-  border-radius: 12px;
+  padding: 11px 10px;
+  border: 1px solid transparent;
+  border-radius: 10px;
   color: #6f7c75;
   text-align: left;
-  background: rgba(255, 255, 255, 0.72);
-  transition: color 0.2s ease, transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  background: transparent;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
 .chapter-link:hover,
 .chapter-link.is-active {
-  color: #2f4a3e;
-  transform: translateX(1px);
-  border-color: rgba(89, 124, 99, 0.36);
-  background: #fff;
+  color: #355445;
+  border-color: rgba(149, 136, 112, 0.24);
+  background: rgba(255, 252, 246, 0.72);
 }
 
 .chapter-link.is-active .chapter-number {
-  border-color: rgba(199, 121, 94, 0.55);
-  color: #c7795e;
-  background: rgba(199, 121, 94, 0.08);
+  border-color: rgba(199, 121, 94, 0.45);
+  color: #b7684b;
+  background: rgba(199, 121, 94, 0.06);
 }
 
 .chapter-number {
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  border: 1px solid rgba(167, 183, 172, 0.7);
+  border: 1px solid rgba(167, 183, 172, 0.55);
   color: #829087;
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1rem;
+  font-size: 0.96rem;
   line-height: 1;
 }
 
@@ -233,11 +232,10 @@
 .journey-note {
   display: flex;
   gap: 10px;
-  margin-top: 18px;
-  padding: 12px;
-  border: 1px dashed rgba(199, 121, 94, 0.42);
-  border-radius: 10px;
-  background: rgba(255, 252, 246, 0.58);
+  margin-top: 14px;
+  padding: 11px;
+  border-left: 2px solid rgba(199, 121, 94, 0.42);
+  background: rgba(255, 252, 246, 0.42);
 }
 
 .note-icon {
@@ -255,9 +253,9 @@
 .reading-area {
   min-width: 0;
   padding: 22px 28px 40px;
-  border: 1px solid rgba(112, 111, 91, 0.13);
-  border-radius: 16px;
-  background: rgba(255, 252, 247, 0.62);
+  border: 1px solid rgba(149, 136, 112, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 252, 249, 0.76);
 }
 
 .reading-meta {
@@ -275,9 +273,9 @@
 .pdf-viewer {
   margin-top: 20px;
   padding: 14px 14px 16px;
-  border: 1px solid rgba(112, 111, 91, 0.16);
-  border-radius: 14px;
-  background: rgba(255, 252, 246, 0.82);
+  border: 1px solid rgba(149, 136, 112, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 252, 249, 0.9);
 }
 
 .pdf-toolbar {
@@ -286,7 +284,7 @@
   align-items: center;
   gap: 14px;
   padding: 4px 4px 12px;
-  border-bottom: 1px solid rgba(112, 111, 91, 0.14);
+  border-bottom: 1px solid rgba(149, 136, 112, 0.2);
 }
 
 .pdf-toolbar .content-kicker {
@@ -295,9 +293,10 @@
 
 .pdf-toolbar h2 {
   margin: 0;
-  color: #2f4a3e;
+  color: #3e6250;
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.65rem;
+  font-size: 1.62rem;
+  font-style: italic;
   font-weight: 600;
 }
 
@@ -307,21 +306,21 @@
   justify-content: center;
   gap: 6px;
   flex: 0 0 auto;
-  min-height: 38px;
-  padding: 8px 12px;
-  border: 1px solid rgba(89, 124, 99, 0.32);
-  border-radius: 10px;
-  color: #355445;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid rgba(199, 121, 94, 0.55);
+  border-radius: 999px;
+  color: #b7684b;
   font-size: 0.72rem;
   font-weight: 700;
   text-decoration: none;
-  background: #fff;
+  background: transparent;
 }
 
 .pdf-download:hover {
-  border-color: #597c63;
-  background: rgba(216, 228, 211, 0.35);
-  color: #2f4a3e;
+  border-color: rgba(199, 121, 94, 0.78);
+  background: rgba(199, 121, 94, 0.12);
+  color: #a45a40;
 }
 
 .client-pdf-frame {
@@ -649,7 +648,8 @@ audio:focus-visible {
   .journey-nav {
     position: static;
     top: auto;
-    padding: 12px;
+    padding: 10px;
+    border-radius: 12px;
   }
 
   .reading-area {
@@ -739,15 +739,15 @@ audio:focus-visible {
   }
 
   .chapter-link {
-    grid-template-columns: 26px 1fr 14px;
+    grid-template-columns: 24px 1fr 14px;
     gap: 8px;
-    padding: 10px 8px;
+    padding: 9px 8px;
   }
 
   .chapter-number {
-    width: 24px;
-    height: 24px;
-    font-size: 0.9rem;
+    width: 22px;
+    height: 22px;
+    font-size: 0.84rem;
   }
 
   .reading-area,
