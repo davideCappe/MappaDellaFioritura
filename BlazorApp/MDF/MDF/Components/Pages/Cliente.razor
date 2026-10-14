@@ -96,7 +96,7 @@ else
                         <div class="pdf-toolbar">
                             <div>
                                 <p class="content-kicker">Documento personale</p>
-                                <h2 id="pdf-title">La tua lettura personale</h2>
+                                <h2 id="pdf-title">Scarica il tuo PDF personale</h2>
                             </div>
 
                             @if (!string.IsNullOrWhiteSpace(PdfUrl))
@@ -105,18 +105,34 @@ else
                             }
                         </div>
 
-                        @if (!string.IsNullOrWhiteSpace(PdfUrl))
-                        {
-                            <iframe class="client-pdf-frame"
-                                    src="@PdfUrl"
-                                    title="Documento personale di @cliente.Nome">
-                            </iframe>
-                            <p class="pdf-note">Puoi leggere il PDF direttamente qui oppure scaricarlo sul tuo dispositivo.</p>
-                        }
-                        else
+                        @if (string.IsNullOrWhiteSpace(PdfUrl))
                         {
                             <div class="client-empty-block">Il documento PDF non è ancora disponibile.</div>
                         }
+                    </section>
+
+                    <section class="pdf-viewer" aria-labelledby="mappa-title">
+                        <div class="pdf-toolbar">
+                            <div>
+                                <p class="content-kicker">Mappa della Fioritura</p>
+                                <h2 id="mappa-title">La tua mappa personale</h2>
+                            </div>
+                        </div>
+
+                        <section class="matrix-panel client-matrix-panel"
+                                 data-client-matrix
+                                 data-birth-date="@BirthDateIso"
+                                 data-client-name="@cliente.Nome">
+                            <div class="matrix-container">
+                                <svg id="matrixSvg" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="images/ITAmatrice.webp" x="0" y="0" width="1000" height="1000" />
+                                    <g id="logoOverlay" opacity="0.3" pointer-events="none">
+                                        <image href="images/logo.webp" x="325" y="325" width="350" height="350" preserveAspectRatio="xMidYMid meet" />
+                                    </g>
+                                    <g id="numeriLayer"></g>
+                                </svg>
+                            </div>
+                        </section>
                     </section>
                 </article>
             </div>
@@ -179,6 +195,8 @@ else
         ? null
         : StorageService.GetPublicFileRoute(PublicId, cliente.PdfFileName);
 
+    private string? BirthDateIso => cliente?.DataNascita.ToString("yyyy-MM-dd");
+
     protected override async Task OnParametersSetAsync()
     {
         isLoading = true;
@@ -190,6 +208,7 @@ else
             {
                 Nome = x.Nome,
                 PublicId = x.PublicId,
+                DataNascita = x.DataNascita,
                 PdfFileName = x.PdfFileName,
                 AudioTracks = x.AudioTracks
                     .OrderBy(track => track.Ordine)
@@ -250,6 +269,7 @@ else
     {
         public string Nome { get; set; } = string.Empty;
         public Guid PublicId { get; set; }
+        public DateOnly DataNascita { get; set; }
         public string? PdfFileName { get; set; }
         public List<AudioTrackPublicViewModel> AudioTracks { get; set; } = [];
     }

@@ -99,6 +99,9 @@ namespace MDF.Migrations
                     b.Property<DateTime>("CreatedUtc")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateOnly>("DataNascita")
+                        .HasColumnType("date");
+
                     b.Property<bool>("IsAttivo")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")

@@ -1103,6 +1103,24 @@ function disegnaMatrice(risultati) {
   }
 }
 
+function renderClientMatrix() {
+  const host = document.querySelector("[data-client-matrix]");
+  if (!host || host.dataset.init === "1") {
+    return;
+  }
+
+  const birthDate = host.dataset.birthDate;
+  if (!birthDate) {
+    return;
+  }
+
+  const clientName = host.dataset.clientName || "Cliente";
+  const risultati = calcolaMatrice(clientName, birthDate);
+  disegnaMatrice(risultati);
+
+  host.dataset.init = "1";
+}
+
 function mostraDescrizioneCentro(numero, profilo) {
   const panel = document.getElementById("descrizioneCentro");
   const titolo = document.getElementById("comfortTitolo");
@@ -1831,6 +1849,8 @@ export function initializeIndexPage() {
 }
 
 function bootIndexPage() {
+  renderClientMatrix();
+
   const btnCalcola = document.getElementById("btnCalcola");
   if (!btnCalcola) {
     return;

@@ -12,6 +12,8 @@ public class Cliente
 
     public Guid PublicId { get; set; } = Guid.NewGuid();
 
+    public DateOnly DataNascita { get; set; }
+
     [StringLength(260)]
     public string? PdfFileName { get; set; }
 

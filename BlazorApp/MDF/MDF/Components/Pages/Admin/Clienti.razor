@@ -43,6 +43,12 @@
             </div>
 
             <div class="admin-field">
+                <label for="cliente-data-nascita">Data di nascita</label>
+                <InputDate id="cliente-data-nascita" @bind-Value="model.DataNascita" class="admin-input" />
+                <ValidationMessage For="() => model.DataNascita" />
+            </div>
+
+            <div class="admin-field">
                 <label for="cliente-publicid">PublicId</label>
                 <InputText id="cliente-publicid" @bind-Value="model.PublicId" class="admin-input admin-code" />
                 <p class="admin-helper">Questo GUID verrà usato per la route pubblica e per la cartella dei file.</p>
@@ -87,6 +93,7 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
+                            <th>Data nascita</th>
                             <th>PublicId</th>
                             <th>Stato</th>
                             <th>Contenuti</th>
@@ -99,6 +106,7 @@
                         {
                             <tr>
                                 <td>@cliente.Nome</td>
+                                <td>@cliente.DataNascita.ToString("dd/MM/yyyy")</td>
                                 <td class="admin-code">@cliente.PublicId</td>
                                 <td>
                                     <span class="admin-pill @(cliente.IsAttivo ? string.Empty : "admin-pill-muted")">
@@ -171,6 +179,7 @@
             {
                 Id = x.Id,
                 Nome = x.Nome,
+                DataNascita = x.DataNascita,
                 PublicId = x.PublicId,
                 IsAttivo = x.IsAttivo,
                 HasPdf = x.PdfFileName != null,
@@ -211,6 +220,7 @@
             }
 
             cliente.Nome = model.Nome.Trim();
+            cliente.DataNascita = model.DataNascita;
             cliente.PublicId = publicId;
             cliente.IsAttivo = model.IsAttivo;
             cliente.UpdatedUtc = DateTime.UtcNow;
@@ -220,6 +230,7 @@
             dbContext.Clienti.Add(new Cliente
             {
                 Nome = model.Nome.Trim(),
+                DataNascita = model.DataNascita,
                 PublicId = publicId,
                 IsAttivo = model.IsAttivo,
                 CreatedUtc = DateTime.UtcNow
@@ -238,6 +249,7 @@
         isEditing = true;
         editingId = cliente.Id;
         model.Nome = cliente.Nome;
+        model.DataNascita = cliente.DataNascita;
         model.PublicId = cliente.PublicId.ToString("D");
         model.IsAttivo = cliente.IsAttivo;
         feedbackMessage = null;
@@ -284,6 +296,7 @@
         isEditing = false;
         editingId = null;
         model.Nome = string.Empty;
+        model.DataNascita = DateOnly.FromDateTime(DateTime.Today);
         model.PublicId = Guid.NewGuid().ToString("D");
         model.IsAttivo = true;
         feedbackMessage = null;
@@ -308,6 +321,9 @@
         [StringLength(160, ErrorMessage = "Il nome cliente può contenere al massimo 160 caratteri.")]
         public string Nome { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "La data di nascita è obbligatoria.")]
+        public DateOnly DataNascita { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+
         [Required(ErrorMessage = "Il PublicId è obbligatorio.")]
         public string PublicId { get; set; } = Guid.NewGuid().ToString("D");
 
@@ -318,6 +334,7 @@
     {
         public int Id { get; set; }
         public string Nome { get; set; } = string.Empty;
+        public DateOnly DataNascita { get; set; }
         public Guid PublicId { get; set; }
         public bool IsAttivo { get; set; }
         public bool HasPdf { get; set; }

@@ -25,6 +25,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.Property(x => x.PublicId)
                 .IsRequired();
 
+            entity.Property(x => x.DataNascita)
+                .HasColumnType("date")
+                .IsRequired();
+
             entity.Property(x => x.PdfFileName)
                 .HasMaxLength(260);
 
