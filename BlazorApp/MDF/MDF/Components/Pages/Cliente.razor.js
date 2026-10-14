@@ -61,6 +61,94 @@ function initClientPlayer(root) {
   player.dataset.init = "1";
 }
 
+function riduciA22(numero) {
+  let n = Math.abs(Number(numero)) || 0;
+  if (n === 0) {
+    return 22;
+  }
+
+  while (n > 22) {
+    n = String(n)
+      .split("")
+      .reduce((acc, c) => acc + Number(c), 0);
+  }
+
+  return n === 0 ? 22 : n;
+}
+
+function sommaCifre(numero) {
+  return String(Math.abs(Number(numero)) || 0)
+    .split("")
+    .reduce((acc, c) => acc + Number(c), 0);
+}
+
+function calcolaScopiDaData(dataNascita) {
+  const [anno, mese, giorno] = dataNascita.split("-").map(Number);
+  if (!anno || !mese || !giorno) {
+    return null;
+  }
+
+  const eta0 = riduciA22(giorno);
+  const eta20 = riduciA22(mese);
+  const eta40 = riduciA22(sommaCifre(anno));
+  const eta10 = riduciA22(eta0 + eta20);
+  const eta30 = riduciA22(eta20 + eta40);
+  const eta60 = riduciA22(eta0 + eta20 + eta40);
+  const eta50 = riduciA22(eta40 + eta60);
+  const eta70 = riduciA22(eta60 + eta0);
+
+  const terra = riduciA22(eta0 + eta40);
+  const cielo = riduciA22(eta20 + eta60);
+  const totaleRicerca = riduciA22(terra + cielo);
+  const maschile = riduciA22(eta10 + eta50);
+  const femminile = riduciA22(eta30 + eta70);
+  const totaleSocializzazione = riduciA22(maschile + femminile);
+  const armoniaSpirituale = riduciA22(totaleRicerca + totaleSocializzazione);
+  const planetario = riduciA22(totaleSocializzazione + armoniaSpirituale);
+
+  return {
+    valoreTerra: terra,
+    valoreCielo: cielo,
+    valoreRicercaTotale: totaleRicerca,
+    valoreSocialeM: maschile,
+    valoreSocialeF: femminile,
+    valoreSocialeTotale: totaleSocializzazione,
+    valoreSpirituale: armoniaSpirituale,
+    valorePlanetario: planetario,
+  };
+}
+
+function initClientInsights() {
+  const panel = document.querySelector(".client-insights-panel");
+  if (!panel || panel.dataset.init === "1") {
+    return;
+  }
+
+  const matrixHost = document.querySelector("[data-client-matrix]");
+  if (!matrixHost) {
+    return;
+  }
+
+  const birthDate = matrixHost.dataset.birthDate;
+  if (!birthDate) {
+    return;
+  }
+
+  const valori = calcolaScopiDaData(birthDate);
+  if (!valori) {
+    return;
+  }
+
+  Object.entries(valori).forEach(([id, valore]) => {
+    const elemento = document.getElementById(id);
+    if (elemento) {
+      elemento.textContent = String(valore);
+    }
+  });
+
+  panel.dataset.init = "1";
+}
+
 function initClientPage() {
   const root = document.querySelector("[data-client-page]");
   if (!root) {
@@ -68,6 +156,7 @@ function initClientPage() {
   }
 
   initClientPlayer(root);
+  initClientInsights();
 }
 
 if (document.readyState === "loading") {
