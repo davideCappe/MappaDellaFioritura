@@ -1,0 +1,97 @@
+.admin-contenuti-page {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-contenuti-page .admin-panel {
+  border-color: rgba(149, 136, 112, 0.22);
+  border-radius: 16px;
+  background: rgba(255, 252, 249, 0.94);
+}
+
+.admin-contenuti-page .admin-grid {
+  align-items: start;
+  gap: 18px;
+  margin-top: 0;
+}
+
+.admin-contenuti-page .admin-upload-box {
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(149, 136, 112, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.admin-contenuti-page .admin-file-row {
+  border-color: rgba(149, 136, 112, 0.22);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.admin-contenuti-page .admin-file-row strong {
+  color: #3f5b4d;
+}
+
+.admin-contenuti-page .admin-form-grid {
+  grid-template-columns: minmax(0, 1fr) 140px;
+}
+
+.admin-contenuti-page .admin-input,
+.admin-contenuti-page .admin-select {
+  border-color: rgba(122, 111, 94, 0.24);
+  background: #fff;
+}
+
+.admin-contenuti-page .admin-inline-actions {
+  gap: 8px;
+}
+
+.admin-contenuti-page .admin-inline-actions .admin-button,
+.admin-contenuti-page .admin-actions .admin-button {
+  min-height: 36px;
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+.admin-contenuti-page .admin-actions-spaced {
+  margin-top: 16px;
+}
+
+.admin-contenuti-page .admin-helper {
+  color: #617068;
+}
+
+@media (max-width: 960px) {
+  .admin-contenuti-page {
+    gap: 14px;
+  }
+
+  .admin-contenuti-page .admin-panel {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .admin-contenuti-page .admin-grid {
+    gap: 14px;
+  }
+
+  .admin-contenuti-page .admin-upload-box {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 720px) {
+  .admin-contenuti-page .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-contenuti-page .admin-inline-actions {
+    width: 100%;
+  }
+
+  .admin-contenuti-page .admin-inline-actions .admin-button,
+  .admin-contenuti-page .admin-inline-actions a.admin-button {
+    flex: 1 1 auto;
+  }
+}

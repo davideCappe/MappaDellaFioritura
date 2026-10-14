@@ -1,5 +1,11 @@
 .admin-app {
-  padding-bottom: 28px;
+  min-height: 100vh;
+  padding: 14px 14px 28px;
+}
+
+.admin-shell-header {
+  max-width: 1220px;
+  margin: 0 auto;
 }
 
 .admin-main {
@@ -9,4 +15,12 @@
 .admin-content {
   display: grid;
   gap: 16px;
+  width: min(1220px, 100%);
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .admin-app {
+    padding: 10px 10px 20px;
+  }
 }

@@ -1,0 +1,43 @@
+.admin-cliente-dettaglio-page {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-cliente-dettaglio-page .admin-panel {
+  border-color: rgba(149, 136, 112, 0.22);
+  border-radius: 16px;
+  background: rgba(255, 252, 249, 0.94);
+}
+
+.admin-cliente-dettaglio-page .admin-cliente-dettaglio-form-panel {
+  max-width: 620px;
+}
+
+.admin-cliente-dettaglio-page .admin-form {
+  gap: 14px;
+}
+
+.admin-cliente-dettaglio-page .admin-input,
+.admin-cliente-dettaglio-page .admin-select {
+  border-color: rgba(122, 111, 94, 0.24);
+  background: #fff;
+}
+
+.admin-cliente-dettaglio-page .admin-field label {
+  font-size: 0.92rem;
+}
+
+@media (max-width: 960px) {
+  .admin-cliente-dettaglio-page {
+    gap: 14px;
+  }
+
+  .admin-cliente-dettaglio-page .admin-panel {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .admin-cliente-dettaglio-page .admin-cliente-dettaglio-form-panel {
+    max-width: none;
+  }
+}

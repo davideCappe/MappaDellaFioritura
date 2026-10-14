@@ -8,37 +8,34 @@
 
 <PageTitle>Back Office | Dashboard</PageTitle>
 
-<section class="admin-panel">
-    <p class="admin-kicker">Area amministrazione</p>
-    <h1 class="admin-page-title">Dashboard</h1>
-    <p class="admin-lead">
-        Da qui puoi gestire clienti, identificativi pubblici e contenuti statici associati.
-    </p>
+<div class="admin-dashboard-page">
+    <section class="admin-panel admin-dashboard-hero">
+        <p class="admin-kicker">Area amministrazione</p>
+        <h1 class="admin-page-title">Dashboard</h1>
+        <p class="admin-lead">
+            Pannello di orientamento operativo del back office. Le azioni sono disponibili dal menu in alto: questa pagina raccoglie il flusso consigliato e le regole da seguire.
+        </p>
+    </section>
 
-    <div class="admin-actions admin-actions-spaced">
-        <a href="/admin/clienti" class="admin-button">Gestisci clienti</a>
-        <a href="/admin/contenuti" class="admin-button admin-button-secondary">Gestisci contenuti</a>
-    </div>
-</section>
+    <section class="admin-link-grid admin-dashboard-grid">
+        <article class="admin-panel">
+            <h2 class="admin-section-title">Flusso consigliato</h2>
+            <ol class="admin-dashboard-list">
+                <li>Crea o aggiorna il cliente in <strong>Clienti</strong>.</li>
+                <li>Verifica PublicId e route pubblica prevista.</li>
+                <li>Carica PDF e tracce in <strong>Contenuti</strong>.</li>
+                <li>Ordina le tracce e controlla la pagina pubblica finale.</li>
+            </ol>
+        </article>
 
-<section class="admin-link-grid">
-    <article class="admin-panel">
-        <h2 class="admin-section-title">Clienti</h2>
-        <p class="admin-helper">
-            Crea e modifica i clienti salvando il mapping tra nome cliente e <strong>PublicId GUID</strong>.
-        </p>
-        <p class="admin-helper">
-            La futura pagina pubblica risponderà su <strong>/cliente/{publicId}</strong>.
-        </p>
-    </article>
-
-    <article class="admin-panel">
-        <h2 class="admin-section-title">Contenuti statici</h2>
-        <p class="admin-helper">
-            Ogni cliente avrà una sottocartella dedicata chiamata come il suo <strong>PublicId</strong>.
-        </p>
-        <p class="admin-helper">
-            In questa fase il back office prepara upload, elenco ed eliminazione di audio, immagini e PDF.
-        </p>
-    </article>
-</section>
+        <article class="admin-panel">
+            <h2 class="admin-section-title">Regole contenuti</h2>
+            <ul class="admin-dashboard-list">
+                <li>Un solo PDF per cliente (l'upload successivo sostituisce il precedente).</li>
+                <li>Ogni traccia audio richiede titolo e ordinamento esplicito.</li>
+                <li>I file sono salvati nella cartella nominata con il <strong>PublicId</strong>.</li>
+                <li>La pubblicazione dipende dallo stato <strong>Cliente attivo</strong>.</li>
+            </ul>
+        </article>
+    </section>
+</div>

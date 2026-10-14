@@ -1,6 +1,6 @@
 <nav class="admin-nav" aria-label="Navigazione back office">
     <div class="admin-nav-brand">
-        <a href="/admin/dashboard" class="admin-brand-link">
+        <a href="/admin/dashboard" class="admin-brand-link" aria-label="Dashboard back office">
             <img src="/images/logo.webp" alt="Mappa della Fioritura" class="admin-brand-logo">
             <span>Back Office</span>
         </a>
@@ -16,8 +16,8 @@
         <a href="/" class="admin-ghost-link">Sito pubblico</a>
         <form method="post" action="/Account/Logout" class="admin-logout-form">
             <AntiforgeryToken />
-            <input type="hidden" name="returnUrl" value="" />
-            <button type="submit" class="admin-logout-button">Esci</button>
+            <input type="hidden" name="returnUrl" value="/" />
+            <button type="submit" class="admin-logout-button" aria-label="Esci dal back office">Esci</button>
         </form>
     </div>
 </nav>

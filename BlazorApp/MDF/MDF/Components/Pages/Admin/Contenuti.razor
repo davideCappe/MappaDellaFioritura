@@ -13,22 +13,23 @@
 
 <PageTitle>Back Office | Contenuti</PageTitle>
 
-<section class="admin-panel">
-    <p class="admin-kicker">Back Office</p>
-    <h1 class="admin-page-title">Contenuti</h1>
-    <p class="admin-lead">
-        Caricamento del PDF cliente e gestione delle tracce audio con titolo e ordinamento.
-    </p>
-</section>
-
-@if (!string.IsNullOrWhiteSpace(feedbackMessage))
-{
-    <section class="@FeedbackCssClass" role="alert">
-        @feedbackMessage
+<div class="admin-contenuti-page">
+    <section class="admin-panel">
+        <p class="admin-kicker">Back Office</p>
+        <h1 class="admin-page-title">Contenuti</h1>
+        <p class="admin-lead">
+            Caricamento del PDF cliente e gestione delle tracce audio con titolo e ordinamento.
+        </p>
     </section>
-}
 
-<section class="admin-grid">
+    @if (!string.IsNullOrWhiteSpace(feedbackMessage))
+    {
+        <section class="@FeedbackCssClass" role="alert">
+            @feedbackMessage
+        </section>
+    }
+
+    <section class="admin-grid">
     <article class="admin-panel">
         <h2 class="admin-section-title">Selezione cliente</h2>
 
@@ -243,6 +244,7 @@
         </div>
     </section>
 }
+</div>
 
 @code {
     private const long MaxAllowedFileSize = 50 * 1024 * 1024;

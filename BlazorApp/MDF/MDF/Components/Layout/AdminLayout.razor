@@ -1,11 +1,13 @@
 @inherits LayoutComponentBase
 
 <div class="app admin-app">
-    <AdminNav />
+    <header class="admin-shell-header">
+        <AdminNav />
+    </header>
 
-    <main class="admin-main">
-        <article class="admin-content">
+    <main class="admin-main" id="admin-main-content">
+        <section class="admin-content" aria-label="Contenuto area amministrazione">
             @Body
-        </article>
+        </section>
     </main>
 </div>
