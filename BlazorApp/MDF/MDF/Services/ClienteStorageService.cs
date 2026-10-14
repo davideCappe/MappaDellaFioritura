@@ -1,14 +1,21 @@
+using Microsoft.AspNetCore.StaticFiles;
+
 namespace MDF.Services;
 
 public sealed class ClienteStorageService(IWebHostEnvironment environment)
 {
-    private static readonly HashSet<string> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly HashSet<string> AllowedPdfExtensions = new(StringComparer.OrdinalIgnoreCase)
     {
-        ".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg",
-        ".pdf",
+        ".pdf"
+    };
+
+    private static readonly HashSet<string> AllowedAudioExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
         ".mp3", ".wav", ".ogg", ".m4a"
     };
 
+    private static readonly HashSet<string> AllowedExtensions = [.. AllowedPdfExtensions, .. AllowedAudioExtensions];
+    private static readonly FileExtensionContentTypeProvider ContentTypeProvider = new();
     private readonly string rootPath = Path.Combine(environment.ContentRootPath, "App_Data", "Clienti");
 
     public string GetClienteFolder(Guid publicId)
@@ -16,6 +23,9 @@ public sealed class ClienteStorageService(IWebHostEnvironment environment)
 
     public string GetPublicRoute(Guid publicId)
         => $"/cliente/{publicId:D}";
+
+    public string GetPublicFileRoute(Guid publicId, string fileName)
+        => $"/cliente/{publicId:D}/files/{Uri.EscapeDataString(SanitizeFileName(fileName))}";
 
     public IReadOnlyList<ClienteStoredFile> GetFiles(Guid publicId)
     {
@@ -33,24 +43,33 @@ public sealed class ClienteStorageService(IWebHostEnvironment environment)
             .ToList();
     }
 
-    public async Task SaveFileAsync(Guid publicId, string originalFileName, Stream content, CancellationToken cancellationToken = default)
+    public async Task<string> SavePdfAsync(Guid publicId, string originalFileName, Stream content, CancellationToken cancellationToken = default)
+        => await SaveFileInternalAsync(publicId, originalFileName, content, AllowedPdfExtensions, cancellationToken);
+
+    public async Task<string> SaveAudioAsync(Guid publicId, string originalFileName, Stream content, CancellationToken cancellationToken = default)
+        => await SaveFileInternalAsync(publicId, originalFileName, content, AllowedAudioExtensions, cancellationToken);
+
+    public bool FileExists(Guid publicId, string fileName)
+        => File.Exists(GetClienteFilePath(publicId, fileName));
+
+    public string GetClienteFilePath(Guid publicId, string fileName)
     {
-        var safeFileName = SanitizeFileName(originalFileName);
-        ValidateExtension(safeFileName);
+        var safeFileName = SanitizeFileName(fileName);
+        return Path.Combine(GetClienteFolder(publicId), safeFileName);
+    }
 
-        var folder = GetClienteFolder(publicId);
-        Directory.CreateDirectory(folder);
+    public string GetContentType(string fileName)
+    {
+        var safeFileName = SanitizeFileName(fileName);
 
-        var filePath = Path.Combine(folder, safeFileName);
-
-        await using var target = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
-        await content.CopyToAsync(target, cancellationToken);
+        return ContentTypeProvider.TryGetContentType(safeFileName, out var contentType)
+            ? contentType
+            : "application/octet-stream";
     }
 
     public void DeleteFile(Guid publicId, string fileName)
     {
-        var safeFileName = SanitizeFileName(fileName);
-        var filePath = Path.Combine(GetClienteFolder(publicId), safeFileName);
+        var filePath = GetClienteFilePath(publicId, fileName);
 
         if (File.Exists(filePath))
         {
@@ -68,11 +87,28 @@ public sealed class ClienteStorageService(IWebHostEnvironment environment)
         }
     }
 
-    private static void ValidateExtension(string fileName)
+    private async Task<string> SaveFileInternalAsync(Guid publicId, string originalFileName, Stream content, HashSet<string> allowedExtensions, CancellationToken cancellationToken)
+    {
+        var safeFileName = SanitizeFileName(originalFileName);
+        ValidateExtension(safeFileName, allowedExtensions);
+
+        var folder = GetClienteFolder(publicId);
+        Directory.CreateDirectory(folder);
+
+        var filePath = Path.Combine(folder, safeFileName);
+
+        await using var target = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+        await content.CopyToAsync(target, cancellationToken);
+
+        return safeFileName;
+    }
+
+    private static void ValidateExtension(string fileName, HashSet<string>? allowedExtensions = null)
     {
         var extension = Path.GetExtension(fileName);
+        var candidates = allowedExtensions ?? AllowedExtensions;
 
-        if (string.IsNullOrWhiteSpace(extension) || !AllowedExtensions.Contains(extension))
+        if (string.IsNullOrWhiteSpace(extension) || !candidates.Contains(extension))
         {
             throw new InvalidOperationException("Estensione file non consentita.");
         }

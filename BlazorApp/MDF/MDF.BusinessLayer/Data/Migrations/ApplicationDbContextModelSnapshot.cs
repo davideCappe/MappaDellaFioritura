@@ -109,6 +109,10 @@ namespace MDF.Migrations
                         .HasMaxLength(160)
                         .HasColumnType("nvarchar(160)");
 
+                    b.Property<string>("PdfFileName")
+                        .HasMaxLength(260)
+                        .HasColumnType("nvarchar(260)");
+
                     b.Property<Guid>("PublicId")
                         .HasColumnType("uniqueidentifier");
 
@@ -123,6 +127,46 @@ namespace MDF.Migrations
                         .IsUnique();
 
                     b.ToTable("Clienti", (string)null);
+                });
+
+            modelBuilder.Entity("MDF.BusinessLayer.Data.ClienteAudio", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(260)
+                        .HasColumnType("nvarchar(260)");
+
+                    b.Property<int>("Ordine")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Titolo")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)");
+
+                    b.Property<DateTime?>("UpdatedUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId", "FileName")
+                        .IsUnique();
+
+                    b.HasIndex("ClienteId", "Ordine");
+
+                    b.ToTable("ClienteAudioTracks", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -279,6 +323,17 @@ namespace MDF.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MDF.BusinessLayer.Data.ClienteAudio", b =>
+                {
+                    b.HasOne("MDF.BusinessLayer.Data.Cliente", "Cliente")
+                        .WithMany("AudioTracks")
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -379,6 +434,11 @@ namespace MDF.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MDF.BusinessLayer.Data.Cliente", b =>
+                {
+                    b.Navigation("AudioTracks");
                 });
 #pragma warning restore 612, 618
         }

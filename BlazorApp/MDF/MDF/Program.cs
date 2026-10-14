@@ -88,6 +88,34 @@ app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages:
 app.UseAntiforgery();
 
 app.MapStaticAssets();
+app.MapGet("/cliente/{publicId:guid}/files/{fileName}", async (Guid publicId, string fileName, IDbContextFactory<ApplicationDbContext> dbContextFactory, ClienteStorageService storageService) =>
+{
+    var decodedFileName = Uri.UnescapeDataString(fileName);
+
+    await using var dbContext = await dbContextFactory.CreateDbContextAsync();
+    var cliente = await dbContext.Clienti
+        .Include(x => x.AudioTracks)
+        .FirstOrDefaultAsync(x => x.PublicId == publicId && x.IsAttivo);
+
+    if (cliente is null)
+    {
+        return (IResult)Results.NotFound();
+    }
+
+    var isAllowedFile = string.Equals(cliente.PdfFileName, decodedFileName, StringComparison.OrdinalIgnoreCase)
+        || cliente.AudioTracks.Any(x => string.Equals(x.FileName, decodedFileName, StringComparison.OrdinalIgnoreCase));
+
+    if (!isAllowedFile || !storageService.FileExists(publicId, decodedFileName))
+    {
+        return (IResult)Results.NotFound();
+    }
+
+    var filePath = storageService.GetClienteFilePath(publicId, decodedFileName);
+    var contentType = storageService.GetContentType(decodedFileName);
+
+    return (IResult)Results.File(filePath, contentType, enableRangeProcessing: true);
+});
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()

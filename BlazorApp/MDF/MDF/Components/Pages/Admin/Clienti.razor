@@ -89,6 +89,7 @@
                             <th>Nome</th>
                             <th>PublicId</th>
                             <th>Stato</th>
+                            <th>Contenuti</th>
                             <th>Route</th>
                             <th>Azioni</th>
                         </tr>
@@ -104,6 +105,14 @@
                                         @(cliente.IsAttivo ? "Attivo" : "Disattivo")
                                     </span>
                                 </td>
+                                <td>
+                                    <div class="admin-status-list">
+                                        <span class="admin-mini-pill @(cliente.HasPdf ? string.Empty : "admin-mini-pill-muted")">
+                                            @(cliente.HasPdf ? "PDF presente" : "PDF mancante")
+                                        </span>
+                                        <span class="admin-mini-pill">@cliente.AudioCount tracce</span>
+                                    </div>
+                                </td>
                                 <td class="admin-code">@StorageService.GetPublicRoute(cliente.PublicId)</td>
                                 <td>
                                     <div class="admin-inline-actions">
@@ -113,6 +122,9 @@
                                         <button type="button" class="admin-button admin-button-secondary" @onclick="() => GoToContenuti(cliente.Id)">
                                             Contenuti
                                         </button>
+                                        <a href="@StorageService.GetPublicRoute(cliente.PublicId)" class="admin-button admin-button-secondary" target="_blank" rel="noopener noreferrer">
+                                            Apri pagina
+                                        </a>
                                         <button type="button" class="admin-button admin-button-danger" @onclick="async () => await DeleteAsync(cliente.Id)">
                                             Elimina
                                         </button>
@@ -129,7 +141,7 @@
 
 @code {
     private readonly ClienteFormModel model = new();
-    private List<Cliente> clienti = [];
+    private List<ClienteListItem> clienti = [];
     private bool isEditing;
     private int? editingId;
     private string? feedbackMessage;
@@ -155,6 +167,15 @@
         await using var dbContext = await DbContextFactory.CreateDbContextAsync();
         clienti = await dbContext.Clienti
             .OrderBy(x => x.Nome)
+            .Select(x => new ClienteListItem
+            {
+                Id = x.Id,
+                Nome = x.Nome,
+                PublicId = x.PublicId,
+                IsAttivo = x.IsAttivo,
+                HasPdf = x.PdfFileName != null,
+                AudioCount = x.AudioTracks.Count
+            })
             .ToListAsync();
     }
 
@@ -212,7 +233,7 @@
         SetSuccess("Cliente salvato correttamente.");
     }
 
-    private void Edit(Cliente cliente)
+    private void Edit(ClienteListItem cliente)
     {
         isEditing = true;
         editingId = cliente.Id;
@@ -291,5 +312,15 @@
         public string PublicId { get; set; } = Guid.NewGuid().ToString("D");
 
         public bool IsAttivo { get; set; } = true;
+    }
+
+    private sealed class ClienteListItem
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public Guid PublicId { get; set; }
+        public bool IsAttivo { get; set; }
+        public bool HasPdf { get; set; }
+        public int AudioCount { get; set; }
     }
 }

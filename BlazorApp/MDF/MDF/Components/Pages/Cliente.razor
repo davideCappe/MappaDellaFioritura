@@ -1,0 +1,263 @@
+@page "/cliente/{PublicId:guid}"
+@rendermode InteractiveServer
+@using Microsoft.EntityFrameworkCore
+@using MDF.Services
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
+@inject ClienteStorageService StorageService
+@layout ClientPageLayout
+
+<PageTitle>@PageTitleText</PageTitle>
+
+@if (isLoading)
+{
+    <section class="client-feedback-shell">
+        <div class="client-feedback-card">
+            <p class="eyebrow">Mappa della Fioritura</p>
+            <h1>Sto preparando il tuo percorso</h1>
+            <p class="welcome-copy">Caricamento dei contenuti in corso.</p>
+        </div>
+    </section>
+}
+else if (cliente is null)
+{
+    <section class="client-feedback-shell">
+        <div class="client-feedback-card">
+            <p class="eyebrow">Percorso non disponibile</p>
+            <h1>Questa pagina non è disponibile</h1>
+            <p class="welcome-copy">Il link potrebbe non essere valido oppure i contenuti non sono ancora stati pubblicati.</p>
+            <a href="/" class="pdf-download">Torna al sito</a>
+        </div>
+    </section>
+}
+else
+{
+    <div class="client-app" data-client-page>
+        <header class="client-header">
+            <a class="client-brand" href="/" aria-label="Mappa della Fioritura, pagina principale">
+                <img src="/images/logo.webp" alt="" class="client-logo">
+                <span>Mappa della Fioritura</span>
+            </a>
+            <div class="client-status"><span class="status-dot"></span> Area personale</div>
+        </header>
+
+        <main>
+            <section class="welcome">
+                <div>
+                    <p class="eyebrow">Un tempo tutto per te</p>
+                    <h1>Il tuo percorso<br><em>di fioritura</em></h1>
+                    <p class="welcome-copy">Ciao @cliente.Nome, qui trovi il tuo documento personale e le tracce audio da ascoltare con calma, seguendo il tuo ritmo.</p>
+                </div>
+                <div class="welcome-mark" aria-hidden="true">✦</div>
+            </section>
+
+            <div class="client-layout">
+                <aside class="journey-nav" aria-label="Indice del percorso">
+                    <div class="journey-heading">
+                        <span>Il percorso</span>
+                        <strong>@TrackCountLabel</strong>
+                    </div>
+
+                    @if (cliente.AudioTracks.Count == 0)
+                    {
+                        <div class="client-empty-block">Nessuna traccia audio disponibile al momento.</div>
+                    }
+                    else
+                    {
+                        <div class="track-list">
+                            @foreach (var item in cliente.AudioTracks.Select((track, index) => new { track, index }))
+                            {
+                                <button class="chapter-link @(item.index == currentTrackIndex ? "is-active" : null)"
+                                        type="button"
+                                        @onclick="() => SelectTrack(item.index)">
+                                    <span class="chapter-number">@((item.index + 1).ToString("00"))</span>
+                                    <span>
+                                        <strong>@item.track.Titolo</strong>
+                                        <small>Ascolta la traccia</small>
+                                    </span>
+                                    <span class="chapter-check">@(item.index == currentTrackIndex ? "●" : "○")</span>
+                                </button>
+                            }
+                        </div>
+                    }
+
+                    <div class="journey-note">
+                        <span class="note-icon">⌁</span>
+                        <p>Puoi interrompere e riprendere quando vuoi. Il tuo percorso resta qui.</p>
+                    </div>
+                </aside>
+
+                <article class="reading-area" aria-label="Contenuto del percorso">
+                    <div class="reading-meta">
+                        <span>Documento personale</span>
+                        <span>@TrackCountLabel</span>
+                    </div>
+
+                    <section class="pdf-viewer" aria-labelledby="pdf-title">
+                        <div class="pdf-toolbar">
+                            <div>
+                                <p class="content-kicker">Documento personale</p>
+                                <h2 id="pdf-title">La tua lettura personale</h2>
+                            </div>
+
+                            @if (!string.IsNullOrWhiteSpace(PdfUrl))
+                            {
+                                <a class="pdf-download" href="@PdfUrl" download>Scarica PDF <span aria-hidden="true">↓</span></a>
+                            }
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(PdfUrl))
+                        {
+                            <iframe class="client-pdf-frame"
+                                    src="@PdfUrl"
+                                    title="Documento personale di @cliente.Nome">
+                            </iframe>
+                            <p class="pdf-note">Puoi leggere il PDF direttamente qui oppure scaricarlo sul tuo dispositivo.</p>
+                        }
+                        else
+                        {
+                            <div class="client-empty-block">Il documento PDF non è ancora disponibile.</div>
+                        }
+                    </section>
+                </article>
+            </div>
+        </main>
+
+        <footer class="client-footer"><span>Preparato con cura per te</span><span>Mappa della Fioritura · 2026</span></footer>
+    </div>
+
+    @if (CurrentTrack is not null)
+    {
+        <section class="audio-player" aria-label="Player audio">
+            <div class="player-inner">
+                <div class="now-playing">
+                    <button class="play-button play-button-secondary" type="button" aria-label="Traccia precedente" @onclick="PreviousTrack">←</button>
+                    <div class="track-copy">
+                        <span class="track-label">In ascolto</span>
+                        <strong>@CurrentTrack.Titolo</strong>
+                    </div>
+                </div>
+
+                <div class="track-controls">
+                    <audio @key="CurrentTrackUrl" class="client-audio-element" controls preload="metadata" src="@CurrentTrackUrl"></audio>
+                </div>
+
+                <div class="player-actions">
+                    <button class="play-button" type="button" aria-label="Traccia successiva" @onclick="NextTrack">→</button>
+                </div>
+            </div>
+            <p class="player-hint"><span>♪</span> Seleziona una traccia dalla colonna di sinistra o usa i controlli del player.</p>
+        </section>
+    }
+}
+
+@code {
+    [Parameter]
+    public Guid PublicId { get; set; }
+
+    private ClientePublicViewModel? cliente;
+    private bool isLoading = true;
+    private int currentTrackIndex;
+
+    private string PageTitleText => cliente is null
+        ? "Percorso cliente | Mappa della Fioritura"
+        : $"{cliente.Nome} | Mappa della Fioritura";
+
+    private string TrackCountLabel => cliente is null
+        ? "0 tracce"
+        : $"{cliente.AudioTracks.Count} tracce";
+
+    private AudioTrackPublicViewModel? CurrentTrack =>
+        cliente is not null && cliente.AudioTracks.Count > 0 && currentTrackIndex >= 0 && currentTrackIndex < cliente.AudioTracks.Count
+            ? cliente.AudioTracks[currentTrackIndex]
+            : null;
+
+    private string? CurrentTrackUrl => CurrentTrack is null
+        ? null
+        : StorageService.GetPublicFileRoute(PublicId, CurrentTrack.FileName);
+
+    private string? PdfUrl => cliente is null || string.IsNullOrWhiteSpace(cliente.PdfFileName)
+        ? null
+        : StorageService.GetPublicFileRoute(PublicId, cliente.PdfFileName);
+
+    protected override async Task OnParametersSetAsync()
+    {
+        isLoading = true;
+
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        cliente = await dbContext.Clienti
+            .Where(x => x.PublicId == PublicId && x.IsAttivo)
+            .Select(x => new ClientePublicViewModel
+            {
+                Nome = x.Nome,
+                PublicId = x.PublicId,
+                PdfFileName = x.PdfFileName,
+                AudioTracks = x.AudioTracks
+                    .OrderBy(track => track.Ordine)
+                    .ThenBy(track => track.Id)
+                    .Select(track => new AudioTrackPublicViewModel
+                    {
+                        FileName = track.FileName,
+                        Titolo = track.Titolo,
+                        Ordine = track.Ordine
+                    })
+                    .ToList()
+            })
+            .FirstOrDefaultAsync();
+
+        if (cliente is null || cliente.AudioTracks.Count == 0)
+        {
+            currentTrackIndex = 0;
+        }
+        else if (currentTrackIndex >= cliente.AudioTracks.Count)
+        {
+            currentTrackIndex = 0;
+        }
+
+        isLoading = false;
+    }
+
+    private void SelectTrack(int index)
+    {
+        if (cliente is null || index < 0 || index >= cliente.AudioTracks.Count)
+        {
+            return;
+        }
+
+        currentTrackIndex = index;
+    }
+
+    private void PreviousTrack()
+    {
+        if (cliente is null || cliente.AudioTracks.Count == 0)
+        {
+            return;
+        }
+
+        currentTrackIndex = (currentTrackIndex - 1 + cliente.AudioTracks.Count) % cliente.AudioTracks.Count;
+    }
+
+    private void NextTrack()
+    {
+        if (cliente is null || cliente.AudioTracks.Count == 0)
+        {
+            return;
+        }
+
+        currentTrackIndex = (currentTrackIndex + 1) % cliente.AudioTracks.Count;
+    }
+
+    private sealed class ClientePublicViewModel
+    {
+        public string Nome { get; set; } = string.Empty;
+        public Guid PublicId { get; set; }
+        public string? PdfFileName { get; set; }
+        public List<AudioTrackPublicViewModel> AudioTracks { get; set; } = [];
+    }
+
+    private sealed class AudioTrackPublicViewModel
+    {
+        public string FileName { get; set; } = string.Empty;
+        public string Titolo { get; set; } = string.Empty;
+        public int Ordine { get; set; }
+    }
+}
