@@ -19,6 +19,7 @@ builder.Services.AddRazorComponents()
 
 // Settings section
 var superAdminSettings = builder.Services.ConfigureAndGet<SuperAdminSettings>(builder.Configuration, nameof(SuperAdminSettings)) ?? new();
+var clienteStorageSettings = builder.Services.ConfigureAndGet<ClienteStorageSettings>(builder.Configuration, nameof(ClienteStorageSettings)) ?? new();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityRedirectManager>();

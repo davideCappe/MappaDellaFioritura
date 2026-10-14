@@ -1,8 +1,10 @@
+using MDF.BusinessLayer.Settings;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.Options;
 
 namespace MDF.Services;
 
-public sealed class ClienteStorageService(IWebHostEnvironment environment)
+public sealed class ClienteStorageService(IWebHostEnvironment environment, IOptions<ClienteStorageSettings> storageOptions)
 {
     private static readonly HashSet<string> AllowedPdfExtensions = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -16,7 +18,7 @@ public sealed class ClienteStorageService(IWebHostEnvironment environment)
 
     private static readonly HashSet<string> AllowedExtensions = [.. AllowedPdfExtensions, .. AllowedAudioExtensions];
     private static readonly FileExtensionContentTypeProvider ContentTypeProvider = new();
-    private readonly string rootPath = Path.Combine(environment.ContentRootPath, "App_Data", "Clienti");
+    private readonly string rootPath = ResolveRootPath(environment, storageOptions.Value);
 
     public string GetClienteFolder(Guid publicId)
         => Path.Combine(rootPath, publicId.ToString("D"));
@@ -85,6 +87,17 @@ public sealed class ClienteStorageService(IWebHostEnvironment environment)
         {
             Directory.Delete(folder, recursive: true);
         }
+    }
+
+    private static string ResolveRootPath(IWebHostEnvironment environment, ClienteStorageSettings settings)
+    {
+        var configuredPath = string.IsNullOrWhiteSpace(settings.RootPath)
+            ? Path.Combine("App_Data", "Clienti")
+            : settings.RootPath;
+
+        return Path.IsPathRooted(configuredPath)
+            ? configuredPath
+            : Path.Combine(environment.ContentRootPath, configuredPath);
     }
 
     private async Task<string> SaveFileInternalAsync(Guid publicId, string originalFileName, Stream content, HashSet<string> allowedExtensions, CancellationToken cancellationToken)
