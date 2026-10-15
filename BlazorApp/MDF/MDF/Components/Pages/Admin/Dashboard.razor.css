@@ -1,75 +1,186 @@
 .admin-dashboard-page {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 20px;
+  min-width: 0;
+  container: dashboard / inline-size;
 }
 
 .admin-dashboard-page .admin-panel {
-  border-color: rgba(149, 136, 112, 0.24);
+  min-width: 0;
   border-radius: 16px;
-  background: linear-gradient(155deg, rgba(255, 252, 249, 0.96), rgba(247, 240, 232, 0.82));
-  box-shadow: 0 16px 34px rgba(91, 78, 62, 0.08);
+  background: var(--paper-soft);
 }
 
-.admin-dashboard-hero {
-  padding-bottom: 24px;
+.dashboard-hero {
+  display: grid;
+  gap: 24px;
+  background: linear-gradient(120deg, var(--paper-soft), rgba(223, 233, 216, 0.8)) !important;
 }
 
-.admin-dashboard-page .admin-page-title {
-  margin-top: 10px;
-  font-size: clamp(2.2rem, 4vw, 3rem);
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 
-.admin-dashboard-page .admin-lead {
-  max-width: 76ch;
-  color: #5e6c65;
+.dashboard-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.admin-dashboard-grid {
-  gap: 16px;
+.dashboard-stat h2 {
+  margin: 0;
+  color: var(--ink-strong);
+  font-size: 0.9rem;
 }
 
-.admin-dashboard-grid .admin-panel {
-  position: relative;
-  overflow: hidden;
+.dashboard-stat strong {
+  color: var(--heading-green);
+  font-size: 2.5rem;
+  line-height: 1.1;
 }
 
-.admin-dashboard-grid .admin-panel::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 64px;
-  height: 2px;
-  background: rgba(199, 121, 94, 0.45);
+.dashboard-stat span {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  line-height: 1.5;
 }
 
-.admin-dashboard-page .admin-section-title {
-  font-size: 1.2rem;
+.dashboard-stat-attention {
+  border-top: 3px solid var(--terracotta);
+}
+
+.dashboard-stat-attention strong {
+  color: var(--terracotta-deep);
+}
+
+.dashboard-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 20px;
+}
+
+.dashboard-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 12px;
 }
 
-.admin-dashboard-list {
+.dashboard-section-head .admin-section-title {
   margin: 0;
-  padding-left: 20px;
-  color: #5e6c65;
-  line-height: 1.7;
 }
 
-.admin-dashboard-list li + li {
-  margin-top: 6px;
+.dashboard-client-list {
+  display: grid;
+  margin: 12px 0;
+  padding: 0;
+  list-style: none;
 }
 
-@media (max-width: 900px) {
-  .admin-dashboard-page {
-    gap: 14px;
+.dashboard-client-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.dashboard-client-info {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-client-info h3 {
+  margin: 0 0 4px;
+  color: var(--heading-green);
+  font-size: 1rem;
+}
+
+.dashboard-client-info .admin-helper {
+  font-size: 0.8rem;
+}
+
+.dashboard-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.dashboard-row-actions {
+  display: grid;
+  flex-shrink: 0;
+  justify-items: center;
+  gap: 8px;
+}
+
+.dashboard-client-list .admin-button {
+  flex-shrink: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+}
+
+.dashboard-text-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--sage-deep);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-underline-offset: 4px;
+}
+
+.dashboard-empty {
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.dashboard-empty h3 {
+  margin: 0;
+  color: var(--heading-green);
+  font-size: 1rem;
+}
+
+.dashboard-note {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+@container dashboard (max-width: 1000px) {
+  .dashboard-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@container dashboard (max-width: 520px) {
+  .dashboard-stats {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .admin-dashboard-page .admin-panel {
     padding: 16px;
-    border-radius: 14px;
   }
 
-  .admin-dashboard-page .admin-page-title {
-    font-size: clamp(1.9rem, 8vw, 2.4rem);
+  .dashboard-client-list li {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard-row-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    justify-items: stretch;
   }
 }

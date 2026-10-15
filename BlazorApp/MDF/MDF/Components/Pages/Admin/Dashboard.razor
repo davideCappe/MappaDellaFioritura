@@ -2,40 +2,200 @@
 @page "/admin/dashboard"
 @rendermode InteractiveServer
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@using MDF.Services
 @using MDF.Shared.Constants
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
+@inject ClienteStorageService StorageService
 @layout AdminLayout
 @attribute [Authorize(Roles = Roles.Admin + "," + Roles.SuperAdmin)]
 
 <PageTitle>Back Office | Dashboard</PageTitle>
 
 <div class="admin-dashboard-page">
-    <section class="admin-panel admin-dashboard-hero">
-        <p class="admin-kicker">Area amministrazione</p>
-        <h1 class="admin-page-title">Dashboard</h1>
-        <p class="admin-lead">
-            Gestisci clienti, contenuti e nuovi utenti dal menu Amministrazione. In Il mio account trovi il profilo e le impostazioni di sicurezza del tuo accesso.
-        </p>
+    <section class="admin-panel dashboard-hero">
+        <div>
+            <p class="admin-kicker">Il tuo lavoro, a colpo d'occhio</p>
+            <h1 class="admin-page-title">Dashboard</h1>
+            <p class="admin-lead">Controlla le pagine pubbliche e riprendi i contenuti da completare.</p>
+        </div>
+        <div class="admin-actions">
+            <a href="/admin/clienti/dettaglio" class="admin-button">Nuovo cliente</a>
+            <a href="/admin/contenuti" class="admin-button admin-button-secondary">Gestisci contenuti</a>
+        </div>
     </section>
 
-    <section class="admin-link-grid admin-dashboard-grid">
-        <article class="admin-panel">
-            <h2 class="admin-section-title">Flusso consigliato</h2>
-            <ol class="admin-dashboard-list">
-                <li>Crea o aggiorna il cliente in <strong>Clienti</strong>.</li>
-                <li>Verifica PublicId e route pubblica prevista.</li>
-                <li>Carica PDF e tracce in <strong>Contenuti</strong>.</li>
-                <li>Ordina le tracce e controlla la pagina pubblica finale.</li>
-            </ol>
-        </article>
+    @if (summary is null)
+    {
+        <p class="admin-empty" role="status">Caricamento panoramica...</p>
+    }
+    else if (summary.Total == 0)
+    {
+        <section class="admin-panel dashboard-empty">
+            <h2 class="admin-section-title">Inizia dal primo cliente</h2>
+            <p class="admin-lead">Crea la sua scheda, poi aggiungi il PDF e le tracce audio. Qui troverai i clienti recenti e i contenuti ancora da caricare.</p>
+            <a href="/admin/clienti/dettaglio" class="admin-button">Crea il primo cliente</a>
+        </section>
+    }
+    else
+    {
+        <section class="dashboard-stats" aria-label="Riepilogo clienti">
+            <article class="admin-panel dashboard-stat">
+                <h2>Clienti totali</h2>
+                <strong>@summary.Total</strong>
+                <span>@(summary.Total - summary.Active) con pagina disattivata</span>
+            </article>
+            <article class="admin-panel dashboard-stat">
+                <h2>Pagine pubbliche attive</h2>
+                <strong>@summary.Active</strong>
+                <span>Raggiungibili tramite link cliente</span>
+            </article>
+            <article class="admin-panel dashboard-stat @(summary.ToComplete > 0 ? "dashboard-stat-attention" : null)">
+                <h2>Attive da completare</h2>
+                <strong>@summary.ToComplete</strong>
+                <span>Senza PDF o senza tracce audio</span>
+            </article>
+        </section>
 
-        <article class="admin-panel">
-            <h2 class="admin-section-title">Regole contenuti</h2>
-            <ul class="admin-dashboard-list">
-                <li>Un solo PDF per cliente (l'upload successivo sostituisce il precedente).</li>
-                <li>Ogni traccia audio richiede titolo e ordinamento esplicito.</li>
-                <li>I file sono salvati nella cartella nominata con il <strong>PublicId</strong>.</li>
-                <li>La pubblicazione dipende dallo stato <strong>Cliente attivo</strong>.</li>
-            </ul>
-        </article>
-    </section>
+        <div class="dashboard-columns">
+            <section class="admin-panel">
+                <div class="dashboard-section-head">
+                    <h2 class="admin-section-title">Da completare</h2>
+                    <span class="admin-pill @(summary.ToComplete > 0 ? "admin-pill-muted" : null)">@summary.ToComplete</span>
+                </div>
+                <p class="admin-helper">Pagine attive con PDF o audio non ancora registrati. Prima le schede create da piu tempo.</p>
+                @if (toComplete.Count == 0)
+                {
+                    <div class="dashboard-empty">
+                        <h3>@(summary.Active == 0 ? "Nessuna pagina attiva" : "Nessun contenuto mancante")</h3>
+                        <p class="admin-helper">@(summary.Active == 0 ? "Puoi attivare le pagine dalla scheda cliente." : "Tutti i clienti attivi hanno un PDF e almeno una traccia audio registrati.")</p>
+                    </div>
+                }
+                else
+                {
+                    <ul class="dashboard-client-list">
+                        @foreach (var cliente in toComplete)
+                        {
+                            <li>
+                                <div class="dashboard-client-info">
+                                    <h3>@cliente.Nome</h3>
+                                    <p class="admin-helper">Nato il @cliente.DataNascita.ToString("dd/MM/yyyy")</p>
+                                    <div class="dashboard-tags">
+                                        @if (!cliente.HasPdf)
+                                        {
+                                            <span class="admin-mini-pill admin-mini-pill-muted">PDF mancante</span>
+                                        }
+                                        @if (cliente.AudioCount == 0)
+                                        {
+                                            <span class="admin-mini-pill admin-mini-pill-muted">Audio mancanti</span>
+                                        }
+                                    </div>
+                                </div>
+                                <a href="@($"/admin/contenuti?clienteId={cliente.Id}")" class="admin-button admin-button-secondary" aria-label="@($"Completa i contenuti di {cliente.Nome}")">Completa</a>
+                            </li>
+                        }
+                    </ul>
+                    @if (summary.ToComplete > toComplete.Count)
+                    {
+                        <p class="admin-helper">Mostrati @toComplete.Count di @summary.ToComplete clienti da completare.</p>
+                    }
+                }
+                <a href="/admin/clienti" class="dashboard-text-link">Vai a tutti i clienti</a>
+            </section>
+
+            <section class="admin-panel">
+                <div class="dashboard-section-head">
+                    <h2 class="admin-section-title">Ultimi clienti creati</h2>
+                </div>
+                <p class="admin-helper">Le ultime cinque schede, con accesso diretto ai contenuti e alla pagina pubblica.</p>
+                <ul class="dashboard-client-list">
+                    @foreach (var cliente in recent)
+                    {
+                        <li>
+                            <div class="dashboard-client-info">
+                                <h3>@cliente.Nome</h3>
+                                <p class="admin-helper">Nato il @cliente.DataNascita.ToString("dd/MM/yyyy")</p>
+                                <div class="dashboard-tags">
+                                    <span class="admin-mini-pill @(cliente.IsAttivo ? null : "admin-mini-pill-muted")">@(cliente.IsAttivo ? "Pagina attiva" : "Pagina disattivata")</span>
+                                    <span class="admin-mini-pill">@(cliente.HasPdf ? "PDF presente" : "PDF mancante")</span>
+                                    <span class="admin-mini-pill">@cliente.AudioCount tracce</span>
+                                </div>
+                            </div>
+                            <div class="dashboard-row-actions">
+                                <a href="@($"/admin/contenuti?clienteId={cliente.Id}")" class="admin-button admin-button-secondary" aria-label="@($"Gestisci i contenuti di {cliente.Nome}")">Contenuti</a>
+                                @if (cliente.IsAttivo)
+                                {
+                                    <a href="@StorageService.GetPublicRoute(cliente.PublicId)" class="dashboard-text-link" target="_blank" rel="noopener noreferrer" aria-label="@($"Apri la pagina di {cliente.Nome} in una nuova scheda")">Apri pagina</a>
+                                }
+                                else
+                                {
+                                    <a href="@($"/admin/clienti/dettaglio/{cliente.Id}")" class="dashboard-text-link">Modifica stato</a>
+                                }
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </section>
+        </div>
+        <p class="dashboard-note">Il riepilogo considera i contenuti registrati nel gestionale, non verifica la presenza dei file su disco. Le segnalazioni non modificano la pubblicazione delle pagine.</p>
+    }
 </div>
+
+@code {
+    private DashboardSummary? summary;
+    private List<DashboardCliente> toComplete = [];
+    private List<DashboardCliente> recent = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        var clienti = dbContext.Clienti.AsNoTracking();
+        summary = await clienti.GroupBy(_ => 1)
+            .Select(group => new DashboardSummary
+            {
+                Total = group.Count(),
+                Active = group.Count(x => x.IsAttivo),
+                ToComplete = group.Count(x => x.IsAttivo &&
+                    (x.PdfFileName == null || x.PdfFileName.Trim() == "" || !x.AudioTracks.Any()))
+            })
+            .SingleOrDefaultAsync() ?? new DashboardSummary();
+
+        var overview = clienti.Select(x => new DashboardCliente
+        {
+            Id = x.Id,
+            Nome = x.Nome,
+            DataNascita = x.DataNascita,
+            PublicId = x.PublicId,
+            IsAttivo = x.IsAttivo,
+            HasPdf = x.PdfFileName != null && x.PdfFileName.Trim() != "",
+            AudioCount = x.AudioTracks.Count,
+            CreatedUtc = x.CreatedUtc
+        });
+
+        toComplete = await overview
+            .Where(x => x.IsAttivo && (!x.HasPdf || x.AudioCount == 0))
+            .OrderBy(x => x.CreatedUtc).ThenBy(x => x.Id)
+            .Take(5).ToListAsync();
+        recent = await overview.OrderByDescending(x => x.CreatedUtc).ThenByDescending(x => x.Id)
+            .Take(5).ToListAsync();
+    }
+
+    private sealed class DashboardSummary
+    {
+        public int Total { get; set; }
+        public int Active { get; set; }
+        public int ToComplete { get; set; }
+    }
+
+    private sealed class DashboardCliente
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; } = "";
+        public DateOnly DataNascita { get; set; }
+        public Guid PublicId { get; set; }
+        public bool IsAttivo { get; set; }
+        public bool HasPdf { get; set; }
+        public int AudioCount { get; set; }
+        public DateTime CreatedUtc { get; set; }
+    }
+}
