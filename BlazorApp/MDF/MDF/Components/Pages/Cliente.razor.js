@@ -77,16 +77,26 @@ function initClientPlayer(root) {
   audio.addEventListener("play", updateHighlights);
   audio.addEventListener("error", () => highlightClientMatrix(root, ""));
 
-  const setTrack = (nextIndex) => {
+  const hint = player.querySelector(".player-hint");
+  const defaultHint = hint?.textContent;
+  let playbackRequest = 0;
+
+  const setTrack = async (nextIndex) => {
     const normalizedIndex = (nextIndex + trackButtons.length) % trackButtons.length;
     const selectedButton = trackButtons[normalizedIndex];
     const trackUrl = selectedButton.dataset.trackUrl;
     const trackTitle = selectedButton.dataset.trackTitle ?? "Traccia";
 
     if (!trackUrl) {
-      return false;
+      console.error("La traccia selezionata non ha un URL audio.");
+      if (hint) {
+        hint.textContent = "La traccia selezionata non e disponibile.";
+        hint.setAttribute("role", "status");
+      }
+      return;
     }
 
+    const request = ++playbackRequest;
     currentIndex = normalizedIndex;
 
     trackButtons.forEach((button, index) => {
@@ -104,30 +114,33 @@ function initClientPlayer(root) {
     audio.load();
     currentTrackTitle.textContent = trackTitle;
     updateHighlights();
-    return true;
-  };
-
-  audio.addEventListener("ended", async () => {
-    highlightClientMatrix(root, "");
-    if (currentIndex >= trackButtons.length - 1) {
-      return;
-    }
-
-    if (!setTrack(currentIndex + 1)) {
-      console.error("La traccia successiva non ha un URL audio.");
-      return;
+    if (hint) {
+      hint.textContent = defaultHint;
+      hint.removeAttribute("role");
     }
 
     try {
       await audio.play();
     } catch (error) {
-      console.error("Impossibile avviare automaticamente la traccia successiva.", error);
-      const hint = player.querySelector(".player-hint");
+      if (request !== playbackRequest) {
+        return;
+      }
+
+      console.error("Impossibile avviare la traccia selezionata.", error);
       if (hint) {
-        hint.textContent = "Impossibile avviare la traccia successiva automaticamente. Premi Play per continuare.";
+        hint.textContent = "Impossibile avviare la traccia automaticamente. Premi Play per continuare.";
         hint.setAttribute("role", "status");
       }
     }
+  };
+
+  audio.addEventListener("ended", () => {
+    highlightClientMatrix(root, "");
+    if (currentIndex >= trackButtons.length - 1) {
+      return;
+    }
+
+    setTrack(currentIndex + 1);
   });
 
   updateHighlights();
