@@ -1,0 +1,154 @@
+.account-panel {
+  min-width: 0;
+  background: var(--paper-soft);
+}
+
+.account-panel ::deep h3 {
+  margin: 0 0 20px;
+  color: var(--heading-green);
+  font-size: 1.3rem;
+}
+
+.account-panel ::deep h4 {
+  margin: 24px 0 12px;
+  color: var(--heading-green);
+}
+
+.account-panel ::deep p {
+  line-height: 1.65;
+}
+
+.account-panel ::deep .row {
+  max-width: 720px;
+}
+
+.account-panel ::deep form {
+  margin-bottom: 16px;
+}
+
+.account-panel ::deep .form-floating {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.account-panel ::deep .form-floating > label {
+  order: -1;
+  color: var(--ink-strong);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.account-panel ::deep .form-control {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: #fff;
+  color: var(--ink-strong);
+  font: inherit;
+}
+
+.account-panel ::deep .form-control:disabled {
+  background: rgba(74, 107, 83, 0.06);
+  color: var(--ink-soft);
+}
+
+.account-panel ::deep .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin: 4px 4px 4px 0;
+  padding: 10px 16px;
+  border: 1px solid var(--sage-deep);
+  border-radius: var(--radius-control);
+  background: var(--sage-deep);
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.account-panel ::deep .btn:hover {
+  background: var(--heading-green);
+}
+
+.account-panel ::deep .btn-danger {
+  border-color: var(--terracotta-deep);
+  background: var(--terracotta-deep);
+}
+
+.account-panel ::deep .btn-danger:hover {
+  background: #69463d;
+}
+
+.account-panel ::deep .btn-link {
+  border-color: transparent;
+  background: transparent;
+  color: var(--sage-deep);
+  text-decoration: underline;
+}
+
+.account-panel ::deep .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.account-panel ::deep .alert {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  overflow-wrap: anywhere;
+}
+
+.account-panel ::deep .alert-success {
+  border-color: rgba(116, 153, 96, 0.24);
+  background: rgba(116, 153, 96, 0.13);
+  color: #2f5a37;
+}
+
+.account-panel ::deep .alert-danger,
+.account-panel ::deep .alert-warning {
+  border-color: rgba(200, 109, 81, 0.26);
+  background: rgba(200, 109, 81, 0.12);
+  color: #8a3d2d;
+}
+
+.account-panel ::deep .text-danger,
+.account-panel ::deep .validation-message,
+.account-panel ::deep .validation-summary-errors {
+  color: #8a3d2d;
+}
+
+.account-panel ::deep .text-success {
+  color: #2f5a37;
+}
+
+.account-panel ::deep .table {
+  width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+  overflow-wrap: anywhere;
+}
+
+.account-panel ::deep .table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.account-panel ::deep code {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 480px) {
+  .account-panel ::deep .table td {
+    display: block;
+  }
+}

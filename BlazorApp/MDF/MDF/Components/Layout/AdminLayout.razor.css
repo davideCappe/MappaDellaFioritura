@@ -1,26 +1,89 @@
 .admin-app {
+  display: grid;
+  grid-template-columns: 264px minmax(0, 1fr);
   min-height: 100vh;
-  padding: 14px 14px 28px;
-}
-
-.admin-shell-header {
-  max-width: 1220px;
+  width: min(1600px, 100%);
   margin: 0 auto;
 }
 
-.admin-main {
-  min-height: calc(100vh - 130px);
+.admin-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow-y: auto;
+  border-right: 1px solid var(--line);
+  background: var(--paper-soft);
+}
+
+.admin-workspace {
+  min-width: 0;
+  padding: 0 32px 32px;
+}
+
+.admin-workspace-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 80px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.admin-workspace-label {
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.admin-current-user {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .admin-content {
   display: grid;
-  gap: 16px;
+  gap: 20px;
   width: min(1220px, 100%);
   margin: 0 auto;
 }
 
+.admin-skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 12px 18px;
+  transform: translateY(-160%);
+  border-radius: var(--radius-control);
+  background: var(--ink-strong);
+  color: #fff;
+}
+
+.admin-skip-link:focus {
+  transform: translateY(0);
+}
+
 @media (max-width: 900px) {
   .admin-app {
-    padding: 10px 10px 20px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-sidebar {
+    position: static;
+    height: auto;
+    overflow: visible;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .admin-workspace {
+    padding: 0 16px 24px;
+  }
+
+  .admin-workspace-header {
+    min-height: 60px;
   }
 }

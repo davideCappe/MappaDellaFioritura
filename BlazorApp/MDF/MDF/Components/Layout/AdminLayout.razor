@@ -1,13 +1,26 @@
 @inherits LayoutComponentBase
 
-<div class="app admin-app">
-    <header class="admin-shell-header">
+<div class="admin-app">
+    <a class="admin-skip-link" href="#admin-main-content">Vai al contenuto</a>
+    <aside class="admin-sidebar" aria-label="Menu area riservata">
         <AdminNav />
-    </header>
+    </aside>
 
-    <main class="admin-main" id="admin-main-content">
-        <section class="admin-content" aria-label="Contenuto area amministrazione">
-            @Body
-        </section>
-    </main>
+    <div class="admin-workspace">
+        <header class="admin-workspace-header">
+            <span class="admin-workspace-label">Area riservata</span>
+            <AuthorizeView>
+                <Authorized Context="authentication">
+                    <span class="admin-current-user" title="@authentication.User.Identity?.Name">
+                        @authentication.User.Identity?.Name
+                    </span>
+                </Authorized>
+            </AuthorizeView>
+        </header>
+        <main class="admin-main" id="admin-main-content" tabindex="-1">
+            <div class="admin-content">
+                @Body
+            </div>
+        </main>
+    </div>
 </div>

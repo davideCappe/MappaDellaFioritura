@@ -1,17 +1,12 @@
 ﻿@inherits LayoutComponentBase
-@layout MDF.Components.Layout.MainLayout
+@layout MDF.Components.Layout.AdminLayout
 
-<h1>Manage your account</h1>
+<section class="admin-panel account-intro">
+    <p class="admin-kicker">Il mio account</p>
+    <h1 class="admin-page-title">Impostazioni personali</h1>
+    <p class="admin-lead">Gestisci il profilo, i dati personali e la sicurezza del tuo accesso.</p>
+</section>
 
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-lg-3">
-            <ManageNavMenu />
-        </div>
-        <div class="col-lg-9">
-            @Body
-        </div>
-    </div>
-</div>
+<section class="admin-panel account-panel" aria-label="Impostazioni account">
+    @Body
+</section>

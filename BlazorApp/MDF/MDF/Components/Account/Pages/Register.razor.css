@@ -1,0 +1,32 @@
+.create-user-panel {
+  width: 100%;
+  max-width: 720px;
+}
+
+.create-user-panel ::deep .admin-input,
+.create-user-panel ::deep .admin-select {
+  font: inherit;
+}
+
+.create-user-panel ::deep .validation-summary-errors,
+.create-user-panel ::deep .validation-message {
+  color: #8a3d2d;
+  font-size: 0.9rem;
+}
+
+.create-user-panel ::deep .validation-summary-valid {
+  display: none;
+}
+
+.create-user-panel ::deep .alert {
+  padding: 14px 16px;
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(116, 153, 96, 0.24);
+  background: rgba(116, 153, 96, 0.13);
+  color: #2f5a37;
+}
+
+.create-user-panel .admin-button {
+  font: inherit;
+  font-weight: 700;
+}
