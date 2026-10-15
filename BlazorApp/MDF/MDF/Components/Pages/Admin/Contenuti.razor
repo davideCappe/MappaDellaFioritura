@@ -14,11 +14,11 @@
 <PageTitle>Back Office | Contenuti</PageTitle>
 
 <div class="admin-contenuti-page">
-    <section class="admin-panel">
+    <section class="admin-panel admin-contenuti-hero">
         <p class="admin-kicker">Back Office</p>
         <h1 class="admin-page-title">Contenuti</h1>
         <p class="admin-lead">
-            Caricamento del PDF cliente e gestione delle tracce audio con titolo e ordinamento.
+            Gestisci PDF e tracce audio della pagina cliente in modo ordinato e immediato.
         </p>
     </section>
 
@@ -29,9 +29,14 @@
         </section>
     }
 
-    <section class="admin-grid">
-    <article class="admin-panel">
-        <h2 class="admin-section-title">Selezione cliente</h2>
+    <section class="admin-grid admin-contenuti-overview">
+    <article class="admin-panel admin-contenuti-selector-panel">
+        <div class="admin-contenuti-section-head">
+            <div>
+                <h2 class="admin-section-title">Selezione cliente</h2>
+                <p class="admin-helper">Scegli la cliente su cui vuoi lavorare. Tutte le sezioni sotto si aggiornano automaticamente.</p>
+            </div>
+        </div>
 
         @if (clienti.Count == 0)
         {
@@ -41,40 +46,46 @@
         }
         else
         {
-            <div class="admin-field">
-                <label for="cliente-select">Cliente</label>
-                <select id="cliente-select" class="admin-select" value="@SelectedClienteIdValue" @onchange="OnClienteChanged">
-                    @foreach (var cliente in clienti)
-                    {
-                        <option value="@cliente.Id">@cliente.Nome</option>
-                    }
-                </select>
-            </div>
-
-            @if (selectedCliente is not null)
-            {
-                <div class="admin-stack">
-                    <div class="admin-field">
-                        <label>PublicId</label>
-                        <div class="admin-input admin-code">@selectedCliente.PublicId</div>
-                    </div>
-
-                    <div class="admin-field">
-                        <label>Route pubblica prevista</label>
-                        <div class="admin-input admin-code">@StorageService.GetPublicRoute(selectedCliente.PublicId)</div>
-                    </div>
-
-                    <div class="admin-field">
-                        <label>Cartella fisica</label>
-                        <div class="admin-input admin-code">@StorageService.GetClienteFolder(selectedCliente.PublicId)</div>
-                    </div>
+            <div class="admin-upload-box admin-contenuti-selector-box">
+                <div class="admin-field">
+                    <label for="cliente-select">Cliente</label>
+                    <select id="cliente-select" class="admin-select" value="@SelectedClienteIdValue" @onchange="OnClienteChanged">
+                        @foreach (var cliente in clienti)
+                        {
+                            <option value="@cliente.Id">@cliente.Nome</option>
+                        }
+                    </select>
                 </div>
-            }
+
+                @if (selectedCliente is not null)
+                {
+                    <div class="admin-contenuti-client-summary">
+                        <div class="admin-contenuti-client-card">
+                            <span class="admin-contenuti-client-label">Cliente selezionata</span>
+                            <strong>@selectedCliente.Nome</strong>
+                        </div>
+                        <div class="admin-contenuti-client-meta">
+                            <span class="admin-mini-pill @(string.IsNullOrWhiteSpace(selectedCliente.PdfFileName) ? "admin-mini-pill-muted" : string.Empty)">
+                                @(string.IsNullOrWhiteSpace(selectedCliente.PdfFileName) ? "PDF mancante" : "PDF presente")
+                            </span>
+                            <span class="admin-mini-pill">@selectedCliente.AudioTracks.Count tracce</span>
+                            <a href="@StorageService.GetPublicRoute(selectedCliente.PublicId)" class="admin-button admin-button-secondary admin-contenuti-link-button" target="_blank" rel="noopener noreferrer">
+                                Apri pagina cliente
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
         }
     </article>
 
-    <article class="admin-panel">
-        <h2 class="admin-section-title">PDF cliente</h2>
+    <article class="admin-panel admin-contenuti-pdf-panel">
+        <div class="admin-contenuti-section-head">
+            <div>
+                <h2 class="admin-section-title">PDF cliente</h2>
+                <p class="admin-helper">Carica o aggiorna il documento personale visibile nella pagina cliente.</p>
+            </div>
+        </div>
 
         @if (selectedCliente is null)
         {
@@ -130,8 +141,13 @@
     </article>
 </section>
 
-<section class="admin-panel">
-    <h2 class="admin-section-title">Nuove tracce audio</h2>
+<section class="admin-panel admin-contenuti-audio-upload-panel">
+    <div class="admin-contenuti-section-head">
+        <div>
+            <h2 class="admin-section-title">Nuove tracce audio</h2>
+            <p class="admin-helper">Prepara una o più tracce, definisci titolo e ordine, poi caricale tutte insieme.</p>
+        </div>
+    </div>
 
     @if (selectedCliente is null)
     {
@@ -180,8 +196,13 @@
     }
 </section>
 
-<section class="admin-panel">
-    <h2 class="admin-section-title">Tracce audio del cliente</h2>
+<section class="admin-panel admin-contenuti-audio-list-panel">
+    <div class="admin-contenuti-section-head">
+        <div>
+            <h2 class="admin-section-title">Tracce audio del cliente</h2>
+            <p class="admin-helper">Qui puoi rivedere, aggiornare o rimuovere le tracce già pubblicate.</p>
+        </div>
+    </div>
 
     @if (selectedCliente is null)
     {
@@ -234,9 +255,13 @@
 
 @if (selectedCliente is not null)
 {
-    <section class="admin-panel">
-        <h2 class="admin-section-title">Anteprima pubblica</h2>
-        <p class="admin-helper">Questa è la route pubblica che verrà usata dalla cliente finale.</p>
+    <section class="admin-panel admin-contenuti-preview-panel">
+        <div class="admin-contenuti-section-head">
+            <div>
+                <h2 class="admin-section-title">Anteprima pubblica</h2>
+                <p class="admin-helper">Controlla il risultato finale così come verrà visto dalla cliente.</p>
+            </div>
+        </div>
         <div class="admin-actions admin-actions-spaced">
             <a href="@StorageService.GetPublicRoute(selectedCliente.PublicId)" class="admin-button" target="_blank" rel="noopener noreferrer">
                 Apri pagina cliente
