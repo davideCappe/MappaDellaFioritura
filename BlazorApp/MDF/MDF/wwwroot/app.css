@@ -721,6 +721,30 @@ h1:focus {
   background: var(--terracotta-soft);
 }
 
+.admin-button:disabled,
+.admin-button[disabled],
+.admin-button-secondary:disabled,
+.admin-button-secondary[disabled],
+.admin-button-danger:disabled,
+.admin-button-danger[disabled] {
+  opacity: 0.48;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  filter: saturate(0.72);
+}
+
+.admin-button:disabled:hover,
+.admin-button[disabled]:hover,
+.admin-button-secondary:disabled:hover,
+.admin-button-secondary[disabled]:hover,
+.admin-button-danger:disabled:hover,
+.admin-button-danger[disabled]:hover {
+  background: inherit;
+  color: inherit;
+  box-shadow: none;
+}
+
 .admin-table-wrapper {
   overflow-x: auto;
 }

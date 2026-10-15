@@ -61,14 +61,15 @@
 }
 
 .admin-contenuti-page .admin-upload-box {
-  gap: 12px;
-  padding: 14px;
-  border: 1px solid rgba(149, 136, 112, 0.2);
-  border-radius: 14px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(249, 245, 240, 0.74));
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(149, 136, 112, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.88);
 }
 
-.admin-contenuti-page .admin-contenuti-selector-box {
+.admin-contenuti-page .admin-contenuti-selector-box,
+.admin-contenuti-page .admin-contenuti-pdf-box {
   border-color: rgba(141, 161, 132, 0.18);
 }
 
@@ -80,9 +81,9 @@
 .admin-contenuti-page .admin-contenuti-client-card {
   display: grid;
   gap: 4px;
-  padding: 14px 16px;
-  border: 1px solid rgba(200, 109, 81, 0.14);
-  border-radius: 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(200, 109, 81, 0.12);
+  border-radius: 12px;
   background: rgba(255, 251, 247, 0.92);
 }
 
@@ -99,6 +100,14 @@
   color: var(--ink-soft);
 }
 
+.admin-contenuti-page .admin-contenuti-client-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
 .admin-contenuti-page .admin-contenuti-client-meta {
   display: flex;
   flex-wrap: wrap;
@@ -107,18 +116,52 @@
 }
 
 .admin-contenuti-page .admin-contenuti-link-button {
-  min-height: 36px;
-  padding-inline: 14px;
+  min-height: 38px;
+  padding-inline: 16px;
+  background: var(--terracotta);
+  border: 1px solid rgba(200, 109, 81, 0.18);
+  color: #fff;
+  box-shadow: 0 10px 18px rgba(200, 109, 81, 0.2);
+}
+
+.admin-contenuti-page .admin-contenuti-link-button:hover {
+  background: var(--terracotta-soft);
+  color: #fff;
 }
 
 .admin-contenuti-page .admin-file-row {
-  border-color: rgba(149, 136, 112, 0.22);
-  border-radius: 14px;
+  border-color: rgba(149, 136, 112, 0.2);
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.92);
 }
 
 .admin-contenuti-page .admin-file-row strong {
   color: #3f5b4d;
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-current,
+.admin-contenuti-page .admin-contenuti-pdf-pending {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-current-main {
+  display: grid;
+  gap: 4px;
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-upload-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-empty {
+  margin: 0;
 }
 
 .admin-contenuti-page .admin-form-grid {
@@ -142,9 +185,9 @@
 .admin-contenuti-page .admin-inline-actions .admin-button,
 .admin-contenuti-page .admin-inline-actions a.admin-button,
 .admin-contenuti-page .admin-actions .admin-button {
-  min-height: 36px;
-  padding: 8px 12px;
-  border-radius: 11px;
+  min-height: 34px;
+  padding: 7px 11px;
+  border-radius: 10px;
   font-weight: 700;
 }
 
@@ -163,12 +206,56 @@
   color: #617068;
 }
 
+.admin-contenuti-page .admin-contenuti-audio-upload-box,
 .admin-contenuti-page .admin-contenuti-audio-editor-box {
   border-color: rgba(141, 161, 132, 0.18);
 }
 
-.admin-contenuti-page .admin-contenuti-audio-editor-box > .admin-helper {
-  margin: 0 0 4px;
+.admin-contenuti-page .admin-contenuti-upload-list,
+.admin-contenuti-page .admin-contenuti-audio-list {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-contenuti-page .admin-contenuti-upload-item,
+.admin-contenuti-page .admin-contenuti-audio-row {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(149, 136, 112, 0.14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.admin-contenuti-page .admin-contenuti-upload-item-head,
+.admin-contenuti-page .admin-contenuti-audio-row-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-contenuti-page .admin-contenuti-upload-item-head strong,
+.admin-contenuti-page .admin-contenuti-audio-row-title strong {
+  color: var(--heading-green);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-row-main {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-contenuti-page .admin-contenuti-audio-form-grid {
+  align-items: end;
+}
+
+.admin-contenuti-page .admin-contenuti-audio-actions {
+  justify-content: flex-start;
+}
+
+.admin-contenuti-page .admin-contenuti-audio-savebar {
+  padding-top: 12px;
+  border-top: 1px solid rgba(149, 136, 112, 0.14);
 }
 
 @media (max-width: 960px) {
@@ -189,12 +276,25 @@
     margin-bottom: 12px;
   }
 
+  .admin-contenuti-page .admin-contenuti-client-details,
   .admin-contenuti-page .admin-contenuti-client-meta {
     align-items: stretch;
   }
 
   .admin-contenuti-page .admin-upload-box {
-    padding: 12px;
+    padding: 10px;
+  }
+
+  .admin-contenuti-page .admin-contenuti-upload-item-head,
+  .admin-contenuti-page .admin-contenuti-audio-row-title,
+  .admin-contenuti-page .admin-contenuti-pdf-current,
+  .admin-contenuti-page .admin-contenuti-pdf-pending {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-contenuti-page .admin-contenuti-pdf-upload-row {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -210,6 +310,15 @@
   .admin-contenuti-page .admin-inline-actions .admin-button,
   .admin-contenuti-page .admin-inline-actions a.admin-button {
     flex: 1 1 auto;
+  }
+
+  .admin-contenuti-page .admin-contenuti-upload-item,
+  .admin-contenuti-page .admin-contenuti-audio-row {
+    padding: 10px;
+  }
+
+  .admin-contenuti-page .admin-contenuti-audio-actions {
+    width: 100%;
   }
 
   .admin-contenuti-page .admin-contenuti-link-button {

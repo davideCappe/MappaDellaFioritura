@@ -34,7 +34,7 @@
         <div class="admin-contenuti-section-head">
             <div>
                 <h2 class="admin-section-title">Selezione cliente</h2>
-                <p class="admin-helper">Scegli la cliente su cui vuoi lavorare. Tutte le sezioni sotto si aggiornano automaticamente.</p>
+                <p class="admin-helper">Scegli il cliente su cui vuoi lavorare. Tutte le sezioni sotto si aggiornano automaticamente.</p>
             </div>
         </div>
 
@@ -52,7 +52,7 @@
                     <select id="cliente-select" class="admin-select" value="@SelectedClienteIdValue" @onchange="OnClienteChanged">
                         @foreach (var cliente in clienti)
                         {
-                            <option value="@cliente.Id">@cliente.Nome</option>
+                            <option value="@cliente.Id">@cliente.Nome · @cliente.DataNascita.ToString("dd/MM/yyyy")</option>
                         }
                     </select>
                 </div>
@@ -61,15 +61,19 @@
                 {
                     <div class="admin-contenuti-client-summary">
                         <div class="admin-contenuti-client-card">
-                            <span class="admin-contenuti-client-label">Cliente selezionata</span>
+                            <span class="admin-contenuti-client-label">Cliente selezionato</span>
                             <strong>@selectedCliente.Nome</strong>
+                            <div class="admin-contenuti-client-details">
+                                <span>Nato il @selectedCliente.DataNascita.ToString("dd/MM/yyyy")</span>
+                                <span>@GetEtaLabel(selectedCliente.DataNascita)</span>
+                            </div>
                         </div>
                         <div class="admin-contenuti-client-meta">
                             <span class="admin-mini-pill @(string.IsNullOrWhiteSpace(selectedCliente.PdfFileName) ? "admin-mini-pill-muted" : string.Empty)">
                                 @(string.IsNullOrWhiteSpace(selectedCliente.PdfFileName) ? "PDF mancante" : "PDF presente")
                             </span>
                             <span class="admin-mini-pill">@selectedCliente.AudioTracks.Count tracce</span>
-                            <a href="@StorageService.GetPublicRoute(selectedCliente.PublicId)" class="admin-button admin-button-secondary admin-contenuti-link-button" target="_blank" rel="noopener noreferrer">
+                            <a href="@StorageService.GetPublicRoute(selectedCliente.PublicId)" class="admin-button admin-contenuti-link-button" target="_blank" rel="noopener noreferrer">
                                 Apri pagina cliente
                             </a>
                         </div>
@@ -93,49 +97,47 @@
         }
         else
         {
-            <div class="admin-upload-box">
-                <p class="admin-helper">Carica un unico PDF personale per il cliente. Un nuovo upload sostituirà quello precedente.</p>
-
+            <div class="admin-upload-box admin-contenuti-pdf-box">
                 @if (!string.IsNullOrWhiteSpace(selectedCliente.PdfFileName))
                 {
-                    <div class="admin-file-row">
-                        <div>
+                    <div class="admin-file-row admin-contenuti-pdf-current">
+                        <div class="admin-contenuti-pdf-current-main">
+                            <span class="admin-contenuti-client-label">Documento attuale</span>
                             <strong>@selectedCliente.PdfFileName</strong>
-                            <div class="admin-file-meta">PDF attualmente associato al cliente</div>
                         </div>
 
-                        <div class="admin-inline-actions">
+                        <div class="admin-inline-actions admin-contenuti-pdf-actions">
                             <a href="@StorageService.GetPublicFileRoute(selectedCliente.PublicId, selectedCliente.PdfFileName)" class="admin-button admin-button-secondary" target="_blank" rel="noopener noreferrer">
                                 Apri PDF
                             </a>
                             <button type="button" class="admin-button admin-button-danger" @onclick="DeletePdfAsync">
-                                Elimina PDF
+                                Elimina
                             </button>
                         </div>
                     </div>
                 }
                 else
                 {
-                    <div class="admin-empty">Nessun PDF caricato per questo cliente.</div>
+                    <div class="admin-empty admin-contenuti-pdf-empty">Nessun PDF caricato per questo cliente.</div>
                 }
 
-                <InputFile OnChange="OnPdfSelected" accept=".pdf" class="admin-input" />
+                <div class="admin-contenuti-pdf-upload-row">
+                    <InputFile OnChange="OnPdfSelected" accept=".pdf" class="admin-input" />
+                    <button type="button" class="admin-button" disabled="@(!CanUploadPdf)" @onclick="UploadPdfAsync">
+                        Carica PDF
+                    </button>
+                </div>
 
                 @if (selectedPdfFile is not null)
                 {
-                    <div class="admin-file-row">
+                    <div class="admin-file-row admin-contenuti-pdf-pending">
                         <div>
+                            <span class="admin-contenuti-client-label">Nuovo file selezionato</span>
                             <strong>@selectedPdfFile.Name</strong>
                             <div class="admin-file-meta">@FormatBytes(selectedPdfFile.Size)</div>
                         </div>
                     </div>
                 }
-
-                <div class="admin-actions">
-                    <button type="button" class="admin-button" disabled="@(selectedPdfFile is null)" @onclick="UploadPdfAsync">
-                        Carica PDF
-                    </button>
-                </div>
             </div>
         }
     </article>
@@ -155,31 +157,28 @@
     }
     else
     {
-        <div class="admin-upload-box">
-            <p class="admin-helper">Carica una o più tracce audio. Per ciascuna puoi definire titolo visualizzato e posizione iniziale.</p>
+        <div class="admin-upload-box admin-contenuti-audio-upload-box">
             <InputFile OnChange="OnAudioFilesSelected" multiple accept=".mp3,.wav,.ogg,.m4a" class="admin-input" />
 
             @if (selectedAudioFiles.Count > 0)
             {
-                <div class="admin-stack">
+                <div class="admin-contenuti-upload-list">
                     @foreach (var item in selectedAudioFiles)
                     {
-                        <div class="admin-file-row admin-file-row-form">
-                            <div class="admin-stack admin-stack-full">
-                                <div>
-                                    <strong>@item.File.Name</strong>
-                                    <div class="admin-file-meta">@FormatBytes(item.File.Size)</div>
-                                </div>
+                        <div class="admin-contenuti-upload-item">
+                            <div class="admin-contenuti-upload-item-head">
+                                <strong>@item.File.Name</strong>
+                                <span class="admin-file-meta">@FormatBytes(item.File.Size)</span>
+                            </div>
 
-                                <div class="admin-form-grid">
-                                    <div class="admin-field">
-                                        <label>Titolo traccia</label>
-                                        <InputText @bind-Value="item.Titolo" class="admin-input" />
-                                    </div>
-                                    <div class="admin-field admin-field-compact">
-                                        <label>Ordine</label>
-                                        <InputNumber @bind-Value="item.Ordine" class="admin-input" />
-                                    </div>
+                            <div class="admin-form-grid admin-contenuti-audio-form-grid">
+                                <div class="admin-field">
+                                    <label>Titolo traccia</label>
+                                    <InputText @bind-Value="item.Titolo" class="admin-input" />
+                                </div>
+                                <div class="admin-field admin-field-compact">
+                                    <label>Ordine</label>
+                                    <InputNumber @bind-Value="item.Ordine" class="admin-input" />
                                 </div>
                             </div>
                         </div>
@@ -188,7 +187,7 @@
             }
 
             <div class="admin-actions">
-                <button type="button" class="admin-button" disabled="@(selectedAudioFiles.Count == 0)" @onclick="UploadAudioAsync">
+                <button type="button" class="admin-button" disabled="@(!CanUploadAudio)" @onclick="UploadAudioAsync">
                     Carica tracce
                 </button>
             </div>
@@ -215,19 +214,16 @@
     else
     {
         <div class="admin-upload-box admin-contenuti-audio-editor-box">
-            <p class="admin-helper">Aggiorna i campi che ti servono e usa il pulsante finale per salvare tutto in una sola volta.</p>
-
-            <div class="admin-stack">
+            <div class="admin-contenuti-audio-list">
                 @foreach (var audio in selectedCliente.AudioTracks.OrderBy(x => x.Ordine))
                 {
-                    <div class="admin-file-row admin-file-row-form">
-                        <div class="admin-stack admin-stack-full">
-                            <div>
+                    <article class="admin-contenuti-audio-row">
+                        <div class="admin-contenuti-audio-row-main">
+                            <div class="admin-contenuti-audio-row-title">
                                 <strong>@audio.FileName</strong>
-                                <div class="admin-file-meta">Titolo mostrato nella pagina cliente: @audio.Titolo</div>
                             </div>
 
-                            <div class="admin-form-grid">
+                            <div class="admin-form-grid admin-contenuti-audio-form-grid">
                                 <div class="admin-field">
                                     <label for="@($"titolo-{audio.Id}")">Titolo</label>
                                     <InputText id="@($"titolo-{audio.Id}")" @bind-Value="audio.Titolo" class="admin-input" />
@@ -239,20 +235,20 @@
                             </div>
                         </div>
 
-                        <div class="admin-inline-actions">
+                        <div class="admin-inline-actions admin-contenuti-audio-actions">
                             <a href="@StorageService.GetPublicFileRoute(selectedCliente.PublicId, audio.FileName)" class="admin-button admin-button-secondary" target="_blank" rel="noopener noreferrer">
-                                Apri audio
+                                Ascolta
                             </a>
                             <button type="button" class="admin-button admin-button-danger" @onclick="() => DeleteAudioAsync(audio.Id)">
                                 Elimina
                             </button>
                         </div>
-                    </div>
+                    </article>
                 }
             </div>
 
-            <div class="admin-actions admin-actions-spaced">
-                <button type="button" class="admin-button" @onclick="SaveAllAudioMetadataAsync">
+            <div class="admin-actions admin-actions-spaced admin-contenuti-audio-savebar">
+                <button type="button" class="admin-button" disabled="@(!CanSaveAudioMetadata)" @onclick="SaveAllAudioMetadataAsync">
                     Salva modifiche tracce
                 </button>
             </div>
@@ -272,6 +268,7 @@
     private ClienteContentViewModel? selectedCliente;
     private IBrowserFile? selectedPdfFile;
     private List<AudioUploadDraft> selectedAudioFiles = [];
+    private Dictionary<int, AudioTrackSnapshot> originalAudioState = [];
     private string? feedbackMessage;
     private bool isError;
 
@@ -280,6 +277,20 @@
         : "admin-alert admin-alert-success";
 
     private string SelectedClienteIdValue => ClienteId?.ToString() ?? string.Empty;
+
+    private bool CanUploadPdf => selectedCliente is not null && selectedPdfFile is not null;
+
+    private bool CanUploadAudio => selectedCliente is not null
+        && selectedAudioFiles.Count > 0
+        && selectedAudioFiles.All(x => !string.IsNullOrWhiteSpace(x.Titolo) && x.Ordine > 0);
+
+    private bool CanSaveAudioMetadata
+        => selectedCliente is not null
+        && selectedCliente.AudioTracks.Count > 0
+        && selectedCliente.AudioTracks.All(x => !string.IsNullOrWhiteSpace(x.Titolo) && x.Ordine > 0)
+        && selectedCliente.AudioTracks
+            .OrderBy(x => x.Id)
+            .Any(x => x.Titolo != originalAudioState.GetValueOrDefault(x.Id).Titolo || x.Ordine != originalAudioState.GetValueOrDefault(x.Id).Ordine);
 
     protected override async Task OnParametersSetAsync()
     {
@@ -292,11 +303,13 @@
         await using var dbContext = await DbContextFactory.CreateDbContextAsync();
         clienti = await dbContext.Clienti
             .OrderBy(x => x.Nome)
+            .ThenBy(x => x.DataNascita)
             .Select(x => new ClienteOption
             {
                 Id = x.Id,
                 Nome = x.Nome,
-                PublicId = x.PublicId
+                PublicId = x.PublicId,
+                DataNascita = x.DataNascita
             })
             .ToListAsync();
     }
@@ -327,6 +340,7 @@
         {
             Id = cliente.Id,
             Nome = cliente.Nome,
+            DataNascita = cliente.DataNascita,
             PublicId = cliente.PublicId,
             PdfFileName = cliente.PdfFileName,
             AudioTracks = cliente.AudioTracks
@@ -341,6 +355,10 @@
                 })
                 .ToList()
         };
+
+        originalAudioState = selectedCliente.AudioTracks.ToDictionary(
+            x => x.Id,
+            x => new AudioTrackSnapshot(x.Titolo, x.Ordine));
     }
 
     private void OnPdfSelected(InputFileChangeEventArgs args)
@@ -625,6 +643,19 @@
         return $"{len:0.##} {sizes[order]}";
     }
 
+    private static string GetEtaLabel(DateOnly dataNascita)
+    {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var eta = today.Year - dataNascita.Year;
+
+        if (today < dataNascita.AddYears(eta))
+        {
+            eta--;
+        }
+
+        return eta == 1 ? "1 anno" : $"{eta} anni";
+    }
+
     private void SetSuccess(string message)
     {
         feedbackMessage = message;
@@ -641,6 +672,7 @@
     {
         public int Id { get; set; }
         public string Nome { get; set; } = string.Empty;
+        public DateOnly DataNascita { get; set; }
         public Guid PublicId { get; set; }
     }
 
@@ -648,6 +680,7 @@
     {
         public int Id { get; set; }
         public string Nome { get; set; } = string.Empty;
+        public DateOnly DataNascita { get; set; }
         public Guid PublicId { get; set; }
         public string? PdfFileName { get; set; }
         public List<AudioTrackViewModel> AudioTracks { get; set; } = [];
@@ -667,4 +700,6 @@
         public string Titolo { get; set; } = string.Empty;
         public int Ordine { get; set; }
     }
+
+    private readonly record struct AudioTrackSnapshot(string Titolo, int Ordine);
 }
