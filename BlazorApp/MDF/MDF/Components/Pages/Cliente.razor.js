@@ -49,8 +49,7 @@ function highlightClientMatrix(root, title) {
 }
 
 function initClientPlayer(root) {
-  // Il player
-  // quindi non va cercato dentro root.
+  // Il player e renderizzato fuori dal contenitore data-client-page.
   const player = document.querySelector("[data-client-player]");
   if (!player || player.dataset.init === "1") {
     return;
@@ -76,7 +75,6 @@ function initClientPlayer(root) {
 
   root.addEventListener("clientmatrixready", updateHighlights);
   audio.addEventListener("play", updateHighlights);
-  audio.addEventListener("ended", () => highlightClientMatrix(root, ""));
   audio.addEventListener("error", () => highlightClientMatrix(root, ""));
 
   const setTrack = (nextIndex) => {
@@ -86,7 +84,7 @@ function initClientPlayer(root) {
     const trackTitle = selectedButton.dataset.trackTitle ?? "Traccia";
 
     if (!trackUrl) {
-      return;
+      return false;
     }
 
     currentIndex = normalizedIndex;
@@ -106,7 +104,31 @@ function initClientPlayer(root) {
     audio.load();
     currentTrackTitle.textContent = trackTitle;
     updateHighlights();
+    return true;
   };
+
+  audio.addEventListener("ended", async () => {
+    highlightClientMatrix(root, "");
+    if (currentIndex >= trackButtons.length - 1) {
+      return;
+    }
+
+    if (!setTrack(currentIndex + 1)) {
+      console.error("La traccia successiva non ha un URL audio.");
+      return;
+    }
+
+    try {
+      await audio.play();
+    } catch (error) {
+      console.error("Impossibile avviare automaticamente la traccia successiva.", error);
+      const hint = player.querySelector(".player-hint");
+      if (hint) {
+        hint.textContent = "Impossibile avviare la traccia successiva automaticamente. Premi Play per continuare.";
+        hint.setAttribute("role", "status");
+      }
+    }
+  });
 
   updateHighlights();
 
