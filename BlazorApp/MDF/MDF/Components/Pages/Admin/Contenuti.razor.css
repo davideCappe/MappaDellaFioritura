@@ -43,8 +43,29 @@
 .admin-contenuti-page .admin-contenuti-pdf-panel,
 .admin-contenuti-page .admin-contenuti-audio-upload-panel,
 .admin-contenuti-page .admin-contenuti-audio-list-panel {
-  border: 1px solid rgba(141, 161, 132, 0.16);
+  position: relative;
+  border: 1px solid rgba(149, 136, 112, 0.18);
+  background: rgba(255, 252, 249, 0.94);
   box-shadow: 0 18px 38px rgba(98, 80, 61, 0.08);
+}
+
+.admin-contenuti-page .admin-contenuti-selector-panel::before,
+.admin-contenuti-page .admin-contenuti-pdf-panel::before,
+.admin-contenuti-page .admin-contenuti-audio-upload-panel::before,
+.admin-contenuti-page .admin-contenuti-audio-list-panel::before {
+  content: none;
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-panel,
+.admin-contenuti-page .admin-contenuti-pdf-box {
+  border-color: rgba(200, 109, 81, 0.2);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-upload-panel,
+.admin-contenuti-page .admin-contenuti-audio-list-panel,
+.admin-contenuti-page .admin-contenuti-audio-upload-box,
+.admin-contenuti-page .admin-contenuti-audio-editor-box {
+  border-color: rgba(141, 161, 132, 0.22);
 }
 
 .admin-contenuti-page .admin-contenuti-section-head {
@@ -53,6 +74,19 @@
   justify-content: space-between;
   gap: 14px;
   margin-bottom: 14px;
+}
+
+.admin-contenuti-page .admin-contenuti-selector-panel .admin-section-title {
+  color: var(--ink-strong);
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-panel .admin-section-title {
+  color: var(--terracotta-deep);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-upload-panel .admin-section-title,
+.admin-contenuti-page .admin-contenuti-audio-list-panel .admin-section-title {
+  color: var(--heading-green);
 }
 
 .admin-contenuti-page .admin-contenuti-section-head .admin-helper {
@@ -68,44 +102,69 @@
   background: rgba(255, 255, 255, 0.88);
 }
 
-.admin-contenuti-page .admin-contenuti-selector-box,
+.admin-contenuti-page .admin-contenuti-selector-box {
+  border-color: rgba(141, 161, 132, 0.2);
+  background: rgba(255, 255, 255, 0.78);
+}
+
 .admin-contenuti-page .admin-contenuti-pdf-box {
-  border-color: rgba(141, 161, 132, 0.18);
+  border-color: rgba(200, 109, 81, 0.18);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-upload-box {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-editor-box {
+  background: rgba(255, 255, 255, 0.84);
 }
 
 .admin-contenuti-page .admin-contenuti-client-summary {
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .admin-contenuti-page .admin-contenuti-client-card {
   display: grid;
-  gap: 4px;
-  padding: 12px 14px;
-  border: 1px solid rgba(200, 109, 81, 0.12);
-  border-radius: 12px;
-  background: rgba(255, 251, 247, 0.92);
+  gap: 8px;
+  padding: 16px 18px;
+  border: 1px solid rgba(74, 107, 83, 0.18);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(245, 250, 242, 0.98), rgba(255, 251, 247, 0.96)),
+    rgba(255, 255, 255, 0.96);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
 }
 
 .admin-contenuti-page .admin-contenuti-client-card strong {
   color: var(--heading-green);
-  font-size: 1.05rem;
+  font-size: 1.32rem;
+  line-height: 1.1;
 }
 
 .admin-contenuti-page .admin-contenuti-client-label {
-  font-size: 0.76rem;
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(74, 107, 83, 0.1);
+  font-size: 0.72rem;
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--sage-deep);
 }
 
 .admin-contenuti-page .admin-contenuti-client-details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 14px;
+  display: grid;
+  gap: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(149, 136, 112, 0.14);
   color: var(--ink-soft);
-  font-size: 0.9rem;
+  font-size: 0.94rem;
 }
 
 .admin-contenuti-page .admin-contenuti-client-meta {
@@ -113,6 +172,7 @@
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
+  padding-top: 2px;
 }
 
 .admin-contenuti-page .admin-button,
@@ -282,6 +342,10 @@
   .admin-contenuti-page .admin-contenuti-client-details,
   .admin-contenuti-page .admin-contenuti-client-meta {
     align-items: stretch;
+  }
+
+  .admin-contenuti-page .admin-contenuti-link-button {
+    margin-left: 0;
   }
 
   .admin-contenuti-page .admin-upload-box {
