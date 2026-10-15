@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using MDF.BusinessLayer.Data;
+using MDF.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 
@@ -28,6 +30,14 @@ internal sealed class IdentityRedirectManager(NavigationManager navigationManage
         }
 
         navigationManager.NavigateTo(uri);
+    }
+
+    public void RedirectToAfterLogin(string? returnUrl, ClaimsPrincipal user)
+    {
+        var defaultUrl = user.IsInRole(Roles.Admin) || user.IsInRole(Roles.SuperAdmin)
+            ? "admin/dashboard"
+            : "Account/Manage";
+        RedirectTo(string.IsNullOrWhiteSpace(returnUrl) ? defaultUrl : returnUrl);
     }
 
     public void RedirectTo(string uri, Dictionary<string, object?> queryParameters)

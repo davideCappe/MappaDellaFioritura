@@ -1,6 +1,9 @@
 .admin-contenuti-page {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   gap: 18px;
+  container: admin-contenuti / inline-size;
 }
 
 .admin-contenuti-page .admin-panel {
@@ -309,6 +312,23 @@
   box-shadow: 0 8px 18px rgba(101, 76, 62, 0.06);
 }
 
+.admin-contenuti-page ::deep .admin-input,
+.admin-contenuti-page .admin-select {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.admin-contenuti-page .admin-panel,
+.admin-contenuti-page .admin-field,
+.admin-contenuti-page .admin-contenuti-pdf-current-main {
+  min-width: 0;
+}
+
+.admin-contenuti-page strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .admin-contenuti-page .admin-inline-actions {
   display: flex;
   flex-wrap: wrap;
@@ -389,11 +409,7 @@
   border-top: 1px solid rgba(149, 136, 112, 0.14);
 }
 
-@media (max-width: 960px) {
-  .admin-contenuti-page {
-    gap: 14px;
-  }
-
+@container admin-contenuti (max-width: 800px) {
   .admin-contenuti-page .admin-contenuti-overview,
   .admin-contenuti-page .admin-contenuti-audio-workspace {
     grid-template-columns: 1fr;
@@ -446,11 +462,11 @@
   }
 
   .admin-contenuti-page .admin-contenuti-pdf-upload-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
-@media (max-width: 720px) {
+@container admin-contenuti (max-width: 520px) {
   .admin-contenuti-page .admin-form-grid {
     grid-template-columns: 1fr;
   }

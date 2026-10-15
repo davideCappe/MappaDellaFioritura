@@ -74,7 +74,7 @@
         if (result.Succeeded)
         {
             Logger.LogInformation("User with ID '{UserId}' logged in with 2fa.", userId);
-            RedirectManager.RedirectTo(ReturnUrl);
+            RedirectManager.RedirectToAfterLogin(ReturnUrl, SignInManager.Context.User);
         }
         else if (result.IsLockedOut)
         {

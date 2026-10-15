@@ -117,7 +117,7 @@
         if (result.Succeeded)
         {
             Logger.LogInformation("User logged in.");
-            RedirectManager.RedirectTo(ReturnUrl);
+            RedirectManager.RedirectToAfterLogin(ReturnUrl, SignInManager.Context.User);
         }
         else if (result.RequiresTwoFactor)
         {
