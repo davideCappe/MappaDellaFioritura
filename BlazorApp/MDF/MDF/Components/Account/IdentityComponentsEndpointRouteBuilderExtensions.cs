@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using System.Text.Json;
 using MDF.BusinessLayer.Data;
 using MDF.Components.Account.Pages;
@@ -42,12 +41,10 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
         });
 
         accountGroup.MapPost("/Logout", async (
-            ClaimsPrincipal user,
-            [FromServices] SignInManager<ApplicationUser> signInManager,
-            [FromForm] string returnUrl) =>
+            [FromServices] SignInManager<ApplicationUser> signInManager) =>
         {
             await signInManager.SignOutAsync();
-            return TypedResults.LocalRedirect($"~/{returnUrl}");
+            return TypedResults.LocalRedirect("~/");
         });
 
         accountGroup.MapPost("/PasskeyCreationOptions", async (
