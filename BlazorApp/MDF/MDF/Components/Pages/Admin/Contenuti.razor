@@ -33,8 +33,9 @@
     <article class="admin-panel admin-contenuti-selector-panel">
         <div class="admin-contenuti-section-head">
             <div>
-                <h2 class="admin-section-title">Selezione cliente</h2>
-                <p class="admin-helper">Scegli il cliente su cui vuoi lavorare. Tutte le sezioni sotto si aggiornano automaticamente.</p>
+                <span class="admin-contenuti-step">01 · Cliente</span>
+                <h2 class="admin-section-title">Seleziona cliente</h2>
+                <p class="admin-helper">Scegli il cliente su cui vuoi lavorare. PDF e tracce si aggiornano automaticamente.</p>
             </div>
         </div>
 
@@ -86,8 +87,9 @@
     <article class="admin-panel admin-contenuti-pdf-panel">
         <div class="admin-contenuti-section-head">
             <div>
-                <h2 class="admin-section-title">PDF cliente</h2>
-                <p class="admin-helper">Carica o aggiorna il documento personale visibile nella pagina cliente.</p>
+                <span class="admin-contenuti-step">02 · Documento</span>
+                <h2 class="admin-section-title">PDF</h2>
+                <p class="admin-helper">Carica o aggiorna il documento visibile nella pagina cliente.</p>
             </div>
         </div>
 
@@ -141,13 +143,13 @@
             </div>
         }
     </article>
-</section>
 
-<section class="admin-panel admin-contenuti-audio-upload-panel">
+    <section class="admin-panel admin-contenuti-audio-panel">
     <div class="admin-contenuti-section-head">
         <div>
-            <h2 class="admin-section-title">Nuove tracce audio</h2>
-            <p class="admin-helper">Prepara una o più tracce, definisci titolo e ordine, poi caricale tutte insieme.</p>
+            <span class="admin-contenuti-step">03 · Audio</span>
+            <h2 class="admin-section-title">Tracce audio</h2>
+            <p class="admin-helper">Carica nuove tracce oppure aggiorna titolo e ordine di quelle già presenti.</p>
         </div>
     </div>
 
@@ -157,103 +159,106 @@
     }
     else
     {
-        <div class="admin-upload-box admin-contenuti-audio-upload-box">
-            <InputFile OnChange="OnAudioFilesSelected" multiple accept=".mp3,.wav,.ogg,.m4a" class="admin-input" />
+        <div class="admin-contenuti-audio-workspace">
+            <section class="admin-contenuti-audio-upload-panel">
+                <div class="admin-contenuti-subsection-head">
+                    <h3>Aggiungi tracce</h3>
+                    <p class="admin-helper">Seleziona i file, assegna titolo e ordine, poi caricali.</p>
+                </div>
+                <div class="admin-upload-box admin-contenuti-audio-upload-box">
+                    <InputFile OnChange="OnAudioFilesSelected" multiple accept=".mp3,.wav,.ogg,.m4a" class="admin-input" />
 
-            @if (selectedAudioFiles.Count > 0)
-            {
-                <div class="admin-contenuti-upload-list">
-                    @foreach (var item in selectedAudioFiles)
+                    @if (selectedAudioFiles.Count > 0)
                     {
-                        <div class="admin-contenuti-upload-item">
-                            <div class="admin-contenuti-upload-item-head">
-                                <strong>@item.File.Name</strong>
-                                <span class="admin-file-meta">@FormatBytes(item.File.Size)</span>
-                            </div>
+                        <div class="admin-contenuti-upload-list">
+                            @foreach (var item in selectedAudioFiles)
+                            {
+                                <div class="admin-contenuti-upload-item">
+                                    <div class="admin-contenuti-upload-item-head">
+                                        <strong>@item.File.Name</strong>
+                                        <span class="admin-file-meta">@FormatBytes(item.File.Size)</span>
+                                    </div>
 
-                            <div class="admin-form-grid admin-contenuti-audio-form-grid">
-                                <div class="admin-field">
-                                    <label>Titolo traccia</label>
-                                    <InputText @bind-Value="item.Titolo" class="admin-input" />
+                                    <div class="admin-form-grid admin-contenuti-audio-form-grid">
+                                        <div class="admin-field">
+                                            <label>Titolo traccia</label>
+                                            <InputText @bind-Value="item.Titolo" class="admin-input" />
+                                        </div>
+                                        <div class="admin-field admin-field-compact">
+                                            <label>Ordine</label>
+                                            <InputNumber @bind-Value="item.Ordine" class="admin-input" />
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="admin-field admin-field-compact">
-                                    <label>Ordine</label>
-                                    <InputNumber @bind-Value="item.Ordine" class="admin-input" />
-                                </div>
-                            </div>
+                            }
                         </div>
                     }
+
+                    <div class="admin-actions">
+                        <button type="button" class="admin-button" disabled="@(!CanUploadAudio)" @onclick="UploadAudioAsync">
+                            Carica tracce
+                        </button>
+                    </div>
                 </div>
-            }
+            </section>
 
-            <div class="admin-actions">
-                <button type="button" class="admin-button" disabled="@(!CanUploadAudio)" @onclick="UploadAudioAsync">
-                    Carica tracce
-                </button>
-            </div>
-        </div>
-    }
-</section>
+            <section class="admin-contenuti-audio-list-panel">
+                <div class="admin-contenuti-subsection-head">
+                    <h3>Tracce presenti <span class="admin-contenuti-track-count">@selectedCliente.AudioTracks.Count</span></h3>
+                    <p class="admin-helper">Modifica titoli e ordine, poi salva le modifiche.</p>
+                </div>
 
-<section class="admin-panel admin-contenuti-audio-list-panel">
-    <div class="admin-contenuti-section-head">
-        <div>
-            <h2 class="admin-section-title">Tracce audio del cliente</h2>
-            <p class="admin-helper">Puoi modificare titoli e ordine direttamente qui sotto, poi salvare tutte le modifiche insieme.</p>
-        </div>
-    </div>
-
-    @if (selectedCliente is null)
-    {
-        <div class="admin-empty">Nessun cliente selezionato.</div>
-    }
-    else if (selectedCliente.AudioTracks.Count == 0)
-    {
-        <div class="admin-empty">Nessuna traccia audio presente per questo cliente.</div>
-    }
-    else
-    {
-        <div class="admin-upload-box admin-contenuti-audio-editor-box">
-            <div class="admin-contenuti-audio-list">
-                @foreach (var audio in selectedCliente.AudioTracks.OrderBy(x => x.Ordine))
+                @if (selectedCliente.AudioTracks.Count == 0)
                 {
-                    <article class="admin-contenuti-audio-row">
-                        <div class="admin-contenuti-audio-row-main">
-                            <div class="admin-contenuti-audio-row-title">
-                                <strong>@audio.FileName</strong>
-                            </div>
+                    <div class="admin-empty">Nessuna traccia audio presente per questo cliente.</div>
+                }
+                else
+                {
+                    <div class="admin-upload-box admin-contenuti-audio-editor-box">
+                        <div class="admin-contenuti-audio-list">
+                            @foreach (var audio in selectedCliente.AudioTracks.OrderBy(x => x.Ordine))
+                            {
+                                <article class="admin-contenuti-audio-row">
+                                    <div class="admin-contenuti-audio-row-main">
+                                        <div class="admin-contenuti-audio-row-title">
+                                            <strong>@audio.FileName</strong>
+                                        </div>
 
-                            <div class="admin-form-grid admin-contenuti-audio-form-grid">
-                                <div class="admin-field">
-                                    <label for="@($"titolo-{audio.Id}")">Titolo</label>
-                                    <InputText id="@($"titolo-{audio.Id}")" @bind-Value="audio.Titolo" class="admin-input" />
-                                </div>
-                                <div class="admin-field admin-field-compact">
-                                    <label for="@($"ordine-{audio.Id}")">Ordine</label>
-                                    <InputNumber id="@($"ordine-{audio.Id}")" @bind-Value="audio.Ordine" class="admin-input" />
-                                </div>
-                            </div>
+                                        <div class="admin-form-grid admin-contenuti-audio-form-grid">
+                                            <div class="admin-field">
+                                                <label for="@($"titolo-{audio.Id}")">Titolo</label>
+                                                <InputText id="@($"titolo-{audio.Id}")" @bind-Value="audio.Titolo" class="admin-input" />
+                                            </div>
+                                            <div class="admin-field admin-field-compact">
+                                                <label for="@($"ordine-{audio.Id}")">Ordine</label>
+                                                <InputNumber id="@($"ordine-{audio.Id}")" @bind-Value="audio.Ordine" class="admin-input" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="admin-inline-actions admin-contenuti-audio-actions">
+                                        <a href="@StorageService.GetPublicFileRoute(selectedCliente.PublicId, audio.FileName)" class="admin-button admin-button-secondary" target="_blank" rel="noopener noreferrer">
+                                            Ascolta
+                                        </a>
+                                        <button type="button" class="admin-button admin-button-danger" @onclick="() => DeleteAudioAsync(audio.Id)">
+                                            Elimina
+                                        </button>
+                                    </div>
+                                </article>
+                            }
                         </div>
 
-                        <div class="admin-inline-actions admin-contenuti-audio-actions">
-                            <a href="@StorageService.GetPublicFileRoute(selectedCliente.PublicId, audio.FileName)" class="admin-button admin-button-secondary" target="_blank" rel="noopener noreferrer">
-                                Ascolta
-                            </a>
-                            <button type="button" class="admin-button admin-button-danger" @onclick="() => DeleteAudioAsync(audio.Id)">
-                                Elimina
+                        <div class="admin-actions admin-actions-spaced admin-contenuti-audio-savebar">
+                            <button type="button" class="admin-button" disabled="@(!CanSaveAudioMetadata)" @onclick="SaveAllAudioMetadataAsync">
+                                Salva modifiche tracce
                             </button>
                         </div>
-                    </article>
+                    </div>
                 }
-            </div>
-
-            <div class="admin-actions admin-actions-spaced admin-contenuti-audio-savebar">
-                <button type="button" class="admin-button" disabled="@(!CanSaveAudioMetadata)" @onclick="SaveAllAudioMetadataAsync">
-                    Salva modifiche tracce
-                </button>
-            </div>
+            </section>
         </div>
     }
+    </section>
 </section>
 
 </div>
