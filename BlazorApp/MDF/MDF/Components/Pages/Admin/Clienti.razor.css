@@ -43,9 +43,15 @@
   margin-bottom: 14px;
 }
 
+.admin-clienti-page .admin-button,
+.admin-clienti-page a.admin-button {
+  min-height: 38px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
 .admin-clienti-page .admin-clienti-toolbar > .admin-button {
-  min-height: 44px;
-  padding-inline: 18px;
   box-shadow: var(--shadow-action);
 }
 
@@ -108,8 +114,7 @@
 }
 
 .admin-clienti-page .admin-search-button {
-  min-height: 46px;
-  padding-inline: 18px;
+  min-width: 104px;
 }
 
 .admin-clienti-page .admin-field label {
@@ -165,11 +170,7 @@
 }
 
 .admin-clienti-page .admin-inline-actions .admin-action-button {
-  min-height: 36px;
-  padding: 8px 12px;
-  border-radius: 11px;
   font-size: 0.78rem;
-  font-weight: 700;
   border: 1px solid transparent;
 }
 
@@ -196,11 +197,7 @@
 }
 
 .admin-clienti-page .admin-inline-actions .admin-button.admin-button-danger {
-  min-height: 36px;
-  padding: 8px 12px;
-  border-radius: 11px;
   font-size: 0.78rem;
-  font-weight: 700;
   box-shadow: 0 10px 18px rgba(200, 109, 81, 0.2);
 }
 
