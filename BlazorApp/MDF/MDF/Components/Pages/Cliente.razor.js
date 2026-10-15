@@ -1,5 +1,55 @@
+// Associazioni dimostrative: i punti sono fissi, senza significato interpretativo.
+const demoTrackHighlights = new Map([
+  ["SCOPI", ["eta0", "eta20", "eta40", "centro"]],
+  ["CODA KARMICA", ["bottom1", "bottom2", "eta60", "moneyLove3"]],
+]);
+
+function highlightClientMatrix(root, title) {
+  const svg = root.querySelector("[data-client-matrix] svg");
+  if (!svg) {
+    return;
+  }
+
+  svg.querySelector("[data-audio-highlights]")?.remove();
+  svg.querySelectorAll(".is-audio-highlighted").forEach((number) => {
+    number.classList.remove("is-audio-highlighted");
+  });
+
+  const normalizedTitle = title.trim().replace(/\s+/g, " ").toLocaleUpperCase("it-IT");
+  const points = demoTrackHighlights.get(normalizedTitle);
+  if (!points) {
+    return;
+  }
+
+  const namespace = "http://www.w3.org/2000/svg";
+  const highlights = document.createElementNS(namespace, "g");
+  highlights.setAttribute("data-audio-highlights", "");
+  highlights.setAttribute("aria-hidden", "true");
+  highlights.setAttribute("pointer-events", "none");
+
+  points.forEach((point) => {
+    const number = svg.querySelector(`[data-matrix-point="${point}"]`);
+    if (!number) {
+      return;
+    }
+
+    const halo = document.createElementNS(namespace, "circle");
+    halo.setAttribute("cx", number.dataset.matrixX);
+    halo.setAttribute("cy", number.dataset.matrixY);
+    halo.setAttribute("r", number.dataset.matrixRadius);
+    halo.classList.add("client-audio-halo");
+    highlights.appendChild(halo);
+    number.classList.add("is-audio-highlighted");
+  });
+
+  const numbersLayer = svg.querySelector("#numeriLayer");
+  if (numbersLayer) {
+    svg.insertBefore(highlights, numbersLayer);
+  }
+}
+
 function initClientPlayer(root) {
-  // Il player è renderizzato fuori dal contenitore data-client-page in Cliente.razor,
+  // Il player
   // quindi non va cercato dentro root.
   const player = document.querySelector("[data-client-player]");
   if (!player || player.dataset.init === "1") {
@@ -18,6 +68,16 @@ function initClientPlayer(root) {
   if (currentIndex < 0) {
     currentIndex = 0;
   }
+
+  const updateHighlights = () => {
+    const title = trackButtons[currentIndex].dataset.trackTitle ?? "";
+    highlightClientMatrix(root, audio.ended ? "" : title);
+  };
+
+  root.addEventListener("clientmatrixready", updateHighlights);
+  audio.addEventListener("play", updateHighlights);
+  audio.addEventListener("ended", () => highlightClientMatrix(root, ""));
+  audio.addEventListener("error", () => highlightClientMatrix(root, ""));
 
   const setTrack = (nextIndex) => {
     const normalizedIndex = (nextIndex + trackButtons.length) % trackButtons.length;
@@ -45,7 +105,10 @@ function initClientPlayer(root) {
     audio.src = trackUrl;
     audio.load();
     currentTrackTitle.textContent = trackTitle;
+    updateHighlights();
   };
+
+  updateHighlights();
 
   trackButtons.forEach((button, index) => {
     button.addEventListener("click", () => setTrack(index));

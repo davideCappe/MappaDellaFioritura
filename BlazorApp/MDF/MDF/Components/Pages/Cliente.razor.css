@@ -20,6 +20,21 @@
   padding: 22px 28px 170px;
 }
 
+.client-app ::deep .client-audio-halo {
+  fill: rgba(255, 210, 83, 0.65);
+  stroke: #b75e21;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 10px rgba(255, 190, 45, 0.9));
+}
+
+.client-app ::deep .is-audio-highlighted {
+  fill: #593213;
+  stroke: rgba(255, 250, 229, 0.9);
+  stroke-width: 1;
+  paint-order: stroke fill;
+  font-weight: 800;
+}
+
 .client-header {
   display: flex;
   align-items: center;
