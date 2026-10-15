@@ -1,4 +1,5 @@
 ﻿@page "/Account/RegisterConfirmation"
+@layout IdentityLayout
 
 @using System.Text
 @using Microsoft.AspNetCore.Identity
@@ -9,22 +10,22 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Register confirmation</PageTitle>
+<PageTitle>Conferma registrazione</PageTitle>
 
-<h1>Register confirmation</h1>
+<h1>Conferma registrazione</h1>
 
 <StatusMessage Message="@statusMessage" />
 
 @if (emailConfirmationLink is not null)
 {
     <p>
-        This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-        Normally this would be emailed: <a href="@emailConfirmationLink">Click here to confirm your account</a>
+        Il servizio di invio email non è ancora configurato. Consulta la <a href="https://aka.ms/aspaccountconf">documentazione per la configurazione</a>.
+        Normalmente riceveresti questo collegamento via email: <a href="@emailConfirmationLink">conferma il tuo account</a>.
     </p>
 }
 else
 {
-    <p role="alert">Please check your email to confirm your account.</p>
+    <p role="status">Controlla la tua casella di posta per confermare il tuo account.</p>
 }
 
 @code {
@@ -52,7 +53,7 @@ else
         if (user is null)
         {
             HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-            statusMessage = "Error finding user for unspecified email";
+            statusMessage = "Errore: impossibile trovare l'utente associato all'indirizzo email indicato.";
         }
         else if (EmailSender is IdentityNoOpEmailSender)
         {

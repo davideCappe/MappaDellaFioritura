@@ -55,6 +55,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
         options.Stores.SchemaVersion = IdentitySchemaVersions.Version3;
     })
     .AddRoles<IdentityRole>()
+    .AddErrorDescriber<ItalianIdentityErrorDescriber>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();

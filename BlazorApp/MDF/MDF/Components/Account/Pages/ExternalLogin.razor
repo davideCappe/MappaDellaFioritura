@@ -1,4 +1,5 @@
 ﻿@page "/Account/ExternalLogin"
+@layout IdentityLayout
 
 @using System.ComponentModel.DataAnnotations
 @using System.Security.Claims
@@ -15,33 +16,27 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<ExternalLogin> Logger
 
-<PageTitle>Register</PageTitle>
+<PageTitle>Collega account esterno</PageTitle>
 
 <StatusMessage Message="@message" />
-<h1>Register</h1>
-<h2>Associate your @ProviderDisplayName account.</h2>
-<hr />
+<h1>Collega account esterno</h1>
+<p>Associa il tuo account @ProviderDisplayName.</p>
 
-<div  class="alert alert-info">
-    You've successfully authenticated with <strong>@ProviderDisplayName</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
+<div class="alert identity-notice" role="status">
+    L'autenticazione con <strong>@ProviderDisplayName</strong> è riuscita.
+    Inserisci l'indirizzo email da utilizzare su questo sito e seleziona «Completa registrazione» per concludere l'accesso.
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" FormName="confirmation" method="post">
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" role="alert" />
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="email" placeholder="Please enter your email." />
-                <label for="Input.Email" class="form-label">Email</label>
-                <ValidationMessage For="() => Input.Email" />
-            </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </EditForm>
+<EditForm Model="Input" OnValidSubmit="OnValidSubmitAsync" FormName="confirmation" method="post">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="identity-error" role="alert" />
+    <div class="identity-field">
+        <label for="Input.Email">Email</label>
+        <InputText @bind-Value="Input.Email" id="Input.Email" class="identity-input" autocomplete="email" aria-required="true" placeholder="nome@dominio.it" />
+        <ValidationMessage For="() => Input.Email" class="identity-error" />
     </div>
-</div>
+    <button type="submit">Completa registrazione</button>
+</EditForm>
 
 @code {
     public const string LoginCallbackAction = "LoginCallback";
@@ -72,14 +67,14 @@
 
         if (RemoteError is not null)
         {
-            RedirectManager.RedirectToWithStatus("Account/Login", $"Error from external provider: {RemoteError}", HttpContext);
+            RedirectManager.RedirectToWithStatus("Account/Login", "Errore: il servizio esterno non ha completato l'autenticazione. Riprova.", HttpContext);
             return;
         }
 
         var info = await SignInManager.GetExternalLoginInfoAsync();
         if (info is null)
         {
-            RedirectManager.RedirectToWithStatus("Account/Login", "Error loading external login information.", HttpContext);
+            RedirectManager.RedirectToWithStatus("Account/Login", "Errore: impossibile recuperare le informazioni di accesso esterno.", HttpContext);
             return;
         }
 
@@ -103,7 +98,7 @@
     {
         if (externalLoginInfo is null)
         {
-            RedirectManager.RedirectToWithStatus("Account/Login", "Error loading external login information.", HttpContext);
+            RedirectManager.RedirectToWithStatus("Account/Login", "Errore: impossibile recuperare le informazioni di accesso esterno.", HttpContext);
             return;
         }
 
@@ -140,7 +135,7 @@
     {
         if (externalLoginInfo is null)
         {
-            RedirectManager.RedirectToWithStatus("Account/Login", "Error loading external login information during confirmation.", HttpContext);
+            RedirectManager.RedirectToWithStatus("Account/Login", "Errore: impossibile recuperare le informazioni di accesso esterno durante la conferma.", HttpContext);
             return;
         }
 
@@ -181,7 +176,7 @@
         }
         else
         {
-            message = $"Error: {string.Join(",", result.Errors.Select(error => error.Description))}";
+            message = $"Errore: {string.Join(" ", result.Errors.Select(error => error.Description))}";
         }
     }
 
@@ -209,8 +204,9 @@
 
     private sealed class InputModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Inserisci l'indirizzo email.")]
+        [EmailAddress(ErrorMessage = "Inserisci un indirizzo email valido.")]
+        [Display(Name = "Email")]
         public string Email { get; set; } = "";
     }
 }

@@ -1,4 +1,5 @@
 ﻿@page "/Account/LoginWith2fa"
+@layout IdentityLayout
 
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Identity
@@ -8,39 +9,30 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<LoginWith2fa> Logger
 
-<PageTitle>Two-factor authentication</PageTitle>
+<PageTitle>Autenticazione a due fattori</PageTitle>
 
-<h1>Two-factor authentication</h1>
-<hr />
+<h1>Autenticazione a due fattori</h1>
 <StatusMessage Message="@message" />
-<p>Your login is protected with an authenticator app. Enter your authenticator code below.</p>
-<div class="row">
-    <div class="col-md-4">
-        <EditForm Model="Input" FormName="login-with-2fa" OnValidSubmit="OnValidSubmitAsync" method="post">
-            <input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
-            <input type="hidden" name="RememberMe" value="@RememberMe" />
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" role="alert" />
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.TwoFactorCode" id="Input.TwoFactorCode" class="form-control" autocomplete="off" />
-                <label for="Input.TwoFactorCode" class="form-label">Authenticator code</label>
-                <ValidationMessage For="() => Input.TwoFactorCode" class="text-danger" />
-            </div>
-            <div class="checkbox mb-3">
-                <label for="remember-machine" class="form-label">
-                    <InputCheckbox @bind-Value="Input.RememberMachine" />
-                    Remember this machine
-                </label>
-            </div>
-            <div>
-                <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-            </div>
-        </EditForm>
+<p>Il tuo accesso è protetto da un'app di autenticazione. Inserisci il codice generato dall'app.</p>
+<EditForm Model="Input" FormName="login-with-2fa" OnValidSubmit="OnValidSubmitAsync" method="post">
+    <input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
+    <input type="hidden" name="RememberMe" value="@RememberMe" />
+    <DataAnnotationsValidator />
+    <ValidationSummary class="identity-error" role="alert" />
+    <div class="identity-field">
+        <label for="Input.TwoFactorCode">Codice di autenticazione</label>
+        <InputText @bind-Value="Input.TwoFactorCode" id="Input.TwoFactorCode" class="identity-input" autocomplete="one-time-code" inputmode="numeric" aria-required="true" placeholder="Codice a 6 cifre" />
+        <ValidationMessage For="() => Input.TwoFactorCode" class="identity-error" />
     </div>
-</div>
+    <label for="remember-machine" class="identity-check">
+        <InputCheckbox @bind-Value="Input.RememberMachine" id="remember-machine" />
+        Ricorda questo dispositivo
+    </label>
+    <button type="submit">Accedi</button>
+</EditForm>
 <p>
-    Don't have access to your authenticator device? You can
-    <a href="Account/LoginWithRecoveryCode?ReturnUrl=@ReturnUrl">log in with a recovery code</a>.
+    Non hai accesso al dispositivo di autenticazione? Puoi
+    <a href="Account/LoginWithRecoveryCode?ReturnUrl=@ReturnUrl">accedere con un codice di recupero</a>.
 </p>
 
 @code {
@@ -84,19 +76,19 @@
         else
         {
             Logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", userId);
-            message = "Error: Invalid authenticator code.";
+            message = "Errore: codice di autenticazione non valido.";
         }
     }
 
     private sealed class InputModel
     {
-        [Required]
-        [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Inserisci il codice di autenticazione.")]
+        [StringLength(7, ErrorMessage = "Il codice di autenticazione deve contenere da {2} a {1} caratteri.", MinimumLength = 6)]
         [DataType(DataType.Text)]
-        [Display(Name = "Authenticator code")]
+        [Display(Name = "Codice di autenticazione")]
         public string? TwoFactorCode { get; set; }
 
-        [Display(Name = "Remember this machine")]
+        [Display(Name = "Ricorda questo dispositivo")]
         public bool RememberMachine { get; set; }
     }
 }

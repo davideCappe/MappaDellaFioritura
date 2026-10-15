@@ -12,7 +12,7 @@ async function fetchWithErrorHandling(url, options = {}) {
     if (!response.ok) {
         const text = await response.text();
         console.error(text);
-        throw new Error(`The server responded with status ${response.status}.`);
+        throw new Error(`Il server ha risposto con il codice ${response.status}. Riprova.`);
     }
     return response;
 }
@@ -68,7 +68,7 @@ customElements.define('passkey-submit', class extends HTMLElement {
 
     async obtainCredential(useConditionalMediation, signal) {
         if (!browserSupportsPasskeys) {
-            throw new Error('Some passkey features are missing. Please update your browser.');
+            throw new Error('Il browser non supporta tutte le funzioni delle passkey. Aggiornalo e riprova.');
         }
 
         const headers = {
@@ -82,11 +82,11 @@ customElements.define('passkey-submit', class extends HTMLElement {
             const mediation = useConditionalMediation ? 'conditional' : undefined;
             return await requestCredential(email, mediation, headers, signal);
         } else {
-            throw new Error(`Unknown passkey operation '${this.attrs.operation}'.`);
+            throw new Error('Operazione passkey non riconosciuta. Ricarica la pagina e riprova.');
         }
     }
 
-    async obtainAndSubmitCredential(useConditionalMediation = false) {
+    async obtainAndSubmitCredential
         this.abortController?.abort();
         this.abortController = new AbortController();
         const signal = this.abortController.signal;
@@ -106,9 +106,24 @@ customElements.define('passkey-submit', class extends HTMLElement {
                 // We log the error in the console but do not relay it to the user.
                 return;
             }
-            const errorMessage = error.name === 'NotAllowedError'
-                ? 'No passkey was provided by the authenticator.'
-                : error.message;
+            let errorMessage;
+            switch (error.name) {
+                case 'NotAllowedError':
+                    errorMessage = 'Nessuna passkey fornita dal dispositivo. La richiesta potrebbe essere stata annullata o essere scaduta.';
+                    break;
+                case 'InvalidStateError':
+                    errorMessage = 'Questa passkey potrebbe essere gia registrata. Prova con un altro dispositivo.';
+                    break;
+                case 'NotSupportedError':
+                    errorMessage = 'Il dispositivo non supporta questa operazione con le passkey.';
+                    break;
+                case 'Error':
+                    errorMessage = error.message;
+                    break;
+                default:
+                    errorMessage = 'Impossibile completare l' + "'" + 'operazione con la passkey. Verifica il dispositivo e riprova.';
+                    break;
+            }
             formData.append(`${this.attrs.name}.Error`, errorMessage);
         }
         this.internals.setFormValue(formData);
