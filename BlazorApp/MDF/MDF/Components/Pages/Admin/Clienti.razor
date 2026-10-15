@@ -41,7 +41,11 @@
         </div>
 
         <div class="admin-clienti-filters">
-            <InputText @bind-Value="searchTerm" @bind-Value:event="oninput" class="admin-input" placeholder="Cerca per nome cliente" />
+            <input type="text"
+                   value="@searchTerm"
+                   @oninput="OnSearchInput"
+                   class="admin-input"
+                   placeholder="Cerca per nome cliente" />
             <button type="button" class="admin-button admin-button-secondary" @onclick="ApplySearchAsync">Cerca</button>
         </div>
 
@@ -128,6 +132,7 @@
     private int totalPages = 1;
     private string? feedbackMessage;
     private bool isError;
+    private CancellationTokenSource? searchDebounceCts;
 
     private string FeedbackCssClass => isError
         ? "admin-alert admin-alert-error"
@@ -175,6 +180,26 @@
                 AudioCount = x.AudioTracks.Count
             })
             .ToListAsync();
+    }
+
+    private async Task OnSearchInput(ChangeEventArgs args)
+    {
+        searchTerm = args.Value?.ToString() ?? string.Empty;
+
+        searchDebounceCts?.Cancel();
+        searchDebounceCts?.Dispose();
+        searchDebounceCts = new CancellationTokenSource();
+
+        try
+        {
+            await Task.Delay(250, searchDebounceCts.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+
+        await ApplySearchAsync();
     }
 
     private async Task ApplySearchAsync()
