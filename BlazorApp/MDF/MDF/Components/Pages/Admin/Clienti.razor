@@ -2,12 +2,15 @@
 @rendermode InteractiveServer
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.EntityFrameworkCore
+@using Microsoft.JSInterop
 @using MDF.Services
 @using MDF.Shared.Constants
 @inject IDbContextFactory<ApplicationDbContext> DbContextFactory
 @inject ClienteStorageService StorageService
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JS
 @layout AdminLayout
 @attribute [Authorize(Roles = Roles.Admin + "," + Roles.SuperAdmin)]
 
@@ -44,6 +47,7 @@
             <input type="text"
                    value="@searchTerm"
                    @oninput="OnSearchInput"
+                   @onkeydown="HandleSearchKeyDown"
                    class="admin-input"
                    placeholder="Cerca per nome cliente" />
             <button type="button" class="admin-button admin-button-secondary" @onclick="ApplySearchAsync">Cerca</button>
@@ -95,8 +99,10 @@
                                         <button type="button" class="admin-button admin-button-secondary" @onclick="() => GoToContenuti(cliente.Id)">
                                             Contenuti
                                         </button>
-                                        <button type="button" class="admin-button admin-button-secondary" data-copy-public-url="@publicRoute" data-copy-label-default="Copia link" data-copy-label-success="Link copiato">
-                                            Copia link
+                                        <button type="button"
+                                                class="admin-button admin-button-secondary @(copiedPublicId == cliente.PublicId ? "admin-copy-success" : string.Empty)"
+                                                @onclick="() => CopyPublicLinkAsync(cliente.PublicId)">
+                                            @(copiedPublicId == cliente.PublicId ? "Link copiato" : "Copia link")
                                         </button>
                                         <button type="button" class="admin-button admin-button-danger" @onclick="async () => await DeleteAsync(cliente.Id)">
                                             Elimina
@@ -133,6 +139,8 @@
     private string? feedbackMessage;
     private bool isError;
     private CancellationTokenSource? searchDebounceCts;
+    private Guid? copiedPublicId;
+    private CancellationTokenSource? copyFeedbackCts;
 
     private string FeedbackCssClass => isError
         ? "admin-alert admin-alert-error"
@@ -210,6 +218,46 @@
 
         currentPage = 1;
         await LoadAsync();
+    }
+
+    private async Task HandleSearchKeyDown(KeyboardEventArgs args)
+    {
+        if (!string.Equals(args.Key, "Enter", StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        await ApplySearchAsync();
+    }
+
+    private async Task CopyPublicLinkAsync(Guid publicId)
+    {
+        var publicRoute = StorageService.GetPublicRoute(publicId);
+        var publicUrl = NavigationManager.ToAbsoluteUri(publicRoute).ToString();
+
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", publicUrl);
+
+        copiedPublicId = publicId;
+        copyFeedbackCts?.Cancel();
+        copyFeedbackCts?.Dispose();
+        copyFeedbackCts = new CancellationTokenSource();
+
+        StateHasChanged();
+
+        try
+        {
+            await Task.Delay(1400, copyFeedbackCts.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+
+        if (copiedPublicId == publicId)
+        {
+            copiedPublicId = null;
+            StateHasChanged();
+        }
     }
 
     private async Task PreviousPageAsync()

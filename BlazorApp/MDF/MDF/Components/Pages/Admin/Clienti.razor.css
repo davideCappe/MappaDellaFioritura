@@ -78,7 +78,7 @@
   font-size: 0.76rem;
 }
 
-.admin-clienti-page .admin-inline-actions [data-copy-public-url][data-copy-state="success"] {
+.admin-clienti-page .admin-inline-actions .admin-copy-success {
   border-color: rgba(116, 153, 96, 0.34);
   background: rgba(116, 153, 96, 0.14);
   color: #2f5a37;
