@@ -9,33 +9,107 @@
   background: rgba(255, 252, 249, 0.94);
 }
 
+.admin-clienti-page .admin-clienti-hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(200, 109, 81, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(141, 161, 132, 0.18), transparent 34%),
+    radial-gradient(circle at left center, rgba(200, 109, 81, 0.12), transparent 28%),
+    rgba(255, 251, 247, 0.96);
+}
+
+.admin-clienti-page .admin-clienti-hero::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(200, 109, 81, 0.28), rgba(141, 161, 132, 0.24));
+}
+
 .admin-clienti-page .admin-clienti-list-panel {
   order: 1;
+  border: 1px solid rgba(141, 161, 132, 0.16);
+  box-shadow: 0 18px 38px rgba(98, 80, 61, 0.08);
 }
 
 .admin-clienti-page .admin-clienti-toolbar {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.admin-clienti-page .admin-clienti-toolbar > .admin-button {
+  min-height: 44px;
+  padding-inline: 18px;
+  box-shadow: var(--shadow-action);
 }
 
 .admin-clienti-page .admin-clienti-list-helper {
-  margin: 0;
+  margin: 4px 0 0;
+  max-width: 56ch;
+  color: var(--ink-soft);
 }
 
 .admin-clienti-page .admin-clienti-filters {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 12px;
+  padding: 14px;
+  border: 1px solid rgba(141, 161, 132, 0.14);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(249, 245, 240, 0.72));
+}
+
+.admin-clienti-page .admin-clienti-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.admin-clienti-page .admin-clienti-count {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--heading-green);
+}
+
+.admin-clienti-page .admin-clienti-filter-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(200, 109, 81, 0.1);
+  color: var(--terracotta-deep);
+  font-size: 0.84rem;
+  font-weight: 600;
 }
 
 .admin-clienti-page .admin-input,
 .admin-clienti-page .admin-select {
   border-color: rgba(122, 111, 94, 0.24);
   background: #fff;
+  box-shadow: 0 8px 18px rgba(101, 76, 62, 0.06);
+}
+
+.admin-clienti-page .admin-clienti-filters .admin-input {
+  min-height: 46px;
+  border-radius: 14px;
+}
+
+.admin-clienti-page .admin-search-button {
+  min-height: 46px;
+  padding-inline: 18px;
 }
 
 .admin-clienti-page .admin-field label {
@@ -43,9 +117,11 @@
 }
 
 .admin-clienti-page .admin-table-wrapper {
-  border: 1px solid rgba(149, 136, 112, 0.2);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.84);
+  overflow: hidden;
+  border: 1px solid rgba(149, 136, 112, 0.18);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .admin-clienti-page .admin-table {
@@ -56,26 +132,76 @@
   position: sticky;
   top: 0;
   z-index: 1;
-  background: rgba(246, 240, 232, 0.98);
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
+  background: linear-gradient(180deg, rgba(246, 240, 232, 0.98), rgba(241, 235, 226, 0.98));
+  color: var(--ink-strong);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.admin-clienti-page .admin-table tbody tr {
+  transition: background-color 140ms ease;
+}
+
+.admin-clienti-page .admin-table tbody tr:nth-child(even) {
+  background: rgba(252, 249, 245, 0.64);
+}
+
+.admin-clienti-page .admin-table tbody tr:hover {
+  background: rgba(141, 161, 132, 0.09);
 }
 
 .admin-clienti-page .admin-table td {
   color: #4f5f58;
   font-size: 0.92rem;
+  vertical-align: middle;
 }
 
 .admin-clienti-page .admin-inline-actions {
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
+  align-items: center;
 }
 
-.admin-clienti-page .admin-inline-actions .admin-button {
-  min-height: 34px;
-  padding: 7px 10px;
-  border-radius: 10px;
-  font-size: 0.76rem;
+.admin-clienti-page .admin-inline-actions .admin-action-button {
+  min-height: 36px;
+  padding: 8px 12px;
+  border-radius: 11px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.admin-clienti-page .admin-inline-actions .admin-action-edit,
+.admin-clienti-page .admin-inline-actions .admin-action-content {
+  background: rgba(239, 244, 236, 0.96);
+  border-color: rgba(141, 161, 132, 0.24);
+  color: var(--sage-deep);
+}
+
+.admin-clienti-page .admin-inline-actions .admin-action-copy {
+  background: rgba(247, 241, 234, 0.96);
+  border-color: rgba(200, 109, 81, 0.2);
+  color: var(--terracotta-deep);
+}
+
+.admin-clienti-page .admin-inline-actions .admin-action-edit:hover,
+.admin-clienti-page .admin-inline-actions .admin-action-content:hover {
+  background: rgba(141, 161, 132, 0.16);
+}
+
+.admin-clienti-page .admin-inline-actions .admin-action-copy:hover {
+  background: rgba(200, 109, 81, 0.12);
+}
+
+.admin-clienti-page .admin-inline-actions .admin-button.admin-button-danger {
+  min-height: 36px;
+  padding: 8px 12px;
+  border-radius: 11px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  box-shadow: 0 10px 18px rgba(200, 109, 81, 0.2);
 }
 
 .admin-clienti-page .admin-inline-actions .admin-copy-success {
@@ -87,14 +213,22 @@
 .admin-clienti-page .admin-clienti-pagination {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 10px;
-  margin-top: 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(149, 136, 112, 0.14);
   color: #617068;
   font-size: 0.9rem;
 }
 
+.admin-clienti-page .admin-clienti-pagination .admin-button {
+  min-width: 112px;
+}
+
 .admin-clienti-page .admin-status-list {
+  display: flex;
+  flex-wrap: wrap;
   gap: 6px;
 }
 
@@ -153,8 +287,17 @@
     align-items: stretch;
   }
 
+  .admin-clienti-page .admin-clienti-toolbar > .admin-button {
+    width: 100%;
+  }
+
   .admin-clienti-page .admin-clienti-filters {
     grid-template-columns: 1fr;
+    padding: 12px;
+  }
+
+  .admin-clienti-page .admin-clienti-meta {
+    align-items: flex-start;
   }
 
   .admin-clienti-page .admin-clienti-pagination {
@@ -171,7 +314,74 @@
     border-radius: 16px;
   }
 
+  .admin-clienti-page .admin-table-wrapper {
+    overflow: visible;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .admin-clienti-page .admin-table,
+  .admin-clienti-page .admin-table thead,
+  .admin-clienti-page .admin-table tbody,
+  .admin-clienti-page .admin-table tr,
+  .admin-clienti-page .admin-table th,
+  .admin-clienti-page .admin-table td {
+    display: block;
+    width: 100%;
+  }
+
   .admin-clienti-page .admin-table {
-    min-width: 700px;
+    min-width: 0;
+  }
+
+  .admin-clienti-page .admin-table thead {
+    display: none;
+  }
+
+  .admin-clienti-page .admin-table tbody {
+    display: grid;
+    gap: 12px;
+  }
+
+  .admin-clienti-page .admin-table tbody tr {
+    padding: 14px;
+    border: 1px solid rgba(149, 136, 112, 0.18);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 12px 24px rgba(98, 80, 61, 0.08);
+  }
+
+  .admin-clienti-page .admin-table tbody tr:nth-child(even),
+  .admin-clienti-page .admin-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .admin-clienti-page .admin-table td {
+    display: grid;
+    grid-template-columns: 108px minmax(0, 1fr);
+    gap: 10px;
+    padding: 8px 0;
+    border: 0;
+    font-size: 0.92rem;
+  }
+
+  .admin-clienti-page .admin-table td::before {
+    content: attr(data-label);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .admin-clienti-page .admin-inline-actions {
+    gap: 10px;
+  }
+
+  .admin-clienti-page .admin-inline-actions .admin-action-button,
+  .admin-clienti-page .admin-inline-actions .admin-button.admin-button-danger {
+    flex: 1 1 calc(50% - 5px);
+    justify-content: center;
   }
 }
