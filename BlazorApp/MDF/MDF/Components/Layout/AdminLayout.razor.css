@@ -45,6 +45,7 @@
 
 .admin-content {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 20px;
   width: min(1220px, 100%);
   margin: 0 auto;
