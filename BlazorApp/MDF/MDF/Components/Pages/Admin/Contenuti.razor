@@ -200,7 +200,7 @@
     <div class="admin-contenuti-section-head">
         <div>
             <h2 class="admin-section-title">Tracce audio del cliente</h2>
-            <p class="admin-helper">Qui puoi rivedere, aggiornare o rimuovere le tracce già pubblicate.</p>
+            <p class="admin-helper">Puoi modificare titoli e ordine direttamente qui sotto, poi salvare tutte le modifiche insieme.</p>
         </div>
     </div>
 
@@ -214,61 +214,52 @@
     }
     else
     {
-        <div class="admin-stack">
-            @foreach (var audio in selectedCliente.AudioTracks.OrderBy(x => x.Ordine))
-            {
-                <div class="admin-file-row admin-file-row-form">
-                    <div class="admin-stack admin-stack-full">
-                        <div>
-                            <strong>@audio.FileName</strong>
-                            <div class="admin-file-meta">Titolo mostrato nella pagina cliente: @audio.Titolo</div>
+        <div class="admin-upload-box admin-contenuti-audio-editor-box">
+            <p class="admin-helper">Aggiorna i campi che ti servono e usa il pulsante finale per salvare tutto in una sola volta.</p>
+
+            <div class="admin-stack">
+                @foreach (var audio in selectedCliente.AudioTracks.OrderBy(x => x.Ordine))
+                {
+                    <div class="admin-file-row admin-file-row-form">
+                        <div class="admin-stack admin-stack-full">
+                            <div>
+                                <strong>@audio.FileName</strong>
+                                <div class="admin-file-meta">Titolo mostrato nella pagina cliente: @audio.Titolo</div>
+                            </div>
+
+                            <div class="admin-form-grid">
+                                <div class="admin-field">
+                                    <label for="@($"titolo-{audio.Id}")">Titolo</label>
+                                    <InputText id="@($"titolo-{audio.Id}")" @bind-Value="audio.Titolo" class="admin-input" />
+                                </div>
+                                <div class="admin-field admin-field-compact">
+                                    <label for="@($"ordine-{audio.Id}")">Ordine</label>
+                                    <InputNumber id="@($"ordine-{audio.Id}")" @bind-Value="audio.Ordine" class="admin-input" />
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="admin-form-grid">
-                            <div class="admin-field">
-                                <label for="@($"titolo-{audio.Id}")">Titolo</label>
-                                <InputText id="@($"titolo-{audio.Id}")" @bind-Value="audio.Titolo" class="admin-input" />
-                            </div>
-                            <div class="admin-field admin-field-compact">
-                                <label for="@($"ordine-{audio.Id}")">Ordine</label>
-                                <InputNumber id="@($"ordine-{audio.Id}")" @bind-Value="audio.Ordine" class="admin-input" />
-                            </div>
+                        <div class="admin-inline-actions">
+                            <a href="@StorageService.GetPublicFileRoute(selectedCliente.PublicId, audio.FileName)" class="admin-button admin-button-secondary" target="_blank" rel="noopener noreferrer">
+                                Apri audio
+                            </a>
+                            <button type="button" class="admin-button admin-button-danger" @onclick="() => DeleteAudioAsync(audio.Id)">
+                                Elimina
+                            </button>
                         </div>
                     </div>
+                }
+            </div>
 
-                    <div class="admin-inline-actions">
-                        <a href="@StorageService.GetPublicFileRoute(selectedCliente.PublicId, audio.FileName)" class="admin-button admin-button-secondary" target="_blank" rel="noopener noreferrer">
-                            Apri audio
-                        </a>
-                        <button type="button" class="admin-button admin-button-secondary" @onclick="() => SaveAudioMetadataAsync(audio)">
-                            Salva metadati
-                        </button>
-                        <button type="button" class="admin-button admin-button-danger" @onclick="() => DeleteAudioAsync(audio.Id)">
-                            Elimina
-                        </button>
-                    </div>
-                </div>
-            }
+            <div class="admin-actions admin-actions-spaced">
+                <button type="button" class="admin-button" @onclick="SaveAllAudioMetadataAsync">
+                    Salva modifiche tracce
+                </button>
+            </div>
         </div>
     }
 </section>
 
-@if (selectedCliente is not null)
-{
-    <section class="admin-panel admin-contenuti-preview-panel">
-        <div class="admin-contenuti-section-head">
-            <div>
-                <h2 class="admin-section-title">Anteprima pubblica</h2>
-                <p class="admin-helper">Controlla il risultato finale così come verrà visto dalla cliente.</p>
-            </div>
-        </div>
-        <div class="admin-actions admin-actions-spaced">
-            <a href="@StorageService.GetPublicRoute(selectedCliente.PublicId)" class="admin-button" target="_blank" rel="noopener noreferrer">
-                Apri pagina cliente
-            </a>
-        </div>
-    </section>
-}
 </div>
 
 @code {
@@ -521,7 +512,7 @@
         }
     }
 
-    private async Task SaveAudioMetadataAsync(AudioTrackViewModel audio)
+    private async Task SaveAllAudioMetadataAsync()
     {
         if (selectedCliente is null)
         {
@@ -529,9 +520,10 @@
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(audio.Titolo))
+        var invalidTrack = selectedCliente.AudioTracks.FirstOrDefault(x => string.IsNullOrWhiteSpace(x.Titolo));
+        if (invalidTrack is not null)
         {
-            SetError("Error: il titolo della traccia è obbligatorio.");
+            SetError("Error: ogni traccia deve avere un titolo.");
             return;
         }
 
@@ -540,23 +532,31 @@
             .Include(x => x.AudioTracks)
             .FirstOrDefaultAsync(x => x.Id == selectedCliente.Id);
 
-        var track = cliente?.AudioTracks.FirstOrDefault(x => x.Id == audio.Id);
-        if (track is null)
+        if (cliente is null)
         {
-            SetError("Error: traccia audio non trovata.");
+            SetError("Error: cliente non trovato.");
             return;
         }
 
-        track.Titolo = audio.Titolo.Trim();
-        track.Ordine = audio.Ordine;
-        track.UpdatedUtc = DateTime.UtcNow;
+        foreach (var audio in selectedCliente.AudioTracks)
+        {
+            var track = cliente.AudioTracks.FirstOrDefault(x => x.Id == audio.Id);
+            if (track is null)
+            {
+                continue;
+            }
 
-        NormalizeAudioOrder(cliente!.AudioTracks);
+            track.Titolo = audio.Titolo.Trim();
+            track.Ordine = audio.Ordine;
+            track.UpdatedUtc = DateTime.UtcNow;
+        }
+
+        NormalizeAudioOrder(cliente.AudioTracks);
         cliente.UpdatedUtc = DateTime.UtcNow;
         await dbContext.SaveChangesAsync();
 
         await ReloadCurrentClienteAsync();
-        SetSuccess("Metadati traccia aggiornati correttamente.");
+        SetSuccess("Modifiche alle tracce salvate correttamente.");
     }
 
     private async Task DeleteAudioAsync(int audioId)

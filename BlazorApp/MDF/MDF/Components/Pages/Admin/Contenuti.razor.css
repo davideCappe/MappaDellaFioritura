@@ -42,8 +42,7 @@
 .admin-contenuti-page .admin-contenuti-selector-panel,
 .admin-contenuti-page .admin-contenuti-pdf-panel,
 .admin-contenuti-page .admin-contenuti-audio-upload-panel,
-.admin-contenuti-page .admin-contenuti-audio-list-panel,
-.admin-contenuti-page .admin-contenuti-preview-panel {
+.admin-contenuti-page .admin-contenuti-audio-list-panel {
   border: 1px solid rgba(141, 161, 132, 0.16);
   box-shadow: 0 18px 38px rgba(98, 80, 61, 0.08);
 }
@@ -164,8 +163,12 @@
   color: #617068;
 }
 
-.admin-contenuti-page .admin-contenuti-preview-panel .admin-actions {
-  padding-top: 4px;
+.admin-contenuti-page .admin-contenuti-audio-editor-box {
+  border-color: rgba(141, 161, 132, 0.18);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-editor-box > .admin-helper {
+  margin: 0 0 4px;
 }
 
 @media (max-width: 960px) {
