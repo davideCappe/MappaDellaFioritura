@@ -104,7 +104,7 @@
                                                 @onclick="() => CopyPublicLinkAsync(cliente.PublicId)">
                                             @(copiedPublicId == cliente.PublicId ? "Link copiato" : "Copia link")
                                         </button>
-                                        <button type="button" class="admin-button admin-button-danger" @onclick="async () => await DeleteAsync(cliente.Id)">
+                                        <button type="button" class="admin-button admin-button-danger" @onclick="() => OpenDeleteDialog(cliente)">
                                             Elimina
                                         </button>
                                     </div>
@@ -125,6 +125,27 @@
             }
         }
     </section>
+
+    @if (deleteDialogCliente is not null)
+    {
+        <div class="admin-delete-dialog-backdrop" @onclick="CloseDeleteDialog">
+            <section class="admin-delete-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-dialog-title" @onclick:stopPropagation="true">
+                <p class="admin-kicker">Conferma eliminazione</p>
+                <h2 id="delete-dialog-title" class="admin-section-title">Eliminare @deleteDialogCliente.Nome?</h2>
+                <p class="admin-helper">
+                    Questa azione rimuoverà il cliente e tutti i suoi contenuti collegati. Se vuoi procedere, conferma l'eliminazione.
+                </p>
+                <div class="admin-actions">
+                    <button type="button" class="admin-button admin-button-danger" @onclick="ConfirmDeleteAsync">
+                        Conferma eliminazione
+                    </button>
+                    <button type="button" class="admin-button admin-button-secondary" @onclick="CloseDeleteDialog">
+                        Annulla
+                    </button>
+                </div>
+            </section>
+        </div>
+    }
 </div>
 
 @code {
@@ -141,6 +162,7 @@
     private CancellationTokenSource? searchDebounceCts;
     private Guid? copiedPublicId;
     private CancellationTokenSource? copyFeedbackCts;
+    private ClienteListItem? deleteDialogCliente;
 
     private string FeedbackCssClass => isError
         ? "admin-alert admin-alert-error"
@@ -282,8 +304,26 @@
         await LoadAsync();
     }
 
-    private async Task DeleteAsync(int clienteId)
+    private void OpenDeleteDialog(ClienteListItem cliente)
     {
+        deleteDialogCliente = cliente;
+    }
+
+    private void CloseDeleteDialog()
+    {
+        deleteDialogCliente = null;
+    }
+
+    private async Task ConfirmDeleteAsync()
+    {
+        if (deleteDialogCliente is null)
+        {
+            return;
+        }
+
+        var clienteId = deleteDialogCliente.Id;
+        deleteDialogCliente = null;
+
         await using var dbContext = await DbContextFactory.CreateDbContextAsync();
 
         var cliente = await dbContext.Clienti.FirstOrDefaultAsync(x => x.Id == clienteId);
