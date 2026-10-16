@@ -86,7 +86,7 @@ customElements.define('passkey-submit', class extends HTMLElement {
         }
     }
 
-    async obtainAndSubmitCredential
+    async obtainAndSubmitCredential(useConditionalMediation = false) {
         this.abortController?.abort();
         this.abortController = new AbortController();
         const signal = this.abortController.signal;
