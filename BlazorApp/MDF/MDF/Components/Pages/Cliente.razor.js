@@ -1,7 +1,12 @@
 // Associazioni dimostrative: i punti sono fissi, senza significato interpretativo.
-const demoTrackHighlights = new Map([
-  ["SCOPI", ["eta0", "eta20", "eta40", "centro"]],
-  ["CODA KARMICA", ["bottom1", "bottom2", "eta60", "moneyLove3"]],
+const demoTrackHighlights = new Map([  
+    ["RITRATTO", ["eta0", "left1", "left2"]],
+    ["TALENTI", ["eta20", "top1", "top2", "eta10", "eta30"]],
+    ["KARMA MATERIALE", ["eta40", "right1", "right2"]],
+    ["LINEA DEL DENARO", ["moneyLove1", "moneyLove2", "right1"]],
+    ["LINEA DELLE RELAZIONI", ["moneyLove1", "moneyLove3", "bottom1"]],
+    ["CODA KARMICA", ["eta60", "bottom1", "bottom2"]],
+    ["COMFORT ZONE", ["centro"]],  
 ]);
 
 function highlightClientMatrix(root, title) {
