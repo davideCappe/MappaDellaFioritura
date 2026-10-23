@@ -1,151 +1,172 @@
-﻿@page "/Account/Register"
+﻿@page "/admin/utenti/nuovo"
+@page "/Account/Register"
+@layout AdminLayout
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = Roles.Admin + "," + Roles.SuperAdmin)]
 
 @using System.ComponentModel.DataAnnotations
-@using System.Text
-@using System.Text.Encodings.Web
+@using MDF.Shared.Constants
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.EntityFrameworkCore
 
 @inject UserManager<ApplicationUser> UserManager
-@inject IUserStore<ApplicationUser> UserStore
-@inject SignInManager<ApplicationUser> SignInManager
-@inject IEmailSender<ApplicationUser> EmailSender
+@inject ApplicationDbContext DbContext
 @inject ILogger<Register> Logger
-@inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Register</PageTitle>
+<PageTitle>Area riservata | Crea utente</PageTitle>
 
-<h1>Register</h1>
+<section class="admin-panel">
+    <p class="admin-kicker">Amministrazione</p>
+    <h1 class="admin-page-title">Crea utente</h1>
+    <p class="admin-lead">Crea un nuovo account senza interrompere la tua sessione di lavoro.</p>
+</section>
 
-<div class="row">
-    <div class="col-lg-6">
-        <StatusMessage Message="@Message" />
-        <EditForm Model="Input" method="post" OnValidSubmit="RegisterUser" FormName="register">
-            <DataAnnotationsValidator />
-            <h2>Create a new account.</h2>
-            <hr />
-            <ValidationSummary class="text-danger" role="alert" />
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label for="Input.Email">Email</label>
-                <ValidationMessage For="() => Input.Email" class="text-danger" />
-            </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="Input.Password">Password</label>
-                <ValidationMessage For="() => Input.Password" class="text-danger" />
-            </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.ConfirmPassword" id="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="Input.ConfirmPassword">Confirm Password</label>
-                <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
-            </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </EditForm>
-    </div>
-    <div class="col-lg-4 col-lg-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            <ExternalLoginPicker />
-        </section>
-    </div>
-</div>
+<section class="admin-panel create-user-panel">
+    <StatusMessage />
+    @if (errorMessage is not null)
+    {
+        <div class="admin-alert admin-alert-error" role="alert">@errorMessage</div>
+    }
+    <EditForm Model="Input" method="post" OnValidSubmit="CreateUserAsync" FormName="create-user" class="admin-form">
+        <DataAnnotationsValidator />
+        <ValidationSummary role="alert" />
+        <div class="admin-field">
+            <label for="new-user-email">Email</label>
+            <InputText type="email" @bind-Value="Input.Email" id="new-user-email" class="admin-input" autocomplete="off" aria-required="true" />
+            <ValidationMessage For="() => Input.Email" />
+        </div>
+        <div class="admin-field">
+            <label for="new-user-password">Password</label>
+            <InputText type="password" @bind-Value="Input.Password" id="new-user-password" class="admin-input" autocomplete="new-password" aria-required="true" aria-describedby="new-user-password-help" />
+            <p id="new-user-password-help" class="admin-helper">@PasswordRequirements</p>
+            <ValidationMessage For="() => Input.Password" />
+        </div>
+        <div class="admin-field">
+            <label for="new-user-confirm-password">Conferma password</label>
+            <InputText type="password" @bind-Value="Input.ConfirmPassword" id="new-user-confirm-password" class="admin-input" autocomplete="new-password" aria-required="true" />
+            <ValidationMessage For="() => Input.ConfirmPassword" />
+        </div>
+        <div class="admin-field">
+            <label for="new-user-role">Ruolo</label>
+            <InputSelect @bind-Value="Input.Role" id="new-user-role" class="admin-select" aria-describedby="new-user-role-help">
+                <option value="@Roles.User">Utente</option>
+                @if (HttpContext.User.IsInRole(Roles.SuperAdmin))
+                {
+                    <option value="@Roles.Admin">Admin</option>
+                }
+            </InputSelect>
+            <p id="new-user-role-help" class="admin-helper">Un utente gestisce solo il proprio account. Un Admin gestisce anche clienti e contenuti e crea utenti standard.</p>
+        </div>
+        <p class="admin-helper">L'account viene attivato con email confermata dall'amministratore, senza invio di email. Verifica l'indirizzo e comunica le credenziali in modo sicuro.</p>
+        <div class="admin-actions">
+            <button type="submit" class="admin-button">Crea utente</button>
+            <a href="/admin/dashboard" class="admin-button admin-button-secondary">Annulla</a>
+        </div>
+    </EditForm>
+</section>
 
 @code {
-    private IEnumerable<IdentityError>? identityErrors;
+    private string? errorMessage;
 
-    [SupplyParameterFromForm]
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromForm(FormName = "create-user")]
     private InputModel Input { get; set; } = default!;
 
-    [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
-
-    private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
+    private string PasswordRequirements
+    {
+        get
+        {
+            var options = UserManager.Options.Password;
+            var requirements = new List<string> { $"almeno {options.RequiredLength} caratteri" };
+            if (options.RequireUppercase) requirements.Add("una lettera maiuscola");
+            if (options.RequireLowercase) requirements.Add("una lettera minuscola");
+            if (options.RequireDigit) requirements.Add("un numero");
+            if (options.RequireNonAlphanumeric) requirements.Add("un carattere speciale");
+            if (options.RequiredUniqueChars > 1) requirements.Add($"{options.RequiredUniqueChars} caratteri distinti");
+            return $"La password deve contenere {string.Join(", ", requirements)}.";
+        }
+    }
 
     protected override void OnInitialized()
     {
         Input ??= new();
     }
 
-    public async Task RegisterUser(EditContext editContext)
+    private async Task CreateUserAsync()
     {
-        var user = CreateUser();
-
-        await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-        var emailStore = GetEmailStore();
-        await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-        var result = await UserManager.CreateAsync(user, Input.Password);
-
-        if (!result.Succeeded)
+        if (!HttpContext.User.IsInRole(Roles.Admin) && !HttpContext.User.IsInRole(Roles.SuperAdmin))
         {
-            identityErrors = result.Errors;
+            errorMessage = "Non sei autorizzato a creare utenti.";
+            Logger.LogWarning("Unauthorized attempt to create a user.");
             return;
         }
 
-        Logger.LogInformation("User created a new account with password.");
-
-        var userId = await UserManager.GetUserIdAsync(user);
-        var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        var callbackUrl = NavigationManager.GetUriWithQueryParameters(
-            NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
-            new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
-
-        await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
-
-        if (UserManager.Options.SignIn.RequireConfirmedAccount)
+        if (Input.Role != Roles.User && !(Input.Role == Roles.Admin && HttpContext.User.IsInRole(Roles.SuperAdmin)))
         {
-            RedirectManager.RedirectTo(
-                "Account/RegisterConfirmation",
-                new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
+            errorMessage = "Non sei autorizzato ad assegnare il ruolo selezionato.";
+            Logger.LogWarning("User {AdministratorId} attempted to assign an unauthorized role.", UserManager.GetUserId(HttpContext.User));
+            return;
         }
-        else
-        {
-            await SignInManager.SignInAsync(user, isPersistent: false);
-            RedirectManager.RedirectTo(ReturnUrl);
-        }
-    }
 
-    private ApplicationUser CreateUser()
-    {
-        try
+        var strategy = DbContext.Database.CreateExecutionStrategy();
+        var result = await strategy.ExecuteAsync(async () =>
         {
-            return Activator.CreateInstance<ApplicationUser>();
-        }
-        catch
-        {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
-                $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor.");
-        }
-    }
+            // Each retry must start with a new user instance and no rolled-back tracked changes.
+            DbContext.ChangeTracker.Clear();
+            await using var transaction = await DbContext.Database.BeginTransactionAsync();
+            var user = new ApplicationUser
+            {
+                UserName = Input.Email.Trim(),
+                Email = Input.Email.Trim(),
+                EmailConfirmed = true
+            };
+            var createResult = await UserManager.CreateAsync(user, Input.Password);
+            if (!createResult.Succeeded)
+            {
+                return createResult;
+            }
 
-    private IUserEmailStore<ApplicationUser> GetEmailStore()
-    {
-        if (!UserManager.SupportsUserEmail)
+            var roleResult = await UserManager.AddToRoleAsync(user, Input.Role);
+            if (!roleResult.Succeeded)
+            {
+                return roleResult;
+            }
+
+            await transaction.CommitAsync();
+            Logger.LogInformation("Administrator {AdministratorId} created user {UserId} with role {Role}.",
+                UserManager.GetUserId(HttpContext.User), user.Id, Input.Role);
+            return IdentityResult.Success;
+        });
+
+        if (!result.Succeeded)
         {
-            throw new NotSupportedException("The default UI requires a user store with email support.");
+            errorMessage = string.Join(" ", result.Errors.Select(error => error.Description));
+            Logger.LogWarning("User creation failed: {Errors}", errorMessage);
+            return;
         }
-        return (IUserEmailStore<ApplicationUser>)UserStore;
+
+        RedirectManager.RedirectToWithStatus("admin/utenti/nuovo", "Utente creato. L'account e attivo e puo accedere con le credenziali impostate.", HttpContext);
     }
 
     private sealed class InputModel
     {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Inserisci l'email.")]
+        [EmailAddress(ErrorMessage = "Inserisci un indirizzo email valido.")]
         public string Email { get; set; } = "";
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Inserisci la password.")]
+        [StringLength(100, ErrorMessage = "La password deve contenere da {2} a {1} caratteri.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
         public string Password { get; set; } = "";
 
+        [Required(ErrorMessage = "Conferma la password.")]
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare(nameof(Password), ErrorMessage = "Le password non coincidono.")]
         public string ConfirmPassword { get; set; } = "";
+
+        [Required]
+        public string Role { get; set; } = Roles.User;
     }
 }

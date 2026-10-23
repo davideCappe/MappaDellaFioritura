@@ -1,11 +1,710 @@
 @page "/admin/contenuti"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.EntityFrameworkCore
+@using MDF.Services
+@using MDF.Shared.Constants
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
+@inject ClienteStorageService StorageService
+@inject NavigationManager NavigationManager
 @layout AdminLayout
-@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@attribute [Authorize(Roles = Roles.Admin + "," + Roles.SuperAdmin)]
 
 <PageTitle>Back Office | Contenuti</PageTitle>
 
-<section class="admin-panel">
-    <p class="admin-kicker">Back Office</p>
-    <h1 class="admin-page-title">Contenuti</h1>
-    <p class="admin-lead">Qui gestirai upload e ordinamento di audio e PDF per cliente.</p>
+<div class="admin-contenuti-page">
+    <section class="admin-panel admin-contenuti-hero">
+        <p class="admin-kicker">Back Office</p>
+        <h1 class="admin-page-title">Contenuti</h1>
+        <p class="admin-lead">
+            Gestisci PDF e tracce audio della pagina cliente in modo ordinato e immediato.
+        </p>
+    </section>
+
+    @if (!string.IsNullOrWhiteSpace(feedbackMessage))
+    {
+        <section class="@FeedbackCssClass" role="alert">
+            @feedbackMessage
+        </section>
+    }
+
+    <section class="admin-grid admin-contenuti-overview">
+    <article class="admin-panel admin-contenuti-selector-panel">
+        <div class="admin-contenuti-section-head">
+            <div>
+                <span class="admin-contenuti-step">01 · Cliente</span>
+                <h2 class="admin-section-title">Seleziona cliente</h2>
+                <p class="admin-helper">Scegli il cliente su cui vuoi lavorare. PDF e tracce si aggiornano automaticamente.</p>
+            </div>
+        </div>
+
+        @if (clienti.Count == 0)
+        {
+            <div class="admin-empty">
+                Nessun cliente disponibile. Crea prima un cliente nella sezione <a href="/admin/clienti">Clienti</a>.
+            </div>
+        }
+        else
+        {
+            <div class="admin-upload-box admin-contenuti-selector-box">
+                <div class="admin-field">
+                    <label for="cliente-select">Cliente</label>
+                    <select id="cliente-select" class="admin-select" value="@SelectedClienteIdValue" @onchange="OnClienteChanged">
+                        @foreach (var cliente in clienti)
+                        {
+                            <option value="@cliente.Id">@cliente.Nome · @cliente.DataNascita.ToString("dd/MM/yyyy")</option>
+                        }
+                    </select>
+                </div>
+
+                @if (selectedCliente is not null)
+                {
+                    <div class="admin-contenuti-client-summary">
+                        <div class="admin-contenuti-client-card">
+                            <span class="admin-contenuti-client-label">Cliente selezionato</span>
+                            <strong>@selectedCliente.Nome</strong>
+                            <div class="admin-contenuti-client-details">
+                                <span>Nato il @selectedCliente.DataNascita.ToString("dd/MM/yyyy")</span>
+                                <span>@GetEtaLabel(selectedCliente.DataNascita)</span>
+                            </div>
+                        </div>
+                        <div class="admin-contenuti-client-meta">
+                            <span class="admin-mini-pill @(string.IsNullOrWhiteSpace(selectedCliente.PdfFileName) ? "admin-mini-pill-muted" : string.Empty)">
+                                @(string.IsNullOrWhiteSpace(selectedCliente.PdfFileName) ? "PDF mancante" : "PDF presente")
+                            </span>
+                            <span class="admin-mini-pill">@selectedCliente.AudioTracks.Count tracce</span>
+                            <a href="@StorageService.GetPublicRoute(selectedCliente.PublicId)" class="admin-button admin-contenuti-link-button" target="_blank" rel="noopener noreferrer">
+                                Apri pagina cliente
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </article>
+
+    <article class="admin-panel admin-contenuti-pdf-panel">
+        <div class="admin-contenuti-section-head">
+            <div>
+                <span class="admin-contenuti-step">02 · Documento</span>
+                <h2 class="admin-section-title">PDF</h2>
+                <p class="admin-helper">Carica o aggiorna il documento visibile nella pagina cliente.</p>
+            </div>
+        </div>
+
+        @if (selectedCliente is null)
+        {
+            <div class="admin-empty">Seleziona un cliente per procedere.</div>
+        }
+        else
+        {
+            <div class="admin-upload-box admin-contenuti-pdf-box">
+                @if (!string.IsNullOrWhiteSpace(selectedCliente.PdfFileName))
+                {
+                    <div class="admin-file-row admin-contenuti-pdf-current">
+                        <div class="admin-contenuti-pdf-current-main">
+                            <span class="admin-contenuti-client-label">Documento attuale</span>
+                            <strong>@selectedCliente.PdfFileName</strong>
+                        </div>
+
+                        <div class="admin-inline-actions admin-contenuti-pdf-actions">
+                            <a href="@StorageService.GetPublicFileRoute(selectedCliente.PublicId, selectedCliente.PdfFileName)" class="admin-button admin-button-secondary" target="_blank" rel="noopener noreferrer">
+                                Apri PDF
+                            </a>
+                            <button type="button" class="admin-button admin-button-danger" @onclick="DeletePdfAsync">
+                                Elimina
+                            </button>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="admin-empty admin-contenuti-pdf-empty">Nessun PDF caricato per questo cliente.</div>
+                }
+
+                <div class="admin-contenuti-pdf-upload-row">
+                    <InputFile OnChange="OnPdfSelected" accept=".pdf" class="admin-input" />
+                    <button type="button" class="admin-button" disabled="@(!CanUploadPdf)" @onclick="UploadPdfAsync">
+                        Carica PDF
+                    </button>
+                </div>
+
+                @if (selectedPdfFile is not null)
+                {
+                    <div class="admin-file-row admin-contenuti-pdf-pending">
+                        <div>
+                            <span class="admin-contenuti-client-label">Nuovo file selezionato</span>
+                            <strong>@selectedPdfFile.Name</strong>
+                            <div class="admin-file-meta">@FormatBytes(selectedPdfFile.Size)</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </article>
+
+    <section class="admin-panel admin-contenuti-audio-panel">
+    <div class="admin-contenuti-section-head">
+        <div>
+            <span class="admin-contenuti-step">03 · Audio</span>
+            <h2 class="admin-section-title">Tracce audio</h2>
+            <p class="admin-helper">Carica nuove tracce oppure aggiorna titolo e ordine di quelle già presenti.</p>
+        </div>
+    </div>
+
+    @if (selectedCliente is null)
+    {
+        <div class="admin-empty">Seleziona un cliente per procedere.</div>
+    }
+    else
+    {
+        <div class="admin-contenuti-audio-workspace">
+            <section class="admin-contenuti-audio-upload-panel">
+                <div class="admin-contenuti-subsection-head">
+                    <h3>Aggiungi tracce</h3>
+                    <p class="admin-helper">Seleziona i file, assegna titolo e ordine, poi caricali.</p>
+                </div>
+                <div class="admin-upload-box admin-contenuti-audio-upload-box">
+                    <InputFile OnChange="OnAudioFilesSelected" multiple accept=".mp3,.wav,.ogg,.m4a" class="admin-input" />
+
+                    @if (selectedAudioFiles.Count > 0)
+                    {
+                        <div class="admin-contenuti-upload-list">
+                            @foreach (var item in selectedAudioFiles)
+                            {
+                                <div class="admin-contenuti-upload-item">
+                                    <div class="admin-contenuti-upload-item-head">
+                                        <strong>@item.File.Name</strong>
+                                        <span class="admin-file-meta">@FormatBytes(item.File.Size)</span>
+                                    </div>
+
+                                    <div class="admin-form-grid admin-contenuti-audio-form-grid">
+                                        <div class="admin-field">
+                                            <label>Titolo traccia</label>
+                                            <InputText @bind-Value="item.Titolo" class="admin-input" />
+                                        </div>
+                                        <div class="admin-field admin-field-compact">
+                                            <label>Ordine</label>
+                                            <InputNumber @bind-Value="item.Ordine" class="admin-input" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <div class="admin-actions">
+                        <button type="button" class="admin-button" disabled="@(!CanUploadAudio)" @onclick="UploadAudioAsync">
+                            Carica tracce
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="admin-contenuti-audio-list-panel">
+                <div class="admin-contenuti-subsection-head">
+                    <h3>Tracce presenti <span class="admin-contenuti-track-count">@selectedCliente.AudioTracks.Count</span></h3>
+                    <p class="admin-helper">Modifica titoli e ordine, poi salva le modifiche.</p>
+                </div>
+
+                @if (selectedCliente.AudioTracks.Count == 0)
+                {
+                    <div class="admin-empty">Nessuna traccia audio presente per questo cliente.</div>
+                }
+                else
+                {
+                    <div class="admin-upload-box admin-contenuti-audio-editor-box">
+                        <div class="admin-contenuti-audio-list">
+                            @foreach (var audio in selectedCliente.AudioTracks.OrderBy(x => x.Ordine))
+                            {
+                                <article class="admin-contenuti-audio-row">
+                                    <div class="admin-contenuti-audio-row-main">
+                                        <div class="admin-contenuti-audio-row-title">
+                                            <strong>@audio.FileName</strong>
+                                        </div>
+
+                                        <div class="admin-form-grid admin-contenuti-audio-form-grid">
+                                            <div class="admin-field">
+                                                <label for="@($"titolo-{audio.Id}")">Titolo</label>
+                                                <InputText id="@($"titolo-{audio.Id}")" @bind-Value="audio.Titolo" class="admin-input" />
+                                            </div>
+                                            <div class="admin-field admin-field-compact">
+                                                <label for="@($"ordine-{audio.Id}")">Ordine</label>
+                                                <InputNumber id="@($"ordine-{audio.Id}")" @bind-Value="audio.Ordine" class="admin-input" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="admin-inline-actions admin-contenuti-audio-actions">
+                                        <a href="@StorageService.GetPublicFileRoute(selectedCliente.PublicId, audio.FileName)" class="admin-button admin-button-secondary" target="_blank" rel="noopener noreferrer">
+                                            Ascolta
+                                        </a>
+                                        <button type="button" class="admin-button admin-button-danger" @onclick="() => DeleteAudioAsync(audio.Id)">
+                                            Elimina
+                                        </button>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+
+                        <div class="admin-actions admin-actions-spaced admin-contenuti-audio-savebar">
+                            <button type="button" class="admin-button" disabled="@(!CanSaveAudioMetadata)" @onclick="SaveAllAudioMetadataAsync">
+                                Salva modifiche tracce
+                            </button>
+                        </div>
+                    </div>
+                }
+            </section>
+        </div>
+    }
+    </section>
 </section>
+
+</div>
+
+@code {
+    private const long MaxAllowedFileSize = 50 * 1024 * 1024;
+
+    [SupplyParameterFromQuery(Name = "clienteId")]
+    public int? ClienteId { get; set; }
+
+    private List<ClienteOption> clienti = [];
+    private ClienteContentViewModel? selectedCliente;
+    private IBrowserFile? selectedPdfFile;
+    private List<AudioUploadDraft> selectedAudioFiles = [];
+    private Dictionary<int, AudioTrackSnapshot> originalAudioState = [];
+    private string? feedbackMessage;
+    private bool isError;
+
+    private string FeedbackCssClass => isError
+        ? "admin-alert admin-alert-error"
+        : "admin-alert admin-alert-success";
+
+    private string SelectedClienteIdValue => ClienteId?.ToString() ?? string.Empty;
+
+    private bool CanUploadPdf => selectedCliente is not null && selectedPdfFile is not null;
+
+    private bool CanUploadAudio => selectedCliente is not null
+        && selectedAudioFiles.Count > 0
+        && selectedAudioFiles.All(x => !string.IsNullOrWhiteSpace(x.Titolo) && x.Ordine > 0);
+
+    private bool CanSaveAudioMetadata
+        => selectedCliente is not null
+        && selectedCliente.AudioTracks.Count > 0
+        && selectedCliente.AudioTracks.All(x => !string.IsNullOrWhiteSpace(x.Titolo) && x.Ordine > 0)
+        && selectedCliente.AudioTracks
+            .OrderBy(x => x.Id)
+            .Any(x => x.Titolo != originalAudioState.GetValueOrDefault(x.Id).Titolo || x.Ordine != originalAudioState.GetValueOrDefault(x.Id).Ordine);
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadClientiAsync();
+        await LoadSelectedClienteAsync();
+    }
+
+    private async Task LoadClientiAsync()
+    {
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        clienti = await dbContext.Clienti
+            .OrderBy(x => x.Nome)
+            .ThenBy(x => x.DataNascita)
+            .Select(x => new ClienteOption
+            {
+                Id = x.Id,
+                Nome = x.Nome,
+                PublicId = x.PublicId,
+                DataNascita = x.DataNascita
+            })
+            .ToListAsync();
+    }
+
+    private async Task LoadSelectedClienteAsync()
+    {
+        if (clienti.Count == 0)
+        {
+            selectedCliente = null;
+            ClienteId = null;
+            return;
+        }
+
+        ClienteId = clienti.Any(x => x.Id == ClienteId) ? ClienteId : clienti[0].Id;
+
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        var cliente = await dbContext.Clienti
+            .Include(x => x.AudioTracks)
+            .FirstOrDefaultAsync(x => x.Id == ClienteId);
+
+        if (cliente is null)
+        {
+            selectedCliente = null;
+            return;
+        }
+
+        selectedCliente = new ClienteContentViewModel
+        {
+            Id = cliente.Id,
+            Nome = cliente.Nome,
+            DataNascita = cliente.DataNascita,
+            PublicId = cliente.PublicId,
+            PdfFileName = cliente.PdfFileName,
+            AudioTracks = cliente.AudioTracks
+                .OrderBy(x => x.Ordine)
+                .ThenBy(x => x.Id)
+                .Select(x => new AudioTrackViewModel
+                {
+                    Id = x.Id,
+                    FileName = x.FileName,
+                    Titolo = x.Titolo,
+                    Ordine = x.Ordine
+                })
+                .ToList()
+        };
+
+        originalAudioState = selectedCliente.AudioTracks.ToDictionary(
+            x => x.Id,
+            x => new AudioTrackSnapshot(x.Titolo, x.Ordine));
+    }
+
+    private void OnPdfSelected(InputFileChangeEventArgs args)
+    {
+        selectedPdfFile = args.File;
+        feedbackMessage = null;
+        isError = false;
+    }
+
+    private void OnAudioFilesSelected(InputFileChangeEventArgs args)
+    {
+        var startingOrder = (selectedCliente?.AudioTracks.Max(x => (int?)x.Ordine) ?? 0) + 1;
+        selectedAudioFiles = args.GetMultipleFiles(20)
+            .Select((file, index) => new AudioUploadDraft
+            {
+                File = file,
+                Titolo = Path.GetFileNameWithoutExtension(file.Name),
+                Ordine = startingOrder + index
+            })
+            .ToList();
+
+        feedbackMessage = null;
+        isError = false;
+    }
+
+    private Task OnClienteChanged(ChangeEventArgs args)
+    {
+        if (!int.TryParse(args.Value?.ToString(), out var clienteId))
+        {
+            return Task.CompletedTask;
+        }
+
+        NavigationManager.NavigateTo($"/admin/contenuti?clienteId={clienteId}", replace: true);
+        return Task.CompletedTask;
+    }
+
+    private async Task UploadPdfAsync()
+    {
+        if (selectedCliente is null || selectedPdfFile is null)
+        {
+            SetError("Error: selezionare un cliente e un PDF valido.");
+            return;
+        }
+
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        var cliente = await dbContext.Clienti.FirstOrDefaultAsync(x => x.Id == selectedCliente.Id);
+
+        if (cliente is null)
+        {
+            SetError("Error: cliente non trovato.");
+            return;
+        }
+
+        try
+        {
+            var previousPdf = cliente.PdfFileName;
+
+            await using var stream = selectedPdfFile.OpenReadStream(MaxAllowedFileSize);
+            var savedFileName = await StorageService.SavePdfAsync(cliente.PublicId, selectedPdfFile.Name, stream);
+
+            cliente.PdfFileName = savedFileName;
+            cliente.UpdatedUtc = DateTime.UtcNow;
+            await dbContext.SaveChangesAsync();
+
+            if (!string.IsNullOrWhiteSpace(previousPdf) && !string.Equals(previousPdf, savedFileName, StringComparison.OrdinalIgnoreCase))
+            {
+                StorageService.DeleteFile(cliente.PublicId, previousPdf);
+            }
+
+            selectedPdfFile = null;
+            await ReloadCurrentClienteAsync();
+            SetSuccess("PDF caricato correttamente.");
+        }
+        catch (Exception ex)
+        {
+            SetError($"Error: {ex.Message}");
+        }
+    }
+
+    private async Task DeletePdfAsync()
+    {
+        if (selectedCliente is null || string.IsNullOrWhiteSpace(selectedCliente.PdfFileName))
+        {
+            SetError("Error: nessun PDF da eliminare.");
+            return;
+        }
+
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        var cliente = await dbContext.Clienti.FirstOrDefaultAsync(x => x.Id == selectedCliente.Id);
+
+        if (cliente is null || string.IsNullOrWhiteSpace(cliente.PdfFileName))
+        {
+            SetError("Error: PDF non trovato.");
+            return;
+        }
+
+        var pdfFileName = cliente.PdfFileName;
+        cliente.PdfFileName = null;
+        cliente.UpdatedUtc = DateTime.UtcNow;
+        await dbContext.SaveChangesAsync();
+
+        StorageService.DeleteFile(cliente.PublicId, pdfFileName);
+        await ReloadCurrentClienteAsync();
+        SetSuccess("PDF eliminato correttamente.");
+    }
+
+    private async Task UploadAudioAsync()
+    {
+        if (selectedCliente is null || selectedAudioFiles.Count == 0)
+        {
+            SetError("Error: selezionare un cliente e almeno una traccia audio.");
+            return;
+        }
+
+        if (selectedAudioFiles.Any(x => string.IsNullOrWhiteSpace(x.Titolo)))
+        {
+            SetError("Error: ogni traccia audio deve avere un titolo.");
+            return;
+        }
+
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        var cliente = await dbContext.Clienti
+            .Include(x => x.AudioTracks)
+            .FirstOrDefaultAsync(x => x.Id == selectedCliente.Id);
+
+        if (cliente is null)
+        {
+            SetError("Error: cliente non trovato.");
+            return;
+        }
+
+        var duplicateFile = selectedAudioFiles
+            .Select(x => Path.GetFileName(x.File.Name))
+            .FirstOrDefault(fileName => cliente.AudioTracks.Any(track => string.Equals(track.FileName, fileName, StringComparison.OrdinalIgnoreCase)));
+
+        if (!string.IsNullOrWhiteSpace(duplicateFile))
+        {
+            SetError($"Error: esiste già una traccia con nome file '{duplicateFile}'.");
+            return;
+        }
+
+        try
+        {
+            foreach (var audio in selectedAudioFiles.OrderBy(x => x.Ordine).ThenBy(x => x.File.Name, StringComparer.OrdinalIgnoreCase))
+            {
+                await using var stream = audio.File.OpenReadStream(MaxAllowedFileSize);
+                var savedFileName = await StorageService.SaveAudioAsync(cliente.PublicId, audio.File.Name, stream);
+
+                cliente.AudioTracks.Add(new ClienteAudio
+                {
+                    FileName = savedFileName,
+                    Titolo = audio.Titolo.Trim(),
+                    Ordine = audio.Ordine,
+                    CreatedUtc = DateTime.UtcNow
+                });
+            }
+
+            NormalizeAudioOrder(cliente.AudioTracks);
+            cliente.UpdatedUtc = DateTime.UtcNow;
+            await dbContext.SaveChangesAsync();
+
+            selectedAudioFiles = [];
+            await ReloadCurrentClienteAsync();
+            SetSuccess("Tracce audio caricate correttamente.");
+        }
+        catch (Exception ex)
+        {
+            SetError($"Error: {ex.Message}");
+        }
+    }
+
+    private async Task SaveAllAudioMetadataAsync()
+    {
+        if (selectedCliente is null)
+        {
+            SetError("Error: cliente non selezionato.");
+            return;
+        }
+
+        var invalidTrack = selectedCliente.AudioTracks.FirstOrDefault(x => string.IsNullOrWhiteSpace(x.Titolo));
+        if (invalidTrack is not null)
+        {
+            SetError("Error: ogni traccia deve avere un titolo.");
+            return;
+        }
+
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        var cliente = await dbContext.Clienti
+            .Include(x => x.AudioTracks)
+            .FirstOrDefaultAsync(x => x.Id == selectedCliente.Id);
+
+        if (cliente is null)
+        {
+            SetError("Error: cliente non trovato.");
+            return;
+        }
+
+        foreach (var audio in selectedCliente.AudioTracks)
+        {
+            var track = cliente.AudioTracks.FirstOrDefault(x => x.Id == audio.Id);
+            if (track is null)
+            {
+                continue;
+            }
+
+            track.Titolo = audio.Titolo.Trim();
+            track.Ordine = audio.Ordine;
+            track.UpdatedUtc = DateTime.UtcNow;
+        }
+
+        NormalizeAudioOrder(cliente.AudioTracks);
+        cliente.UpdatedUtc = DateTime.UtcNow;
+        await dbContext.SaveChangesAsync();
+
+        await ReloadCurrentClienteAsync();
+        SetSuccess("Modifiche alle tracce salvate correttamente.");
+    }
+
+    private async Task DeleteAudioAsync(int audioId)
+    {
+        if (selectedCliente is null)
+        {
+            SetError("Error: cliente non selezionato.");
+            return;
+        }
+
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        var cliente = await dbContext.Clienti
+            .Include(x => x.AudioTracks)
+            .FirstOrDefaultAsync(x => x.Id == selectedCliente.Id);
+
+        var track = cliente?.AudioTracks.FirstOrDefault(x => x.Id == audioId);
+        if (track is null)
+        {
+            SetError("Error: traccia audio non trovata.");
+            return;
+        }
+
+        var fileName = track.FileName;
+        dbContext.Remove(track);
+        NormalizeAudioOrder(cliente!.AudioTracks.Where(x => x.Id != audioId).ToList());
+        cliente.UpdatedUtc = DateTime.UtcNow;
+        await dbContext.SaveChangesAsync();
+
+        StorageService.DeleteFile(cliente.PublicId, fileName);
+        await ReloadCurrentClienteAsync();
+        SetSuccess("Traccia audio eliminata correttamente.");
+    }
+
+    private async Task ReloadCurrentClienteAsync()
+    {
+        await LoadClientiAsync();
+        await LoadSelectedClienteAsync();
+    }
+
+    private static void NormalizeAudioOrder(IEnumerable<ClienteAudio> tracks)
+    {
+        var orderedTracks = tracks
+            .OrderBy(x => x.Ordine)
+            .ThenBy(x => x.CreatedUtc)
+            .ThenBy(x => x.Id)
+            .ToList();
+
+        for (var index = 0; index < orderedTracks.Count; index++)
+        {
+            orderedTracks[index].Ordine = index + 1;
+        }
+    }
+
+    private static string FormatBytes(long bytes)
+    {
+        string[] sizes = ["B", "KB", "MB", "GB"];
+        double len = bytes;
+        var order = 0;
+
+        while (len >= 1024 && order < sizes.Length - 1)
+        {
+            order++;
+            len /= 1024;
+        }
+
+        return $"{len:0.##} {sizes[order]}";
+    }
+
+    private static string GetEtaLabel(DateOnly dataNascita)
+    {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        var eta = today.Year - dataNascita.Year;
+
+        if (today < dataNascita.AddYears(eta))
+        {
+            eta--;
+        }
+
+        return eta == 1 ? "1 anno" : $"{eta} anni";
+    }
+
+    private void SetSuccess(string message)
+    {
+        feedbackMessage = message;
+        isError = false;
+    }
+
+    private void SetError(string message)
+    {
+        feedbackMessage = message;
+        isError = true;
+    }
+
+    private sealed class ClienteOption
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public DateOnly DataNascita { get; set; }
+        public Guid PublicId { get; set; }
+    }
+
+    private sealed class ClienteContentViewModel
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public DateOnly DataNascita { get; set; }
+        public Guid PublicId { get; set; }
+        public string? PdfFileName { get; set; }
+        public List<AudioTrackViewModel> AudioTracks { get; set; } = [];
+    }
+
+    private sealed class AudioTrackViewModel
+    {
+        public int Id { get; set; }
+        public string FileName { get; set; } = string.Empty;
+        public string Titolo { get; set; } = string.Empty;
+        public int Ordine { get; set; }
+    }
+
+    private sealed class AudioUploadDraft
+    {
+        public IBrowserFile File { get; set; } = default!;
+        public string Titolo { get; set; } = string.Empty;
+        public int Ordine { get; set; }
+    }
+
+    private readonly record struct AudioTrackSnapshot(string Titolo, int Ordine);
+}

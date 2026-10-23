@@ -1,0 +1,18 @@
+@inherits LayoutComponentBase
+@layout MainLayout
+
+<div class="identity-page">
+    <a class="identity-skip-link" href="#identity-content">Vai al contenuto</a>
+    <header class="identity-header">
+        <a class="identity-brand" href="/" aria-label="Mappa della Fioritura: pagina iniziale">
+            <img src="/images/logo.webp" alt="" width="56" height="56" />
+            <span>Mappa della Fioritura</span>
+        </a>
+        <a href="Account/Login">Area riservata</a>
+    </header>
+    <main class="identity-shell" id="identity-content" tabindex="-1">
+        <section class="identity-panel" aria-label="Gestione accesso">
+            @Body
+        </section>
+    </main>
+</div>

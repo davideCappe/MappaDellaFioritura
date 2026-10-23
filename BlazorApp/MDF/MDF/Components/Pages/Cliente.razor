@@ -1,0 +1,313 @@
+@page "/cliente/{PublicId:guid}"
+@using Microsoft.EntityFrameworkCore
+@using MDF.Services
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
+@inject ClienteStorageService StorageService
+@layout ClientPageLayout
+
+<PageTitle>@PageTitleText</PageTitle>
+
+@if (isLoading)
+{
+    <section class="client-feedback-shell">
+        <div class="client-feedback-card">
+            <p class="eyebrow">Mappa della Fioritura</p>
+            <h1>Sto preparando il tuo percorso</h1>
+            <p class="welcome-copy">Caricamento dei contenuti in corso.</p>
+        </div>
+    </section>
+}
+else if (cliente is null)
+{
+    <section class="client-feedback-shell">
+        <div class="client-feedback-card">
+            <p class="eyebrow">Percorso non disponibile</p>
+            <h1>Questa pagina non è disponibile</h1>
+            <p class="welcome-copy">Il link potrebbe non essere valido oppure i contenuti non sono ancora stati pubblicati.</p>
+            <a href="/" class="pdf-download">Torna al sito</a>
+        </div>
+    </section>
+}
+else
+{
+    <div class="client-app" data-client-page>
+        <header class="client-header">
+            <a class="client-brand" href="/" aria-label="Mappa della Fioritura, pagina principale">
+                <img src="/images/logo.webp" alt="" class="client-logo">
+                <span>Mappa della Fioritura</span>
+            </a>
+            <div class="client-status"><span class="status-dot"></span> Area personale</div>
+        </header>
+
+        <main>
+            <section class="welcome">
+                <div>
+                    <p class="eyebrow">Un tempo tutto per te</p>
+                    <h1>La tua Mappa<br><em>della fioritura</em></h1>
+                    <p class="welcome-copy">Ciao <strong class="welcome-name">@cliente.Nome</strong>, qui trovi il tuo documento personale e le tracce audio da ascoltare con calma, seguendo il tuo ritmo.</p>
+                </div>
+                <div class="welcome-mark" aria-hidden="true">✦</div>
+            </section>
+
+            <div class="client-layout">
+                <aside class="journey-nav" aria-label="Indice del percorso">
+                    <div class="journey-heading">
+                        <span>Il percorso</span>
+                        <strong>@TrackCountLabel</strong>
+                    </div>
+
+                    @if (cliente.AudioTracks.Count == 0)
+                    {
+                        <div class="client-empty-block">Nessuna traccia audio disponibile al momento.</div>
+                    }
+                    else
+                    {
+                        <div class="track-list">
+                            @foreach (var item in cliente.AudioTracks.Select((track, index) => new { track, index }))
+                            {
+                                <button class="chapter-link @(item.index == currentTrackIndex ? "is-active" : null)"
+                                        type="button"
+                                        aria-pressed="@(item.index == currentTrackIndex ? "true" : "false")"
+                                        data-track-button
+                                        data-track-index="@item.index"
+                                        data-track-url="@StorageService.GetPublicFileRoute(PublicId, item.track.FileName)"
+                                        data-track-title="@item.track.Titolo">
+                                    <span class="chapter-number">@((item.index + 1).ToString("00"))</span>
+                                    <span>
+                                        <strong>@item.track.Titolo</strong>
+                                        <small>Ascolta la traccia</small>
+                                    </span>
+                                    <span class="chapter-check">@(item.index == currentTrackIndex ? "●" : "○")</span>
+                                </button>
+                            }
+                        </div>
+                    }
+
+                    <div class="journey-note">
+                        <span class="note-icon">⌁</span>
+                        <p>Puoi interrompere e riprendere quando vuoi. Il tuo percorso resta qui.</p>
+                    </div>
+                </aside>
+
+                <article class="reading-area" aria-label="Contenuto del percorso">
+                    <div class="reading-meta">
+                        <span>Documento personale</span>
+                        <span>@TrackCountLabel</span>
+                    </div>
+
+                    <section class="pdf-viewer" aria-labelledby="pdf-title">
+                        <div class="pdf-toolbar">
+                            <div>
+                                <p class="content-kicker">Documento personale</p>
+                                <h2 id="pdf-title">Scarica il tuo PDF personale</h2>
+                            </div>
+
+                            @if (!string.IsNullOrWhiteSpace(PdfUrl))
+                            {
+                                <a class="pdf-download" href="@PdfUrl" download>Scarica PDF <span aria-hidden="true">↓</span></a>
+                            }
+                        </div>
+
+                        @if (string.IsNullOrWhiteSpace(PdfUrl))
+                        {
+                            <div class="client-empty-block">Il documento PDF non è ancora disponibile.</div>
+                        }
+                    </section>
+
+                    <section class="pdf-viewer" aria-labelledby="mappa-title">
+                        <div class="pdf-toolbar">
+                            <div>
+                                <p class="content-kicker">Mappa della Fioritura</p>
+                                <h2 id="mappa-title">La tua mappa personale</h2>
+                            </div>
+                        </div>
+
+                        <section class="matrix-panel client-matrix-panel"
+                                 data-client-matrix
+                                 data-birth-date="@BirthDateIso"
+                                 data-client-name="@cliente.Nome">
+                            <div class="matrix-container">
+                                <svg id="matrixSvg" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="images/ITAmatrice.webp" x="0" y="0" width="1000" height="1000" />
+                                    <g id="logoOverlay" opacity="0.3" pointer-events="none">
+                                        <image href="images/logo.webp" x="325" y="325" width="350" height="350" preserveAspectRatio="xMidYMid meet" />
+                                    </g>
+                                    <g id="numeriLayer"></g>
+                                </svg>
+                            </div>
+                        </section>
+
+                        <section class="insights-panel client-insights-panel" aria-label="Approfondimenti mappa">
+                            <div class="insight-grid">
+                                <section class="insight-card" aria-labelledby="ricercaTitolo">
+                                    <h2 id="ricercaTitolo">Scopo personale</h2>
+                                    <p>Unione del maschile e femminile.</p>
+                                    <p>Abilità, capacità, conoscenze.</p>
+                                    <dl class="value-list">
+                                        <div>
+                                            <dt>Cielo</dt>
+                                            <dd id="valoreCielo">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>Terra</dt>
+                                            <dd id="valoreTerra">-</dd>
+                                        </div>
+                                        <div class="value-total">
+                                            <dd id="valoreRicercaTotale">-</dd>
+                                        </div>
+                                    </dl>
+                                </section>
+
+                                <section class="insight-card" aria-labelledby="socializzazioneTitolo">
+                                    <h2 id="socializzazioneTitolo">Scopo sociale</h2>
+                                    <p>Sistemi sociali e del clan familiare.</p>
+                                    <p>Risultati e riconoscimento nella società.</p>
+                                    <dl class="value-list">
+                                        <div>
+                                            <dt>M</dt>
+                                            <dd id="valoreSocialeM">-</dd>
+                                        </div>
+                                        <div>
+                                            <dt>F</dt>
+                                            <dd id="valoreSocialeF">-</dd>
+                                        </div>
+                                        <div class="value-total">
+                                            <dd id="valoreSocialeTotale">-</dd>
+                                        </div>
+                                    </dl>
+                                </section>
+
+                                <section class="insight-card insight-card-compact" aria-labelledby="spiritualeTitolo">
+                                    <h2 id="spiritualeTitolo">Scopo generale</h2>
+                                    <p>Chi sono io per Dio? Dov'è il divino in me?</p>
+                                    <dl class="value-list">
+                                        <div>
+                                            <dt>Energia</dt>
+                                            <dd id="valoreSpirituale">-</dd>
+                                        </div>
+                                    </dl>
+                                </section>
+
+                                <section class="insight-card insight-card-compact" aria-labelledby="planetarioTitolo">
+                                    <h2 id="planetarioTitolo">Scopo universale</h2>
+                                    <p>Scopo planetario, cosa dare al mondo, stile di vita.</p>
+                                    <dl class="value-list">
+                                        <div>
+                                            <dt>Energia</dt>
+                                            <dd id="valorePlanetario">-</dd>
+                                        </div>
+                                    </dl>
+                                </section>
+                            </div>
+                        </section>
+                    </section>
+                </article>
+            </div>
+        </main>
+
+        <footer class="client-footer"><span>Preparato con cura per te</span><span>Mappa della Fioritura · 2026</span></footer>
+    </div>
+
+    @if (CurrentTrack is not null)
+    {
+        <section class="audio-player" id="player-audio" aria-label="Player audio" data-client-player>
+            <div class="player-inner">
+                <div class="now-playing">
+                    <button class="play-button play-button-secondary" type="button" aria-label="Traccia precedente" data-track-prev>←</button>
+                    <div class="track-copy">
+                        <span class="track-label">In ascolto</span>
+                        <strong data-current-track-title>@CurrentTrack.Titolo</strong>
+                    </div>
+                </div>
+
+                <div class="track-controls">
+                    <audio class="client-audio-element" controls preload="metadata" src="@CurrentTrackUrl" data-client-audio></audio>
+                </div>
+
+                <div class="player-actions">
+                    <button class="play-button" type="button" aria-label="Traccia successiva" data-track-next>→</button>
+                </div>
+            </div>
+            <p class="player-hint"><span>♪</span> Seleziona una traccia dalla colonna di sinistra o usa i controlli del player.</p>
+        </section>
+    }
+
+    }
+
+@code {
+    [Parameter]
+    public Guid PublicId { get; set; }
+
+    private ClientePublicViewModel? cliente;
+    private bool isLoading = true;
+    private int currentTrackIndex;
+
+    private string PageTitleText => cliente is null
+        ? "Percorso cliente | Mappa della Fioritura"
+        : $"{cliente.Nome} | Mappa della Fioritura";
+
+    private string TrackCountLabel => cliente is null
+        ? "0 tracce"
+        : $"{cliente.AudioTracks.Count} tracce";
+
+    private AudioTrackPublicViewModel? CurrentTrack =>
+        cliente is not null && cliente.AudioTracks.Count > 0 && currentTrackIndex >= 0 && currentTrackIndex < cliente.AudioTracks.Count
+            ? cliente.AudioTracks[currentTrackIndex]
+            : null;
+
+    private string? CurrentTrackUrl => CurrentTrack is null
+        ? null
+        : StorageService.GetPublicFileRoute(PublicId, CurrentTrack.FileName);
+
+    private string? PdfUrl => cliente is null || string.IsNullOrWhiteSpace(cliente.PdfFileName)
+        ? null
+        : StorageService.GetPublicFileRoute(PublicId, cliente.PdfFileName);
+
+    private string? BirthDateIso => cliente?.DataNascita.ToString("yyyy-MM-dd");
+
+    protected override async Task OnParametersSetAsync()
+    {
+        isLoading = true;
+
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        cliente = await dbContext.Clienti
+            .Where(x => x.PublicId == PublicId && x.IsAttivo)
+            .Select(x => new ClientePublicViewModel
+            {
+                Nome = x.Nome,
+                PublicId = x.PublicId,
+                DataNascita = x.DataNascita,
+                PdfFileName = x.PdfFileName,
+                AudioTracks = x.AudioTracks
+                    .OrderBy(track => track.Ordine)
+                    .ThenBy(track => track.Id)
+                    .Select(track => new AudioTrackPublicViewModel
+                    {
+                        FileName = track.FileName,
+                        Titolo = track.Titolo,
+                        Ordine = track.Ordine
+                    })
+                    .ToList()
+            })
+            .FirstOrDefaultAsync();
+
+        currentTrackIndex = 0;
+        isLoading = false;
+    }
+
+    private sealed class ClientePublicViewModel
+    {
+        public string Nome { get; set; } = string.Empty;
+        public Guid PublicId { get; set; }
+        public DateOnly DataNascita { get; set; }
+        public string? PdfFileName { get; set; }
+        public List<AudioTrackPublicViewModel> AudioTracks { get; set; } = [];
+    }
+
+    private sealed class AudioTrackPublicViewModel
+    {
+        public string FileName { get; set; } = string.Empty;
+        public string Titolo { get; set; } = string.Empty;
+        public int Ordine { get; set; }
+    }
+}

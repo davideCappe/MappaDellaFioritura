@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using MDF.BusinessLayer.Data;
+using MDF.Shared.Constants;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 
@@ -30,6 +32,14 @@ internal sealed class IdentityRedirectManager(NavigationManager navigationManage
         navigationManager.NavigateTo(uri);
     }
 
+    public void RedirectToAfterLogin(string? returnUrl, ClaimsPrincipal user)
+    {
+        var defaultUrl = user.IsInRole(Roles.Admin) || user.IsInRole(Roles.SuperAdmin)
+            ? "admin/dashboard"
+            : "Account/Manage";
+        RedirectTo(string.IsNullOrWhiteSpace(returnUrl) ? defaultUrl : returnUrl);
+    }
+
     public void RedirectTo(string uri, Dictionary<string, object?> queryParameters)
     {
         var uriWithoutQuery = navigationManager.ToAbsoluteUri(uri).GetLeftPart(UriPartial.Path);
@@ -51,5 +61,5 @@ internal sealed class IdentityRedirectManager(NavigationManager navigationManage
         => RedirectToWithStatus(CurrentPath, message, context);
 
     public void RedirectToInvalidUser(UserManager<ApplicationUser> userManager, HttpContext context)
-        => RedirectToWithStatus("Account/InvalidUser", $"Error: Unable to load user with ID '{userManager.GetUserId(context.User)}'.", context);
+        => RedirectToWithStatus("Account/InvalidUser", "Errore: impossibile caricare il tuo account. Prova ad accedere nuovamente.", context);
 }

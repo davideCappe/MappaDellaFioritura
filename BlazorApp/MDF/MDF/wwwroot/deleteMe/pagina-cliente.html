@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il tuo percorso | Mappa della Fioritura</title>
+    <meta name="description" content="Il tuo percorso personale di ascolto e consapevolezza.">
+    <link rel="icon" type="image/webp" href="images/logo.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/pagina-cliente.css">
+</head>
+
+<body>
+    <div class="client-app">
+        <header class="client-header">
+            <a class="client-brand" href="index.html" aria-label="Mappa della Fioritura, pagina principale">
+                <img src="images/logo.webp" alt="" class="client-logo">
+                <span>Mappa della Fioritura</span>
+            </a>
+            <div class="client-status"><span class="status-dot"></span> Area personale</div>
+        </header>
+        <main>
+            <section class="welcome reveal">
+                <div>
+                    <p class="eyebrow">Un tempo tutto per te</p>
+                    <h1>Il tuo percorso<br><em>di fioritura</em></h1>
+                    <p class="welcome-copy">Ciao Silvia, qui trovi la tua lettura personale e le tracce audio da ascoltare con calma, seguendo il tuo ritmo.</p>
+                </div>
+                <div class="welcome-mark" aria-hidden="true">✦</div>
+            </section>
+
+            <div class="client-layout">
+                <aside class="journey-nav" aria-label="Indice del percorso">
+                    <div class="journey-heading">
+                        <span>Il percorso</span>
+                        <strong data-track-count>6 tracce</strong>
+                    </div>
+                    <div class="track-list" data-track-list></div>
+                    <div class="journey-note">
+                        <span class="note-icon">⌁</span>
+                        <p>Puoi interrompere e riprendere quando vuoi. Il tuo percorso resta qui.</p>
+                    </div>
+                </aside>
+
+                <article class="reading-area" aria-label="Contenuto del percorso">
+                    <div class="reading-meta"><span>Documento personale</span><span>8 pagine</span></div>
+                    <section class="pdf-viewer" aria-labelledby="pdf-title">
+                        <div class="pdf-toolbar">
+                            <div>
+                                <p class="content-kicker">Documento personale</p>
+                                <h2 id="pdf-title">La tua Matrice del Destino</h2>
+                            </div>
+                            <a class="pdf-download" href="audio/Matrice%20Adulti.pdf" download>Scarica PDF <span aria-hidden="true">↓</span></a>
+                        </div>
+                        <div class="pdf-pages" aria-label="Pagine della Matrice del Destino">
+                            <img class="pdf-page" src="images/matrice-adulti/pagina-01.jpg" alt="Pagina 1 della Matrice del Destino" loading="eager">
+                            <img class="pdf-page" src="images/matrice-adulti/pagina-02.jpg" alt="Pagina 2 della Matrice del Destino" loading="lazy">
+                            <img class="pdf-page" src="images/matrice-adulti/pagina-03.jpg" alt="Pagina 3 della Matrice del Destino" loading="lazy">
+                            <img class="pdf-page" src="images/matrice-adulti/pagina-04.jpg" alt="Pagina 4 della Matrice del Destino" loading="lazy">
+                            <img class="pdf-page" src="images/matrice-adulti/pagina-05.jpg" alt="Pagina 5 della Matrice del Destino" loading="lazy">
+                            <img class="pdf-page" src="images/matrice-adulti/pagina-06.jpg" alt="Pagina 6 della Matrice del Destino" loading="lazy">
+                            <img class="pdf-page" src="images/matrice-adulti/pagina-07.jpg" alt="Pagina 7 della Matrice del Destino" loading="lazy">
+                            <img class="pdf-page" src="images/matrice-adulti/pagina-08.jpg" alt="Pagina 8 della Matrice del Destino" loading="lazy">
+                        </div>
+                        <p class="pdf-note">Scorri le pagine con calma: la traccia audio resta attiva mentre leggi.</p>
+                    </section>
+                </article>
+            </div>
+        </main>
+
+        <footer class="client-footer"><span>Preparato con cura per te</span><span>Mappa della Fioritura · 2026</span></footer>
+    </div>
+
+    <section class="audio-player" aria-label="Player audio">
+        <div class="player-inner">
+            <div class="now-playing">
+                <button class="play-button" type="button" aria-label="Riproduci traccia" data-play><span class="play-icon">▶</span></button>
+                <div class="track-copy"><span class="track-label">In ascolto</span><strong data-track-title>Talenti</strong></div>
+            </div>
+            <div class="track-controls">
+                <div class="progress-row"><span data-current-time>0:00</span><input type="range" min="0" max="100" value="0" aria-label="Posizione nella traccia" data-progress><span data-duration>--:--</span></div>
+                <input class="progress-bar" type="range" min="0" max="100" value="0" aria-label="Avanzamento traccia" data-progress>
+            </div>
+            <div class="player-actions"><button class="skip-button" type="button" aria-label="Traccia precedente" data-previous>←</button><button class="skip-button" type="button" aria-label="Traccia successiva" data-next>→</button><button class="volume-button" type="button" aria-label="Attiva o disattiva audio" data-mute>◖</button></div>
+        </div>
+        <p class="player-hint"><span>♪</span> L'audio continua mentre esplori il tuo percorso</p>
+    </section>
+
+    <audio data-audio preload="metadata"></audio>
+
+    <script src="scripts/pagina-cliente.js"></script>
+</body>
+
+</html>

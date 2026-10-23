@@ -1,0 +1,496 @@
+.admin-contenuti-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  gap: 18px;
+  container: admin-contenuti / inline-size;
+}
+
+.admin-contenuti-page .admin-panel {
+  border-color: rgba(149, 136, 112, 0.22);
+  border-radius: 16px;
+  background: rgba(255, 252, 249, 0.94);
+}
+
+.admin-contenuti-page .admin-contenuti-hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(200, 109, 81, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(141, 161, 132, 0.18), transparent 34%),
+    radial-gradient(circle at left center, rgba(200, 109, 81, 0.12), transparent 28%),
+    rgba(255, 251, 247, 0.96);
+}
+
+.admin-contenuti-page .admin-contenuti-hero::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(200, 109, 81, 0.28), rgba(141, 161, 132, 0.24));
+}
+
+.admin-contenuti-page .admin-grid {
+  align-items: start;
+  gap: 18px;
+  margin-top: 0;
+}
+
+.admin-contenuti-page .admin-contenuti-overview {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.admin-contenuti-page .admin-contenuti-selector-panel,
+.admin-contenuti-page .admin-contenuti-pdf-panel,
+.admin-contenuti-page .admin-contenuti-audio-panel {
+  position: relative;
+  border: 1px solid rgba(149, 136, 112, 0.18);
+  background: rgba(255, 252, 249, 0.94);
+  box-shadow: 0 18px 38px rgba(98, 80, 61, 0.08);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-panel {
+  grid-column: 1 / -1;
+}
+
+.admin-contenuti-page .admin-contenuti-selector-panel::before,
+.admin-contenuti-page .admin-contenuti-pdf-panel::before,
+.admin-contenuti-page .admin-contenuti-audio-panel::before {
+  content: none;
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-panel,
+.admin-contenuti-page .admin-contenuti-pdf-box {
+  border-color: rgba(200, 109, 81, 0.2);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-upload-box,
+.admin-contenuti-page .admin-contenuti-audio-editor-box {
+  border-color: rgba(141, 161, 132, 0.22);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+.admin-contenuti-page .admin-contenuti-audio-upload-panel,
+.admin-contenuti-page .admin-contenuti-audio-list-panel {
+  min-width: 0;
+}
+
+.admin-contenuti-page .admin-contenuti-audio-upload-box {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.admin-contenuti-page .admin-contenuti-upload-list,
+.admin-contenuti-page .admin-contenuti-audio-upload-box > .admin-actions {
+  grid-column: 1 / -1;
+}
+
+.admin-contenuti-page .admin-contenuti-audio-upload-box > .admin-actions {
+  justify-content: flex-end;
+}
+
+.admin-contenuti-page .admin-contenuti-audio-list-panel {
+  padding-top: 18px;
+  border-top: 1px solid rgba(149, 136, 112, 0.18);
+}
+
+.admin-contenuti-page .admin-contenuti-subsection-head {
+  margin-bottom: 12px;
+}
+
+.admin-contenuti-page .admin-contenuti-subsection-head h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 4px;
+  color: var(--heading-green);
+  font-size: 1rem;
+}
+
+.admin-contenuti-page .admin-contenuti-subsection-head .admin-helper {
+  margin: 0;
+}
+
+.admin-contenuti-page .admin-contenuti-track-count {
+  display: inline-grid;
+  min-width: 24px;
+  min-height: 24px;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(141, 161, 132, 0.14);
+  color: var(--sage-deep);
+  font-size: 0.75rem;
+}
+
+.admin-contenuti-page .admin-contenuti-step {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--sage-deep);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-contenuti-page .admin-contenuti-section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.admin-contenuti-page .admin-contenuti-selector-panel .admin-section-title {
+  color: var(--ink-strong);
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-panel .admin-section-title {
+  color: var(--terracotta-deep);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-panel .admin-section-title {
+  color: var(--heading-green);
+}
+
+.admin-contenuti-page .admin-contenuti-section-head .admin-helper {
+  margin: 4px 0 0;
+  max-width: 58ch;
+}
+
+.admin-contenuti-page .admin-upload-box {
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(149, 136, 112, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.admin-contenuti-page .admin-contenuti-selector-box {
+  border-color: rgba(141, 161, 132, 0.2);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-box {
+  border-color: rgba(200, 109, 81, 0.18);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-upload-box {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-editor-box {
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.admin-contenuti-page .admin-contenuti-client-summary {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-contenuti-page .admin-contenuti-client-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px 18px;
+  border: 1px solid rgba(74, 107, 83, 0.18);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(245, 250, 242, 0.98), rgba(255, 251, 247, 0.96)),
+    rgba(255, 255, 255, 0.96);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.admin-contenuti-page .admin-contenuti-client-card strong {
+  color: var(--heading-green);
+  font-size: 1.32rem;
+  line-height: 1.1;
+}
+
+.admin-contenuti-page .admin-contenuti-client-label {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(74, 107, 83, 0.1);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+}
+
+.admin-contenuti-page .admin-contenuti-client-details {
+  display: grid;
+  gap: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(149, 136, 112, 0.14);
+  color: var(--ink-soft);
+  font-size: 0.94rem;
+}
+
+.admin-contenuti-page .admin-contenuti-client-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding-top: 2px;
+}
+
+.admin-contenuti-page .admin-button,
+.admin-contenuti-page a.admin-button {
+  min-height: 38px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.admin-contenuti-page .admin-contenuti-link-button {
+  background: var(--terracotta);
+  border: 1px solid rgba(200, 109, 81, 0.18);
+  color: #fff;
+  box-shadow: 0 10px 18px rgba(200, 109, 81, 0.2);
+}
+
+.admin-contenuti-page .admin-contenuti-link-button:hover {
+  background: var(--terracotta-soft);
+  color: #fff;
+}
+
+.admin-contenuti-page .admin-file-row {
+  border-color: rgba(149, 136, 112, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.admin-contenuti-page .admin-file-row strong {
+  color: #3f5b4d;
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-current,
+.admin-contenuti-page .admin-contenuti-pdf-pending {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-current-main {
+  display: grid;
+  gap: 4px;
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-upload-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-contenuti-page .admin-contenuti-pdf-empty {
+  margin: 0;
+}
+
+.admin-contenuti-page .admin-form-grid {
+  grid-template-columns: minmax(0, 1fr) 140px;
+}
+
+.admin-contenuti-page .admin-input,
+.admin-contenuti-page .admin-select {
+  border-color: rgba(122, 111, 94, 0.24);
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(101, 76, 62, 0.06);
+}
+
+.admin-contenuti-page ::deep .admin-input,
+.admin-contenuti-page .admin-select {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.admin-contenuti-page .admin-panel,
+.admin-contenuti-page .admin-field,
+.admin-contenuti-page .admin-contenuti-pdf-current-main {
+  min-width: 0;
+}
+
+.admin-contenuti-page strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.admin-contenuti-page .admin-inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.admin-contenuti-page .admin-inline-actions .admin-button,
+.admin-contenuti-page .admin-inline-actions a.admin-button,
+.admin-contenuti-page .admin-actions .admin-button {
+  font-weight: 700;
+}
+
+.admin-contenuti-page .admin-inline-actions .admin-button:not(.admin-button-danger),
+.admin-contenuti-page .admin-inline-actions a.admin-button:not(.admin-button-danger) {
+  background: rgba(239, 244, 236, 0.96);
+  border-color: rgba(141, 161, 132, 0.24);
+  color: var(--sage-deep);
+}
+
+.admin-contenuti-page .admin-actions-spaced {
+  margin-top: 16px;
+}
+
+.admin-contenuti-page .admin-helper {
+  color: #617068;
+}
+
+.admin-contenuti-page .admin-contenuti-audio-upload-box,
+.admin-contenuti-page .admin-contenuti-audio-editor-box {
+  border-color: rgba(141, 161, 132, 0.18);
+}
+
+.admin-contenuti-page .admin-contenuti-upload-list,
+.admin-contenuti-page .admin-contenuti-audio-list {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-contenuti-page .admin-contenuti-upload-item,
+.admin-contenuti-page .admin-contenuti-audio-row {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(149, 136, 112, 0.14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.admin-contenuti-page .admin-contenuti-upload-item-head,
+.admin-contenuti-page .admin-contenuti-audio-row-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.admin-contenuti-page .admin-contenuti-upload-item-head strong,
+.admin-contenuti-page .admin-contenuti-audio-row-title strong {
+  color: var(--heading-green);
+}
+
+.admin-contenuti-page .admin-contenuti-audio-row-main {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-contenuti-page .admin-contenuti-audio-form-grid {
+  align-items: end;
+}
+
+.admin-contenuti-page .admin-contenuti-audio-actions {
+  justify-content: flex-start;
+}
+
+.admin-contenuti-page .admin-contenuti-audio-savebar {
+  padding-top: 12px;
+  border-top: 1px solid rgba(149, 136, 112, 0.14);
+}
+
+@container admin-contenuti (max-width: 800px) {
+  .admin-contenuti-page .admin-contenuti-overview,
+  .admin-contenuti-page .admin-contenuti-audio-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-contenuti-page .admin-contenuti-audio-panel {
+    grid-column: auto;
+  }
+
+  .admin-contenuti-page .admin-contenuti-audio-list-panel {
+    padding-top: 16px;
+  }
+
+  .admin-contenuti-page .admin-contenuti-audio-upload-box {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-contenuti-page .admin-panel {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .admin-contenuti-page .admin-grid {
+    gap: 14px;
+  }
+
+  .admin-contenuti-page .admin-contenuti-section-head {
+    margin-bottom: 12px;
+  }
+
+  .admin-contenuti-page .admin-contenuti-client-details,
+  .admin-contenuti-page .admin-contenuti-client-meta {
+    align-items: stretch;
+  }
+
+  .admin-contenuti-page .admin-contenuti-link-button {
+    margin-left: 0;
+  }
+
+  .admin-contenuti-page .admin-upload-box {
+    padding: 10px;
+  }
+
+  .admin-contenuti-page .admin-contenuti-upload-item-head,
+  .admin-contenuti-page .admin-contenuti-audio-row-title,
+  .admin-contenuti-page .admin-contenuti-pdf-current,
+  .admin-contenuti-page .admin-contenuti-pdf-pending {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-contenuti-page .admin-contenuti-pdf-upload-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@container admin-contenuti (max-width: 520px) {
+  .admin-contenuti-page .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-contenuti-page .admin-inline-actions {
+    width: 100%;
+  }
+
+  .admin-contenuti-page .admin-inline-actions .admin-button,
+  .admin-contenuti-page .admin-inline-actions a.admin-button {
+    flex: 1 1 auto;
+  }
+
+  .admin-contenuti-page .admin-contenuti-upload-item,
+  .admin-contenuti-page .admin-contenuti-audio-row {
+    padding: 10px;
+  }
+
+  .admin-contenuti-page .admin-contenuti-audio-actions {
+    width: 100%;
+  }
+
+  .admin-contenuti-page .admin-contenuti-link-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

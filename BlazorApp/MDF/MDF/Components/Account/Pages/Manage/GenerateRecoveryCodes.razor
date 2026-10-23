@@ -6,7 +6,7 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<GenerateRecoveryCodes> Logger
 
-<PageTitle>Generate two-factor authentication (2FA) recovery codes</PageTitle>
+<PageTitle>Genera codici di recupero</PageTitle>
 
 @if (recoveryCodes is not null)
 {
@@ -14,26 +14,19 @@
 }
 else
 {
-    <h3>Generate two-factor authentication (2FA) recovery codes</h3>
+    <h3>Genera nuovi codici di recupero</h3>
     <div class="alert alert-warning" role="alert">
-        <p>
-            <span class="glyphicon glyphicon-warning-sign"></span>
-            <strong>Put these codes in a safe place.</strong>
-        </p>
-        <p>
-            If you lose your device and don't have the recovery codes you will lose access to your account.
-        </p>
-        <p>
-            Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key
-            used in an authenticator app you should <a href="Account/Manage/ResetAuthenticator">reset your authenticator keys.</a>
-        </p>
+        <p><strong>I nuovi codici sostituiranno quelli precedenti. Conservali in un luogo sicuro.</strong></p>
+        <p>Se perdi il dispositivo e non hai i codici di recupero, potresti perdere l'accesso al tuo account.</p>
+        <p>Questa operazione non modifica la chiave dell'app. Per cambiarla, <a href="Account/Manage/ResetAuthenticator">reimposta l'app di autenticazione</a>.</p>
     </div>
-    <div>
-        <form @formname="generate-recovery-codes" @onsubmit="OnSubmitAsync" method="post">
-            <AntiforgeryToken />
-            <button class="btn btn-danger" type="submit">Generate Recovery Codes</button>
-        </form>
-    </div>
+    <form @formname="generate-recovery-codes" @onsubmit="OnSubmitAsync" method="post">
+        <AntiforgeryToken />
+        <div class="account-actions">
+            <button class="btn btn-primary" type="submit">Genera nuovi codici</button>
+            <a href="/Account/Manage/TwoFactorAuthentication" class="btn btn-secondary">Annulla</a>
+        </div>
+    </form>
 }
 
 @code {
@@ -70,7 +63,7 @@ else
 
         var userId = await UserManager.GetUserIdAsync(user);
         recoveryCodes = await UserManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
-        message = "You have generated new recovery codes.";
+        message = "Nuovi codici di recupero generati correttamente.";
 
         Logger.LogInformation("User with ID '{UserId}' has generated new 2FA recovery codes.", userId);
     }

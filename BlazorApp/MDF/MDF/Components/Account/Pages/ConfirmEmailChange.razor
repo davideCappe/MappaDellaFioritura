@@ -1,4 +1,5 @@
 ﻿@page "/Account/ConfirmEmailChange"
+@layout IdentityLayout
 
 @using System.Text
 @using Microsoft.AspNetCore.Identity
@@ -8,9 +9,9 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Confirm email change</PageTitle>
+<PageTitle>Conferma modifica email</PageTitle>
 
-<h1>Confirm email change</h1>
+<h1>Conferma modifica email</h1>
 
 <StatusMessage Message="@message" />
 
@@ -34,14 +35,14 @@
         if (UserId is null || Email is null || Code is null)
         {
             RedirectManager.RedirectToWithStatus(
-                "Account/Login", "Error: Invalid email change confirmation link.", HttpContext);
+                "Account/Login", "Errore: il collegamento per confermare la modifica dell'email non è valido.", HttpContext);
             return;
         }
 
         var user = await UserManager.FindByIdAsync(UserId);
         if (user is null)
         {
-            message = "Unable to find user with Id '{userId}'";
+            message = "Errore: impossibile trovare l'utente richiesto.";
             return;
         }
 
@@ -49,7 +50,7 @@
         var result = await UserManager.ChangeEmailAsync(user, Email, code);
         if (!result.Succeeded)
         {
-            message = "Error changing email.";
+            message = "Errore: impossibile modificare l'indirizzo email.";
             return;
         }
 
@@ -58,11 +59,11 @@
         var setUserNameResult = await UserManager.SetUserNameAsync(user, Email);
         if (!setUserNameResult.Succeeded)
         {
-            message = "Error changing user name.";
+            message = "Errore: impossibile modificare il nome utente.";
             return;
         }
 
         await SignInManager.RefreshSignInAsync(user);
-        message = "Thank you for confirming your email change.";
+        message = "La modifica del tuo indirizzo email è stata confermata.";
     }
 }

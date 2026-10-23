@@ -18,7 +18,7 @@
 </div>
 
 <div class="app login-page">
-    <MainNav ActivePage="Account" EnglishHref="/en/index.html" ShowTellMe="false" />
+    <MainNav ActivePage="Account" EnglishHref="/en/index.html" />
 
     <div class="page-content">
         <main class="login-shell reveal" id="contenuto">
@@ -91,7 +91,7 @@
     {
         if (!string.IsNullOrEmpty(Input.Passkey?.Error))
         {
-            errorMessage = $"Error: {Input.Passkey.Error}";
+            errorMessage = "Errore: impossibile accedere con la passkey. Riprova o utilizza email e password.";
             return;
         }
 
@@ -117,7 +117,7 @@
         if (result.Succeeded)
         {
             Logger.LogInformation("User logged in.");
-            RedirectManager.RedirectTo(ReturnUrl);
+            RedirectManager.RedirectToAfterLogin(ReturnUrl, SignInManager.Context.User);
         }
         else if (result.RequiresTwoFactor)
         {
@@ -132,21 +132,23 @@
         }
         else
         {
-            errorMessage = "Error: Invalid login attempt.";
+            errorMessage = "Errore: accesso non riuscito. Verifica email e password.";
         }
     }
 
     private sealed class InputModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Inserisci l'indirizzo email.")]
+        [EmailAddress(ErrorMessage = "Inserisci un indirizzo email valido.")]
+        [Display(Name = "Email")]
         public string Email { get; set; } = "";
 
-        [Required]
+        [Required(ErrorMessage = "Inserisci la password.")]
         [DataType(DataType.Password)]
+        [Display(Name = "Password")]
         public string Password { get; set; } = "";
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Ricordami")]
         public bool RememberMe { get; set; }
 
         public PasskeyInputModel? Passkey { get; set; }

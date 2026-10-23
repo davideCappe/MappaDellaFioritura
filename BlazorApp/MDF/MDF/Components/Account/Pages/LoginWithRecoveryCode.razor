@@ -1,4 +1,5 @@
 ﻿@page "/Account/LoginWithRecoveryCode"
+@layout IdentityLayout
 
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Identity
@@ -8,29 +9,24 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<LoginWithRecoveryCode> Logger
 
-<PageTitle>Recovery code verification</PageTitle>
+<PageTitle>Accesso con codice di recupero</PageTitle>
 
-<h1>Recovery code verification</h1>
-<hr />
+<h1>Accesso con codice di recupero</h1>
 <StatusMessage Message="@message" />
 <p>
-    You have requested to log in with a recovery code. This login will not be remembered until you provide
-    an authenticator app code at log in or disable 2FA and log in again.
+    Hai scelto di accedere con un codice di recupero. Questo accesso non verrà ricordato finché non inserirai
+    un codice dell'app di autenticazione al prossimo accesso oppure disattiverai l'autenticazione a due fattori e accederai nuovamente.
 </p>
-<div class="row">
-    <div class="col-md-4">
-        <EditForm Model="Input" FormName="login-with-recovery-code" OnValidSubmit="OnValidSubmitAsync" method="post">
-            <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" role="alert" />
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.RecoveryCode" id="Input.RecoveryCode" class="form-control" autocomplete="off" placeholder="RecoveryCode" />
-                <label for="Input.RecoveryCode" class="form-label">Recovery Code</label>
-                <ValidationMessage For="() => Input.RecoveryCode" class="text-danger" />
-            </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-        </EditForm>
+<EditForm Model="Input" FormName="login-with-recovery-code" OnValidSubmit="OnValidSubmitAsync" method="post">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="identity-error" role="alert" />
+    <div class="identity-field">
+        <label for="Input.RecoveryCode">Codice di recupero</label>
+        <InputText @bind-Value="Input.RecoveryCode" id="Input.RecoveryCode" class="identity-input" autocomplete="off" aria-required="true" placeholder="Inserisci il codice di recupero" />
+        <ValidationMessage For="() => Input.RecoveryCode" class="identity-error" />
     </div>
-</div>
+    <button type="submit">Accedi</button>
+</EditForm>
 
 @code {
     private string? message;
@@ -62,7 +58,7 @@
         if (result.Succeeded)
         {
             Logger.LogInformation("User with ID '{UserId}' logged in with a recovery code.", userId);
-            RedirectManager.RedirectTo(ReturnUrl);
+            RedirectManager.RedirectToAfterLogin(ReturnUrl, SignInManager.Context.User);
         }
         else if (result.IsLockedOut)
         {
@@ -72,15 +68,15 @@
         else
         {
             Logger.LogWarning("Invalid recovery code entered for user with ID '{UserId}' ", userId);
-            message = "Error: Invalid recovery code entered.";
+            message = "Errore: codice di recupero non valido.";
         }
     }
 
     private sealed class InputModel
     {
-        [Required]
+        [Required(ErrorMessage = "Inserisci il codice di recupero.")]
         [DataType(DataType.Text)]
-        [Display(Name = "Recovery Code")]
+        [Display(Name = "Codice di recupero")]
         public string RecoveryCode { get; set; } = "";
     }
 }

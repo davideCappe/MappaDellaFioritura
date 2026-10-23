@@ -1,0 +1,192 @@
+@page "/admin/clienti/dettaglio"
+@page "/admin/clienti/dettaglio/{clienteId:int}"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.EntityFrameworkCore
+@using MDF.Shared.Constants
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
+@inject NavigationManager NavigationManager
+@layout AdminLayout
+@attribute [Authorize(Roles = Roles.Admin + "," + Roles.SuperAdmin)]
+
+<PageTitle>Back Office | Dettaglio cliente</PageTitle>
+
+<div class="admin-cliente-dettaglio-page">
+    <section class="admin-panel">
+        <p class="admin-kicker">Back Office</p>
+        <h1 class="admin-page-title">@(isEditMode ? "Modifica cliente" : "Nuovo cliente")</h1>
+        <p class="admin-lead">Compila i dati cliente. Il link pubblico viene generato e gestito automaticamente.</p>
+    </section>
+
+    @if (!string.IsNullOrWhiteSpace(feedbackMessage))
+    {
+        <section class="@FeedbackCssClass" role="alert">
+            @feedbackMessage
+        </section>
+    }
+
+    <section class="admin-panel admin-cliente-dettaglio-form-panel">
+        <EditForm Model="model" OnValidSubmit="SaveAsync" FormName="cliente-dettaglio-form" class="admin-form">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="admin-field">
+                <label for="cliente-nome">Nome cliente</label>
+                <InputText id="cliente-nome" @bind-Value="model.Nome" class="admin-input" />
+                <ValidationMessage For="() => model.Nome" />
+            </div>
+
+            <div class="admin-field">
+                <label for="cliente-data-nascita">Data di nascita</label>
+                <InputDate id="cliente-data-nascita" @bind-Value="model.DataNascita" class="admin-input" />
+                <ValidationMessage For="() => model.DataNascita" />
+            </div>
+
+            <label class="admin-checkbox" for="cliente-attivo">
+                <InputCheckbox id="cliente-attivo" @bind-Value="model.IsAttivo" />
+                <span>Cliente attivo</span>
+            </label>
+
+            <div class="admin-actions">
+                <button type="submit" class="admin-button">Salva</button>
+                <button type="button" class="admin-button admin-button-secondary" @onclick="BackToList">
+                    Torna elenco
+                </button>
+            </div>
+        </EditForm>
+    </section>
+</div>
+
+@code {
+    [Parameter]
+    public int? clienteId { get; set; }
+
+    private readonly ClienteFormModel model = new();
+    private bool isEditMode;
+    private string? feedbackMessage;
+    private bool isError;
+
+    private string FeedbackCssClass => isError
+        ? "admin-alert admin-alert-error"
+        : "admin-alert admin-alert-success";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        feedbackMessage = null;
+        isError = false;
+
+        if (clienteId.HasValue)
+        {
+            await LoadForEditAsync(clienteId.Value);
+            return;
+        }
+
+        isEditMode = false;
+        ResetModel();
+    }
+
+    private async Task LoadForEditAsync(int id)
+    {
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+        var cliente = await dbContext.Clienti.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (cliente is null)
+        {
+            SetError("Error: cliente non trovato.");
+            isEditMode = false;
+            ResetModel();
+            return;
+        }
+
+        isEditMode = true;
+        model.Nome = cliente.Nome;
+        model.DataNascita = cliente.DataNascita;
+        model.IsAttivo = cliente.IsAttivo;
+        model.PublicId = cliente.PublicId.ToString("D");
+    }
+
+    private async Task SaveAsync()
+    {
+        feedbackMessage = null;
+
+        if (!Guid.TryParse(model.PublicId, out var publicId))
+        {
+            SetError("Error: il PublicId non è un GUID valido.");
+            return;
+        }
+
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+
+        if (isEditMode && clienteId.HasValue)
+        {
+            var cliente = await dbContext.Clienti.FirstOrDefaultAsync(x => x.Id == clienteId.Value);
+
+            if (cliente is null)
+            {
+                SetError("Error: cliente non trovato.");
+                return;
+            }
+
+            cliente.Nome = model.Nome.Trim();
+            cliente.DataNascita = model.DataNascita;
+            cliente.IsAttivo = model.IsAttivo;
+            cliente.UpdatedUtc = DateTime.UtcNow;
+        }
+        else
+        {
+            var publicIdExists = await dbContext.Clienti.AnyAsync(x => x.PublicId == publicId);
+            if (publicIdExists)
+            {
+                SetError("Error: esiste già un cliente con questo PublicId.");
+                return;
+            }
+
+            dbContext.Clienti.Add(new Cliente
+            {
+                Nome = model.Nome.Trim(),
+                DataNascita = model.DataNascita,
+                PublicId = publicId,
+                IsAttivo = model.IsAttivo,
+                CreatedUtc = DateTime.UtcNow
+            });
+        }
+
+        await dbContext.SaveChangesAsync();
+        NavigationManager.NavigateTo("/admin/clienti");
+    }
+
+    private void BackToList()
+    {
+        NavigationManager.NavigateTo("/admin/clienti");
+    }
+
+    private void ResetModel()
+    {
+        model.Nome = string.Empty;
+        model.DataNascita = DateOnly.FromDateTime(DateTime.Today);
+        model.IsAttivo = true;
+        model.PublicId = Guid.NewGuid().ToString("D");
+    }
+
+    private void SetError(string message)
+    {
+        feedbackMessage = message;
+        isError = true;
+    }
+
+    private sealed class ClienteFormModel
+    {
+        [Required(ErrorMessage = "Il nome cliente è obbligatorio.")]
+        [StringLength(160, ErrorMessage = "Il nome cliente può contenere al massimo 160 caratteri.")]
+        public string Nome { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La data di nascita è obbligatoria.")]
+        public DateOnly DataNascita { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+
+        [Required(ErrorMessage = "Il PublicId è obbligatorio.")]
+        public string PublicId { get; set; } = Guid.NewGuid().ToString("D");
+
+        public bool IsAttivo { get; set; } = true;
+    }
+}

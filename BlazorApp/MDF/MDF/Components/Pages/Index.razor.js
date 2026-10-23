@@ -1081,6 +1081,10 @@ function disegnaMatrice(risultati) {
       pos.fontFamily || "'Segoe UI', system-ui, sans-serif",
     );
     text.classList.add("numero-rivelato");
+    text.dataset.matrixPoint = chiave;
+    text.dataset.matrixX = String(pos.x);
+    text.dataset.matrixY = String(pos.y);
+    text.dataset.matrixRadius = String((pos.fontSize || 24) * 0.8);
     text.style.setProperty("--numero-delay", `${indice * 28}ms`);
     text.textContent = String(valore);
 
@@ -1101,6 +1105,25 @@ function disegnaMatrice(risultati) {
       matrixContainer.classList.remove("updated");
     }, 500);
   }
+}
+
+function renderClientMatrix() {
+  const host = document.querySelector("[data-client-matrix]");
+  if (!host || host.dataset.init === "1") {
+    return;
+  }
+
+  const birthDate = host.dataset.birthDate;
+  if (!birthDate) {
+    return;
+  }
+
+  const clientName = host.dataset.clientName || "Cliente";
+  const risultati = calcolaMatrice(clientName, birthDate);
+  disegnaMatrice(risultati);
+
+  host.dataset.init = "1";
+  host.dispatchEvent(new CustomEvent("clientmatrixready", { bubbles: true }));
 }
 
 function mostraDescrizioneCentro(numero, profilo) {
@@ -1831,6 +1854,8 @@ export function initializeIndexPage() {
 }
 
 function bootIndexPage() {
+  renderClientMatrix();
+
   const btnCalcola = document.getElementById("btnCalcola");
   if (!btnCalcola) {
     return;

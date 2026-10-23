@@ -1,11 +1,391 @@
 @page "/admin/clienti"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.JSInterop
+@using MDF.Services
+@using MDF.Shared.Constants
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
+@inject ClienteStorageService StorageService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
 @layout AdminLayout
-@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@attribute [Authorize(Roles = Roles.Admin + "," + Roles.SuperAdmin)]
 
 <PageTitle>Back Office | Clienti</PageTitle>
 
-<section class="admin-panel">
-    <p class="admin-kicker">Back Office</p>
-    <h1 class="admin-page-title">Clienti</h1>
-    <p class="admin-lead">Qui inserirai gestione cliente, stato e link pubblico.</p>
-</section>
+<div class="admin-clienti-page">
+    <section class="admin-panel admin-clienti-hero">
+        <p class="admin-kicker">Back Office</p>
+        <h1 class="admin-page-title">Clienti</h1>
+        <p class="admin-lead">
+            Crea e gestisci i clienti, poi copia il link pubblico pronto da condividere.
+        </p>
+    </section>
+
+    @if (!string.IsNullOrWhiteSpace(feedbackMessage))
+    {
+        <section class="@FeedbackCssClass" role="alert">
+            @feedbackMessage
+        </section>
+    }
+
+    <section class="admin-panel admin-clienti-list-panel">
+        <div class="admin-clienti-toolbar">
+            <div>
+                <h2 class="admin-section-title">Elenco clienti</h2>
+                <p class="admin-helper admin-clienti-list-helper">Cerca un cliente, apri i contenuti o copia il link da inviare.</p>
+            </div>
+            <button type="button" class="admin-button" @onclick="GoToCreate">
+                Nuovo cliente
+            </button>
+        </div>
+
+        <div class="admin-clienti-filters">
+            <input type="text"
+                   value="@searchTerm"
+                   @oninput="OnSearchInput"
+                   @onkeydown="HandleSearchKeyDown"
+                   class="admin-input"
+                   placeholder="Cerca per nome cliente" />
+            <button type="button" class="admin-button admin-button-secondary admin-search-button" @onclick="ApplySearchAsync">Cerca</button>
+        </div>
+
+        <div class="admin-clienti-meta">
+            <span class="admin-clienti-count">@(totalCount == 1 ? "1 cliente" : $"{totalCount} clienti")</span>
+            @if (!string.IsNullOrWhiteSpace(appliedSearchTerm))
+            {
+                <span class="admin-clienti-filter-tag">Ricerca attiva: @appliedSearchTerm</span>
+            }
+        </div>
+
+        @if (clienti.Count == 0)
+        {
+            <div class="admin-empty">Nessun cliente trovato.</div>
+        }
+        else
+        {
+            <div class="admin-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Data nascita</th>
+                            <th>Stato</th>
+                            <th>Contenuti</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var cliente in clienti)
+                        {
+                            var publicRoute = StorageService.GetPublicRoute(cliente.PublicId);
+
+                            <tr>
+                                <td data-label="Nome">@cliente.Nome</td>
+                                <td data-label="Data nascita">@cliente.DataNascita.ToString("dd/MM/yyyy")</td>
+                                <td data-label="Stato">
+                                    <span class="admin-pill @(cliente.IsAttivo ? string.Empty : "admin-pill-muted")">
+                                        @(cliente.IsAttivo ? "Attivo" : "Disattivo")
+                                    </span>
+                                </td>
+                                <td data-label="Contenuti">
+                                    <div class="admin-status-list">
+                                        <span class="admin-mini-pill @(cliente.HasPdf ? string.Empty : "admin-mini-pill-muted")">
+                                            @(cliente.HasPdf ? "PDF presente" : "PDF mancante")
+                                        </span>
+                                        <span class="admin-mini-pill">@cliente.AudioCount tracce</span>
+                                    </div>
+                                </td>
+                                <td data-label="Azioni">
+                                    <div class="admin-inline-actions">
+                                        <button type="button" class="admin-button admin-button-secondary admin-action-button admin-action-edit" @onclick="() => GoToEdit(cliente.Id)">
+                                            Modifica
+                                        </button>
+                                        <button type="button" class="admin-button admin-button-secondary admin-action-button admin-action-content" @onclick="() => GoToContenuti(cliente.Id)">
+                                            Contenuti
+                                        </button>
+                                        <button type="button"
+                                                class="admin-button admin-button-secondary admin-action-button admin-action-copy @(copiedPublicId == cliente.PublicId ? "admin-copy-success" : string.Empty)"
+                                                @onclick="() => CopyPublicLinkAsync(cliente.PublicId)">
+                                            @(copiedPublicId == cliente.PublicId ? "Link copiato" : "Copia link")
+                                        </button>
+                                        <button type="button" class="admin-button admin-button-danger admin-action-button" @onclick="() => OpenDeleteDialog(cliente)">
+                                            Elimina
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <div class="admin-clienti-pagination">
+                    <button type="button" class="admin-button admin-button-secondary" @onclick="PreviousPageAsync" disabled="@(currentPage == 1)">Precedente</button>
+                    <span>Pagina @currentPage di @totalPages · @totalCount clienti</span>
+                    <button type="button" class="admin-button admin-button-secondary" @onclick="NextPageAsync" disabled="@(currentPage >= totalPages)">Successiva</button>
+                </div>
+            }
+        }
+    </section>
+
+    @if (deleteDialogCliente is not null)
+    {
+        <div class="admin-delete-dialog-backdrop" @onclick="CloseDeleteDialog">
+            <section class="admin-delete-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-dialog-title" @onclick:stopPropagation="true">
+                <p class="admin-kicker">Conferma eliminazione</p>
+                <h2 id="delete-dialog-title" class="admin-section-title">Eliminare @deleteDialogCliente.Nome?</h2>
+                <p class="admin-helper">
+                    Questa azione rimuoverà il cliente e tutti i suoi contenuti collegati. Se vuoi procedere, conferma l'eliminazione.
+                </p>
+                <div class="admin-actions">
+                    <button type="button" class="admin-button admin-button-danger" @onclick="ConfirmDeleteAsync">
+                        Conferma eliminazione
+                    </button>
+                    <button type="button" class="admin-button admin-button-secondary" @onclick="CloseDeleteDialog">
+                        Annulla
+                    </button>
+                </div>
+            </section>
+        </div>
+    }
+</div>
+
+@code {
+    private const int PageSize = 12;
+
+    private List<ClienteListItem> clienti = [];
+    private string searchTerm = string.Empty;
+    private string? appliedSearchTerm;
+    private int currentPage = 1;
+    private int totalCount;
+    private int totalPages = 1;
+    private string? feedbackMessage;
+    private bool isError;
+    private CancellationTokenSource? searchDebounceCts;
+    private Guid? copiedPublicId;
+    private CancellationTokenSource? copyFeedbackCts;
+    private ClienteListItem? deleteDialogCliente;
+
+    private string FeedbackCssClass => isError
+        ? "admin-alert admin-alert-error"
+        : "admin-alert admin-alert-success";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+
+        var query = dbContext.Clienti.AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(appliedSearchTerm))
+        {
+            var term = appliedSearchTerm.Trim();
+            query = query.Where(x => x.Nome.Contains(term));
+        }
+
+        totalCount = await query.CountAsync();
+        totalPages = Math.Max(1, (int)Math.Ceiling(totalCount / (double)PageSize));
+
+        if (currentPage > totalPages)
+        {
+            currentPage = totalPages;
+        }
+
+        var skip = (currentPage - 1) * PageSize;
+
+        clienti = await query
+            .OrderBy(x => x.Nome)
+            .Skip(skip)
+            .Take(PageSize)
+            .Select(x => new ClienteListItem
+            {
+                Id = x.Id,
+                Nome = x.Nome,
+                DataNascita = x.DataNascita,
+                PublicId = x.PublicId,
+                IsAttivo = x.IsAttivo,
+                HasPdf = x.PdfFileName != null,
+                AudioCount = x.AudioTracks.Count
+            })
+            .ToListAsync();
+    }
+
+    private async Task OnSearchInput(ChangeEventArgs args)
+    {
+        searchTerm = args.Value?.ToString() ?? string.Empty;
+
+        searchDebounceCts?.Cancel();
+        searchDebounceCts?.Dispose();
+        searchDebounceCts = new CancellationTokenSource();
+
+        try
+        {
+            await Task.Delay(250, searchDebounceCts.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+
+        await ApplySearchAsync();
+    }
+
+    private async Task ApplySearchAsync()
+    {
+        appliedSearchTerm = string.IsNullOrWhiteSpace(searchTerm)
+            ? null
+            : searchTerm.Trim();
+
+        currentPage = 1;
+        await LoadAsync();
+    }
+
+    private async Task HandleSearchKeyDown(KeyboardEventArgs args)
+    {
+        if (!string.Equals(args.Key, "Enter", StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        await ApplySearchAsync();
+    }
+
+    private async Task CopyPublicLinkAsync(Guid publicId)
+    {
+        var publicRoute = StorageService.GetPublicRoute(publicId);
+        var publicUrl = NavigationManager.ToAbsoluteUri(publicRoute).ToString();
+
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", publicUrl);
+
+        copiedPublicId = publicId;
+        copyFeedbackCts?.Cancel();
+        copyFeedbackCts?.Dispose();
+        copyFeedbackCts = new CancellationTokenSource();
+
+        StateHasChanged();
+
+        try
+        {
+            await Task.Delay(1400, copyFeedbackCts.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+
+        if (copiedPublicId == publicId)
+        {
+            copiedPublicId = null;
+            StateHasChanged();
+        }
+    }
+
+    private async Task PreviousPageAsync()
+    {
+        if (currentPage <= 1)
+        {
+            return;
+        }
+
+        currentPage--;
+        await LoadAsync();
+    }
+
+    private async Task NextPageAsync()
+    {
+        if (currentPage >= totalPages)
+        {
+            return;
+        }
+
+        currentPage++;
+        await LoadAsync();
+    }
+
+    private void OpenDeleteDialog(ClienteListItem cliente)
+    {
+        deleteDialogCliente = cliente;
+    }
+
+    private void CloseDeleteDialog()
+    {
+        deleteDialogCliente = null;
+    }
+
+    private async Task ConfirmDeleteAsync()
+    {
+        if (deleteDialogCliente is null)
+        {
+            return;
+        }
+
+        var clienteId = deleteDialogCliente.Id;
+        deleteDialogCliente = null;
+
+        await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+
+        var cliente = await dbContext.Clienti.FirstOrDefaultAsync(x => x.Id == clienteId);
+
+        if (cliente is null)
+        {
+            SetError("Error: cliente non trovato.");
+            return;
+        }
+
+        dbContext.Clienti.Remove(cliente);
+        await dbContext.SaveChangesAsync();
+
+        StorageService.DeleteClienteFolder(cliente.PublicId);
+
+        await LoadAsync();
+        SetSuccess("Cliente eliminato correttamente.");
+    }
+
+    private void GoToCreate()
+    {
+        NavigationManager.NavigateTo("/admin/clienti/dettaglio");
+    }
+
+    private void GoToEdit(int clienteId)
+    {
+        NavigationManager.NavigateTo($"/admin/clienti/dettaglio/{clienteId}");
+    }
+
+    private void GoToContenuti(int clienteId)
+    {
+        NavigationManager.NavigateTo($"/admin/contenuti?clienteId={clienteId}");
+    }
+
+    private void SetSuccess(string message)
+    {
+        feedbackMessage = message;
+        isError = false;
+    }
+
+    private void SetError(string message)
+    {
+        feedbackMessage = message;
+        isError = true;
+    }
+
+    private sealed class ClienteListItem
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public DateOnly DataNascita { get; set; }
+        public Guid PublicId { get; set; }
+        public bool IsAttivo { get; set; }
+        public bool HasPdf { get; set; }
+        public int AudioCount { get; set; }
+    }
+}
